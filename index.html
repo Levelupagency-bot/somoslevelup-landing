@@ -15,7 +15,7 @@
   --mid: #626262;
   --light: #d9d9d9;
   --white: #ffffff;
-} 
+}
 
 *, *::before, *::after {
   margin: 0;
@@ -1013,14 +1013,27 @@ a {
 
 .footer-links a {
   font-family: 'DM Sans', sans-serif;
-  font-weight: 400;
-  font-size: 13px;
+  font-weight: 500;
+  font-size: 15px;
   color: var(--light);
   transition: color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-links a svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }
 
 .footer-links a:hover {
   color: var(--accent);
+}
+
+.footer-links a:hover svg {
+  fill: var(--accent);
 }
 
 .footer-copy {
@@ -1192,13 +1205,11 @@ body {
 <!-- ============ NAV ============ -->
 <nav class="nav" id="nav">
   <a href="#" aria-label="Level Up AIMA">
-    <svg class="nav-logo" viewBox="0 0 160 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="1" y="1" width="22" height="48" rx="2" fill="#ffffff"/>
-      <g transform="translate(12, 43) rotate(-90)">
-        <text font-family="'Barlow Condensed', sans-serif" font-weight="800" font-size="14" fill="#030807" letter-spacing="0.1em" text-anchor="start" dominant-baseline="middle">LEVEL</text>
-      </g>
-      <text x="30" y="36" font-family="'Barlow Condensed', sans-serif" font-weight="800" font-size="46" fill="#ffffff" letter-spacing="-0.02em">UP</text>
-      <text x="30" y="48" font-family="'Barlow Condensed', sans-serif" font-weight="700" font-size="11" fill="#ffffff" letter-spacing="0.35em">AIMA</text>
+    <svg class="nav-logo" viewBox="0 0 180 115" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="8" width="30" height="105" rx="2" fill="#ffffff"/>
+      <text text-anchor="middle" dominant-baseline="central" transform="rotate(-90, 17, 60)" x="17" y="60" font-family='Barlow Condensed' font-weight="800" font-size="33" fill="#030807" letter-spacing="0.04em">LEVEL</text>
+      <text x="38" y="88" font-family='Barlow Condensed' font-weight="800" font-size="115" fill="#ffffff" letter-spacing="-0.02em">UP</text>
+      <text x="38" y="110" font-family='Barlow Condensed' font-weight="700" font-size="19" fill="#ffffff" letter-spacing="0.62em" textLength="120" lengthAdjust="spacing">AIMA</text>
     </svg>
   </a>
   <a href="#form" class="nav-cta">Diagnóstico gratuito</a>
@@ -1441,7 +1452,7 @@ body {
         <path d="M17 28.5L24.5 36L39 20" stroke="#eea83b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       <h3>RECIBIDO.</h3>
-      <p>Te escribimos antes de las 24hs por WhatsApp para coordinar.<br>Mientras tanto, si querés ver cómo pensamos, estamos en <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>.</p>
+      <p>Te escribimos antes de las 24hs por WhatsApp para coordinar.<br>Mientras tanto, si querés ver cómo pensamos, estamos en <a href="https://www.instagram.com/levelup.aima/" target="_blank" rel="noopener">Instagram</a>.</p>
     </div>
   </div>
 </section>
@@ -1449,18 +1460,15 @@ body {
 <!-- ============ FOOTER ============ -->
 <footer class="footer">
   <div class="footer-inner">
-    <svg class="footer-logo" viewBox="0 0 160 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="1" y="1" width="22" height="48" rx="2" fill="#ffffff"/>
-      <g transform="translate(12, 43) rotate(-90)">
-        <text font-family="'Barlow Condensed', sans-serif" font-weight="800" font-size="14" fill="#030807" letter-spacing="0.1em" text-anchor="start" dominant-baseline="middle">LEVEL</text>
-      </g>
-      <text x="30" y="36" font-family="'Barlow Condensed', sans-serif" font-weight="800" font-size="46" fill="#ffffff" letter-spacing="-0.02em">UP</text>
-      <text x="30" y="48" font-family="'Barlow Condensed', sans-serif" font-weight="700" font-size="11" fill="#ffffff" letter-spacing="0.35em">AIMA</text>
+    <svg class="footer-logo" viewBox="0 0 180 115" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="8" width="30" height="105" rx="2" fill="#ffffff"/>
+      <text text-anchor="middle" dominant-baseline="central" transform="rotate(-90, 17, 60)" x="17" y="60" font-family='Barlow Condensed' font-weight="800" font-size="33" fill="#030807" letter-spacing="0.04em">LEVEL</text>
+      <text x="38" y="88" font-family='Barlow Condensed' font-weight="800" font-size="115" fill="#ffffff" letter-spacing="-0.02em">UP</text>
+      <text x="38" y="110" font-family='Barlow Condensed' font-weight="700" font-size="19" fill="#ffffff" letter-spacing="0.62em" textLength="120" lengthAdjust="spacing">AIMA</text>
     </svg>
     <p class="footer-tagline">Infraestructura comercial para negocios que ya no pueden depender del dueño.</p>
     <div class="footer-links">
-      <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://wa.me/" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="https://www.instagram.com/levelup.aima/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#d9d9d9" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg> Instagram</a>
     </div>
   </div>
   <p class="footer-copy">© 2025 Level Up™ | AIMA</p>
@@ -1556,7 +1564,7 @@ body {
 
   /* ============ TYPEWRITER ============ */
   var headline = document.getElementById('heroHeadline');
-  var fullText = "LLEGASTE HASTA ACÁ SOLO.\nESO YA NO ALCANZA.";
+  var fullText = "LLEGASTE HASTA ACÁ SOLO\nESO YA NO ALCANZA";
   var charIndex = 0;
   var cursor = document.createElement('span');
   cursor.className = 'typewriter-cursor';
@@ -1740,6 +1748,21 @@ body {
     }
 
     if (valid) {
+      // Send data to webhook
+      var formData = {
+        nombre: nombre.value.trim(),
+        email: email.value.trim(),
+        whatsapp: whatsapp.value.trim(),
+        rubro: rubro.value.trim(),
+        problema: problemaInput.value.trim()
+      };
+
+      fetch('https://n8n.srv1035755.hstgr.cloud/webhook/e48fc3b6-eb6c-42d5-be1e-9e56a1fe25a1', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      }).catch(function() {});
+
       form.style.display = 'none';
       confirmation.classList.add('active');
       confirmation.offsetHeight;
