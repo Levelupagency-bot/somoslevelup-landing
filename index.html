@@ -29,14 +29,24 @@
   /* sobre #121110: dim .46 daba 4.28:1 y faint .30 daba 2.54:1 — ambos por debajo del mínimo.
      Medido en pantalla: .62 => 6.8:1 · .52 => 5.2:1 (sobre panel, 4.9:1). Todo pasa el mínimo. */
   --ink:#f2f0ec;--mid:rgba(242,240,236,.66);--dim:rgba(242,240,236,.62);--faint:rgba(242,240,236,.52);
+  /* tintas intermedias como token: escritas a mano quedaban del color del fondo
+     en las secciones claras (contraste 1.00, texto invisible) */
+  --ink-2:rgba(242,240,236,.88);--ink-3:rgba(242,240,236,.74);
   --hot:#f26a1f;--trace:#e6e2db;
+  /* diagnóstico: verde suma, rojo descarta. Elegidos para pasar 4.5:1 en grafito */
+  --suma:#5ab07c;--descarta:#e06a52;
   --line:rgba(242,240,236,.14);--line-2:rgba(242,240,236,.08);
+  --hover-bg:rgba(242,240,236,.045);
   --g1:rgba(126,56,16,.32);--g2:rgba(20,19,18,.6);
+  /* una sola ley de movimiento en toda la página: exponencial que sale rápido
+     y se posa. Antes convivían cinco curvas casi iguales, una por cada capa. */
+  --ley:cubic-bezier(.16,1,.3,1);
   --f:'Archivo',system-ui,sans-serif;
-  --pad:clamp(20px,4vw,56px);
+  /* el mínimo sube de 20 a 26: en celular el texto llegaba muy al borde */
+  --pad:clamp(26px,4.5vw,60px);
 }
 html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-body{font-family:var(--f);background:var(--void);color:var(--ink);font-size:16px;line-height:1.55;overflow-x:hidden}
+body{font-family:var(--f);background:var(--void);color:var(--ink);font-size:16px;line-height:1.65;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 
 .bg{position:fixed;inset:0;z-index:0;pointer-events:none;
@@ -51,6 +61,7 @@ a{color:inherit;text-decoration:none}
   padding:20px var(--pad);border-bottom:1px solid transparent;transition:background .3s,border-color .3s}
 .nav.stuck{background:rgba(18,17,16,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:var(--line)}
 .mark{font-weight:900;font-size:16px;letter-spacing:-.045em}
+.mark .bar-m{color:var(--hot);font-weight:600;margin:0 1px}
 .mark sup{font-size:7px;font-weight:500;vertical-align:super}
 .nav-r{display:flex;align-items:center;gap:clamp(14px,2.4vw,30px)}
 /* alto mínimo de 44: entre 720 y 1000px estos links se ven Y se tocan (tablet) */
@@ -58,10 +69,18 @@ a{color:inherit;text-decoration:none}
   font-size:12.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
   color:rgba(242,240,236,.88);transition:color .2s}
 .nav-r a:hover{color:var(--hot)}
+/* Soluciones es la puerta de AIMA: pesa más que el resto del menú */
+.nav-r a.destacado{color:var(--hot);font-weight:800}
+.nav-r a.destacado::after{content:'';display:block;position:absolute;left:0;right:0;bottom:8px;
+  height:2px;background:var(--hot);transform:scaleX(0);transform-origin:0 50%;
+  transition:transform .35s cubic-bezier(.16,1,.3,1)}
+.nav-r a.destacado{position:relative}
+@media(hover:hover) and (pointer:fine){.nav-r a.destacado:hover::after{transform:scaleX(1)}}
 .cta-n{background:var(--hot);color:#fff;font-weight:800;font-size:14px;letter-spacing:.01em;
   padding:12px 22px;min-height:44px;border:0;cursor:pointer;font-family:var(--f);
   transition:transform .18s,background .2s}
-.cta-n:hover{transform:translateY(-1px);background:#ff7c30}
+.cta-n:hover{background:#ff7c30}
+@media(hover:hover) and (pointer:fine){.cta-n:hover{transform:translateY(-1px)}}
 
 /* ── hero ── */
 .via{position:fixed;right:0;top:0;width:54vw;height:100svh;z-index:5;pointer-events:none;
@@ -69,11 +88,16 @@ a{color:inherit;text-decoration:none}
   mask-image:linear-gradient(90deg,transparent,#000 14%,#000 97%)}
 .via canvas{width:100%;height:100%;display:block}
 .caps{position:absolute;inset:0}
+/* Las palabras de cada estación: legibles siempre, y encendidas cuando el trazo
+   las toca. El destello lo dibuja el canvas; acá sube el peso y el color. */
 .cap{position:absolute;bottom:15%;transform:translateX(-50%);white-space:nowrap;text-align:center;
-  font-size:9.5px;letter-spacing:.17em;text-transform:uppercase;color:var(--faint);transition:color .3s}
-.cap b{display:block;font-weight:600;font-size:10.5px}
-.cap.on{color:var(--hot)}
-.cap.own::after{content:'tu equipo';display:block;font-size:8.5px;letter-spacing:.1em;color:var(--faint);margin-top:3px}
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);
+  transition:color .25s ease,transform .35s cubic-bezier(.16,1,.3,1)}
+.cap b{display:block;font-weight:800;font-size:12px}
+.cap.on{color:var(--hot);transform:translateX(-50%) translateY(-4px)}
+.cap.on b{color:var(--hot)}
+.cap.own::after{content:'tu equipo';display:block;font-size:9.5px;letter-spacing:.1em;
+  color:var(--dim);margin-top:4px;font-weight:600}
 
 .hero{position:relative;z-index:10;min-height:100svh;display:flex;flex-direction:column;justify-content:center;
   padding:0 var(--pad)}
@@ -94,36 +118,66 @@ h1 em{font-style:normal;color:var(--hot)}
    fantasma a media transición. Sin overflow:hidden — cortaba la p de "próximo". */
 .swap{display:inline-block;color:var(--hot);font-weight:700;vertical-align:baseline}
 .swap i{font-style:normal;display:inline-block;
-  transition:transform .34s cubic-bezier(.16,.9,.24,1),opacity .3s ease}
+  transition:transform .34s cubic-bezier(.16,1,.3,1),opacity .3s ease}
 .swap.sale i{transform:translateY(-.55em);opacity:0}
 .swap.entra i{transform:translateY(.55em);opacity:0;transition:none}
 .act{display:flex;align-items:center;gap:18px;margin-top:clamp(22px,2.6vw,34px);flex-wrap:wrap}
 /* mismo tratamiento que el botón del header: si allá va blanco, acá también */
 .btn{font-family:var(--f);font-size:15px;font-weight:800;padding:15px 30px;background:var(--hot);
   color:#fff;border:0;cursor:pointer;transition:transform .18s,background .2s}
-.btn:hover{transform:translateY(-2px);background:#ff7c30}
+.btn:hover{background:#ff7c30}
+@media(hover:hover) and (pointer:fine){.btn:hover{transform:translateY(-2px)}}
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:600}
 .btn.ghost:hover{border-color:var(--hot);background:transparent}
 .hint{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim)}
 
 /* ── secciones ── */
-.sec{position:relative;z-index:10;padding:clamp(72px,9vw,140px) var(--pad);background:var(--void)}
+/* El corte no se consigue estirando la sección — así quedan larguísimas. Se consigue
+   marcándolo: regla arriba + una marca naranja corta que dice "acá empieza otra cosa". */
+.sec{position:relative;z-index:10;padding:clamp(74px,8vw,120px) var(--pad);
+  background:var(--void);border-top:1px solid var(--line)}
+.sec::before{content:'';position:absolute;top:-1px;left:var(--pad);width:clamp(40px,5vw,72px);
+  height:2px;background:var(--hot)}
 .sec.alt{background:var(--panel)}
+/* RESTAURADO: otro reemplazo se llevó el bloque de la zona clara entera. */
+/* ══ INVERSIÓN A CLARO ══
+   No repinta nada a mano: redefine los tokens dentro del bloque y todas las reglas
+   que ya usan var(--ink)/var(--hot)/var(--line) se dan vuelta solas. El naranja baja
+   a #b0430c porque el de marca sobre marfil da 2.7:1 — ilegible. Así da 5.1:1. */
+.luz{
+  --void:#f2f0ec;--panel:#e8e5df;
+  /* Los grises de marfil pesaban poco: sobre fondo claro el ojo pide más tinta que
+     sobre oscuro para leer igual. Todos suben ~10 puntos de alfa. */
+  --ink:#161513;--mid:rgba(22,21,19,.86);--dim:rgba(22,21,19,.80);--faint:rgba(22,21,19,.74);
+  --ink-2:rgba(22,21,19,.94);--ink-3:rgba(22,21,19,.86);
+  --hot:#b0430c;--trace:#3a3833;
+  --line:rgba(22,21,19,.17);--line-2:rgba(22,21,19,.09);
+  --hover-bg:rgba(22,21,19,.055);
+  background:#f2f0ec;color:var(--ink)}
+.luz .tag i,.luz .shead span:last-child{color:#f2f0ec}
+
+.sec.luz{border-top-color:rgba(22,21,19,.16)}
 /* el rótulo de sección es la señalización de la página: tiene que leerse de un vistazo,
    no ser un susurro gris. Número naranja con peso + etiqueta en tinta casi plena. */
 .tag{display:flex;align-items:center;gap:13px;font-size:15px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--ink);margin-bottom:clamp(20px,2.6vw,32px);font-weight:800}
+  color:var(--ink);margin-bottom:clamp(24px,3vw,38px);font-weight:800}
 /* el número va en chapa naranja llena: es el mojón de la página, tiene que verse de lejos */
 .tag i{font-style:normal;background:var(--hot);color:#120d08;font-weight:900;font-size:14px;
   letter-spacing:.04em;line-height:1;padding:6px 9px 5px}
 .tag .bar{width:30px;height:3px;background:var(--hot);flex-shrink:0}
 @media(max-width:720px){.tag{font-size:13px;gap:10px}.tag .bar{width:18px}}
-h2{font-weight:900;font-size:clamp(28px,4.2vw,60px);line-height:.96;letter-spacing:-.045em;max-width:18ch}
+h2{font-weight:900;font-size:clamp(28px,4.2vw,60px);line-height:1;letter-spacing:-.045em;max-width:18ch;
+  margin-bottom:clamp(16px,1.8vw,24px)}
 h2 em{font-style:normal;color:var(--hot)}
-.lead{font-size:clamp(15px,1.15vw,18px);color:var(--mid);max-width:54ch;margin-top:18px;line-height:1.6}
+/* "Un sistema. Se entrega entero." tiene que entrar en un renglón: sin el tope de
+   18ch, "entero" caía solo abajo */
+.h-sistema{max-width:none;white-space:nowrap}
+@media(max-width:900px){.h-sistema{white-space:normal;max-width:14ch}}
+.lead{font-size:clamp(15px,1.15vw,18px);color:var(--mid);max-width:54ch;margin-top:0;line-height:1.75}
 .lead b{color:var(--ink);font-weight:600}
 
-.rv{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.rv{opacity:0;transform:translateY(16px);
+  transition:opacity .42s cubic-bezier(.16,1,.3,1),transform .42s cubic-bezier(.16,1,.3,1)}
 .js-rv .rv.in,.rv.in{opacity:1;transform:none}
 html:not(.js-rv) .rv{opacity:1;transform:none}
 
@@ -132,15 +186,15 @@ html:not(.js-rv) .rv{opacity:1;transform:none}
    observador que .rv, así que hereda la misma red de seguridad: si el JS no corre,
    el CSS de abajo las deja visibles igual. */
 .js-rv .stg>*{opacity:0;transform:translateY(15px);
-  transition:opacity .55s cubic-bezier(.2,.7,.2,1),transform .55s cubic-bezier(.2,.7,.2,1)}
+  transition:opacity .36s cubic-bezier(.16,1,.3,1),transform .36s cubic-bezier(.16,1,.3,1)}
 .js-rv .stg.in>*{opacity:1;transform:none}
 .js-rv .stg.in>*:nth-child(1){transition-delay:.02s}
-.js-rv .stg.in>*:nth-child(2){transition-delay:.09s}
-.js-rv .stg.in>*:nth-child(3){transition-delay:.16s}
-.js-rv .stg.in>*:nth-child(4){transition-delay:.23s}
-.js-rv .stg.in>*:nth-child(5){transition-delay:.30s}
-.js-rv .stg.in>*:nth-child(6){transition-delay:.37s}
-.js-rv .stg.in>*:nth-child(n+7){transition-delay:.44s}
+.js-rv .stg.in>*:nth-child(2){transition-delay:.06s}
+.js-rv .stg.in>*:nth-child(3){transition-delay:.12s}
+.js-rv .stg.in>*:nth-child(4){transition-delay:.18s}
+.js-rv .stg.in>*:nth-child(5){transition-delay:.24s}
+.js-rv .stg.in>*:nth-child(6){transition-delay:.30s}
+.js-rv .stg.in>*:nth-child(n+7){transition-delay:.36s}
 html:not(.js-rv) .stg>*{opacity:1;transform:none}
 
 /* hilo de avance arriba de todo: dice cuánto falta sin ocupar lugar */
@@ -149,13 +203,16 @@ html:not(.js-rv) .stg>*{opacity:1;transform:none}
 
 /* micro-reacciones: nada que se mueva solo, solo respuesta a lo que hace el visitante */
 @media(hover:hover){
-  .srow{transition:background .28s ease}
-  .srow:hover{background:rgba(242,240,236,.022)}
-  .srow:hover .a{color:rgba(242,240,236,.9)}
-  .qs li{transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+  /* mismo gesto que los módulos del sistema: se ilumina la fila y la marca la recorre */
+  /* hover fuerte: la fila se ilumina, la columna HOY sube a tinta plena, el filo se
+     enciende y la marca naranja recorre el borde de punta a punta. */
+  .srow:hover{--marca:1;background:var(--hover-bg)}
+  .srow:hover .a{color:var(--ink)}
+  .srow:hover .a{border-left-color:var(--hot)}
+  .srow:hover .b{color:var(--hot)}
+  .srow::after{height:3px}
+  .qs li{transition:transform .32s cubic-bezier(.16,1,.3,1)}
   .qs li:hover{transform:translateX(7px)}
-  .mod{transition:background .28s ease}
-  .mod:hover{background:rgba(242,240,236,.018)}
 }
 @media(prefers-reduced-motion:reduce){
   .js-rv .stg>*{opacity:1;transform:none;transition:none}
@@ -164,7 +221,7 @@ html:not(.js-rv) .stg>*{opacity:1;transform:none}
 }
 
 /* divisor con el punto que viaja: el mismo motivo del hero */
-.rail{position:relative;height:1px;background:var(--line-2);margin:clamp(34px,4vw,56px) 0;overflow:visible}
+.rail{position:relative;height:1px;background:var(--line-2);margin:clamp(48px,5.5vw,80px) 0;overflow:visible}
 /* punto sólido, sin halo: el resplandor de color es el tic de las webs hechas con IA */
 .rail::after{content:'';position:absolute;top:-2px;left:0;width:5px;height:5px;border-radius:50%;
   background:var(--hot);animation:corre 9s linear infinite}
@@ -172,37 +229,118 @@ html:not(.js-rv) .stg>*{opacity:1;transform:none}
 
 /* antes / después */
 .shift{margin-top:clamp(30px,3.5vw,48px);border-top:1px solid var(--line)}
-.srow{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,4vw,64px);padding:clamp(16px,2.2vw,26px) 0;
-  border-bottom:1px solid var(--line-2);align-items:start}
+.srow{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,4vw,64px);
+  padding:clamp(18px,2.4vw,28px) clamp(12px,1.4vw,18px);
+  margin-left:clamp(-12px,-1.4vw,-18px);margin-right:clamp(-12px,-1.4vw,-18px);
+  border-bottom:1px solid var(--line-2);align-items:start;transition:background .3s ease}
+.srow::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--hot);
+  transform-origin:0 50%;transform:scaleX(var(--marca,0));
+  transition:transform .22s cubic-bezier(.16,1,.3,1)}
+.srow .b{transition:color .3s ease}
 /* la columna HOY iba tan apagada que no se leía. La jerarquía ahora la marca el peso
    y el filo de color, no la falta de contraste: gris legible vs. tinta plena en negrita. */
-.srow .a{color:rgba(242,240,236,.74);font-size:clamp(14px,1.05vw,16.5px);line-height:1.5;
-  padding-left:14px;border-left:1px solid var(--line)}
-.srow .b{color:var(--ink);font-size:clamp(14px,1.05vw,16.5px);line-height:1.5;font-weight:600;padding-left:14px;border-left:1px solid var(--hot)}
+.srow .a{color:var(--ink-3);font-size:clamp(15px,1.22vw,18.5px);line-height:1.6;font-weight:500;
+  padding-left:16px;border-left:2px solid var(--line);transition:color .25s ease,border-color .25s ease}
+.srow .b{color:var(--ink);font-size:clamp(15px,1.22vw,18.5px);line-height:1.6;font-weight:700;
+  padding-left:16px;border-left:2px solid var(--hot);transition:color .25s ease}
 /* lo que depende de activar LIA va marcado aparte: el sistema es el orden, el agente es opcional.
    Ojo: la clase .opt ya existe más abajo (la chapita OPCIONAL del módulo 04). */
 .srow .b .si-lia{display:block;margin-top:9px;font-style:normal;font-weight:400;font-size:.86em;
-  color:var(--dim);padding-left:12px;border-left:1px dashed rgba(242,106,31,.42);max-width:44ch}
+  color:var(--dim);padding-left:12px;border-left:1px dashed var(--hot);max-width:44ch}
 .srow .b .si-lia b{color:var(--hot);font-weight:700}
 .shead{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,4vw,64px);padding-bottom:10px;
   font-size:13px;letter-spacing:.16em;text-transform:uppercase;font-weight:800}
 /* chapas, igual que el número de sección: la comparación es el corazón del módulo
    y con un rótulo subrayado de 12px no se veía. Ahora se lee de un vistazo cuál es cuál. */
 .shead span{justify-self:start;align-self:end;display:inline-flex;align-items:center;
-  padding:9px 14px;border:1px solid var(--line);color:rgba(242,240,236,.72)}
+  padding:9px 14px;border:1px solid var(--line);color:var(--ink-3)}
 .shead span:last-child{background:var(--hot);color:#120d08;border-color:var(--hot)}
 
 /* módulos del sistema */
 .mods{margin-top:clamp(30px,3.5vw,48px)}
-.mod{display:grid;grid-template-columns:64px minmax(0,1fr) minmax(0,1.3fr);gap:clamp(14px,3vw,44px);
-  padding:clamp(20px,2.6vw,32px) 0;border-top:1px solid var(--line)}
+.mod{position:relative;display:grid;grid-template-columns:64px minmax(0,1fr) minmax(0,1.3fr);
+  gap:clamp(14px,3vw,44px);padding:clamp(22px,2.8vw,34px) clamp(12px,1.4vw,18px);
+  margin-left:clamp(-12px,-1.4vw,-18px);margin-right:clamp(-12px,-1.4vw,-18px);
+  border-top:1px solid var(--line);transition:background .35s ease}
+.mod::before{content:'';position:absolute;top:-1px;left:0;right:0;height:2px;background:var(--hot);
+  transform-origin:0 50%;transform:scaleX(var(--marca,0));
+  transition:transform .22s cubic-bezier(.16,1,.3,1)}
+.mod .n,.mod h3{transition:color .3s ease}
+@media(hover:hover){
+  /* se ilumina la fila entera y la marca naranja la recorre */
+  .mod:hover{--marca:1;background:var(--hover-bg)}
+  .mod:hover h3{color:var(--hot)}
+}
 .mod .n{font-size:12px;color:var(--hot);font-weight:700;letter-spacing:.08em;padding-top:5px}
 .mod h3{font-weight:800;font-size:clamp(17px,1.6vw,23px);letter-spacing:-.03em;line-height:1.15}
-.mod p{color:var(--mid);font-size:clamp(14px,1.05vw,16px);line-height:1.6}
+.mod p{color:var(--mid);font-size:clamp(14px,1.05vw,16px);line-height:1.72}
 .mod p b{color:var(--ink);font-weight:600}
 .mod .meta{display:block;font-size:10.5px;letter-spacing:.06em;color:var(--faint);margin-top:9px;text-transform:uppercase}
 .opt{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.1em;color:var(--hot);
   border:1px solid var(--hot);padding:2px 6px;margin-left:8px;vertical-align:3px}
+
+/* ══ AIMA · la sección con más carácter ══
+   Sin cajas: dos grupos, cada uno con su rótulo y sus renglones. El hover ilumina
+   la fila entera y estira la marca naranja — el circuito que se conecta. */
+.h-aima{max-width:22ch}
+.lead-aima{max-width:66ch}
+.lead-aima b{color:var(--ink);font-weight:700}
+
+.grupo{margin-top:clamp(38px,4.6vw,66px)}
+/* rótulos de grupo: son títulos secundarios, no etiquetitas. Barra naranja al
+   costado + tamaño de subtítulo real. */
+.grupo-tit{display:flex;align-items:center;gap:13px;font-size:clamp(15px,1.5vw,20px);
+  letter-spacing:.14em;text-transform:uppercase;font-weight:900;color:var(--ink);
+  margin-bottom:clamp(22px,2.6vw,34px)}
+.grupo-tit::before{content:'';width:clamp(22px,2.4vw,34px);height:3px;background:var(--hot);flex-shrink:0}
+.items{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,44px)}
+.items.dos{grid-template-columns:repeat(2,1fr)}
+.item{position:relative;border-top:1px solid var(--line);padding:clamp(20px,2.4vw,30px) clamp(12px,1.4vw,18px) 4px;
+  margin-left:clamp(-12px,-1.4vw,-18px);transition:background .35s ease}
+.item::before{content:'';position:absolute;top:-1px;left:0;right:0;height:2px;background:var(--hot);
+  transform-origin:0 50%;transform:scaleX(var(--marca,.18));
+  transition:transform .22s cubic-bezier(.16,1,.3,1)}
+.item h3{font-weight:800;font-size:clamp(18px,1.6vw,23px);letter-spacing:-.03em;line-height:1.2}
+.item h3 sup{font-size:9px;color:var(--hot);vertical-align:super}
+.item p{margin-top:10px;color:var(--mid);font-size:clamp(14px,1.05vw,16px);line-height:1.72}
+.item p b{color:var(--ink);font-weight:700}
+@media(hover:hover){
+  .item:hover{--marca:1;background:var(--hover-bg)}
+  .item:hover h3{color:var(--hot)}
+}
+.item h3{transition:color .3s ease}
+
+.g-cta{display:inline-flex;align-items:center;min-height:48px;margin-top:clamp(30px,3.6vw,46px);
+  padding:0 24px;border:1px solid var(--hot);color:var(--hot);font-weight:800;font-size:12.5px;
+  letter-spacing:.1em;text-transform:uppercase;transition:background .25s,color .25s}
+.g-cta:hover{background:var(--hot);color:#120d08}
+@media(max-width:860px){
+  .items,.items.dos{grid-template-columns:1fr;gap:0}
+  .item{margin-left:0;padding-left:0;padding-right:0}
+}
+
+/* RESTAURADO: un reemplazo anterior se llevó este bloque por delante y dejó
+   los respiros y "lo que no hacemos" sin estilos. */
+/* ══ RESPIRO ══ una sola frase, sola en pantalla. Sin número ni kicker. */
+.respiro{position:relative;z-index:10;background:var(--void);display:flex;align-items:center;
+  min-height:clamp(400px,70svh,820px);padding:clamp(64px,10vw,140px) var(--pad)}
+.respiro .frase{font-weight:900;font-size:clamp(31px,6.3vw,86px);line-height:.97;
+  letter-spacing:-.05em;max-width:15ch}
+.respiro .frase em{font-style:normal;color:var(--hot)}
+.respiro .pie-frase{margin-top:clamp(22px,2.6vw,34px);padding-top:16px;border-top:1px solid var(--line);
+  max-width:54ch;font-size:clamp(13.5px,1.02vw,15.5px);color:var(--dim);line-height:1.65}
+
+/* entra directo al contenido: el respiro de arriba ya puso el titular */
+.entrada{max-width:62ch;font-size:clamp(16px,1.4vw,21px);margin-top:0}
+
+/* centrada, sin número */
+.centro{text-align:center;max-width:58ch;margin:0 auto}
+.centro h2{max-width:none}
+.nots3{margin-top:clamp(26px,3vw,40px)}
+.nots3 div{padding:clamp(14px,1.7vw,20px) 0;border-bottom:1px solid var(--line-2);
+  color:var(--mid);font-size:clamp(15px,1.25vw,19px);line-height:1.45}
+.nots3 div:first-child{border-top:1px solid var(--line-2)}
+.nots3 .nota-tec{border-bottom:0;color:var(--faint);font-size:clamp(12.5px,.95vw,14px);padding-top:18px}
 
 /* lo que no hacemos */
 .nots{margin-top:clamp(28px,3.4vw,44px);display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0 clamp(24px,4vw,60px)}
@@ -223,18 +361,43 @@ html:not(.js-rv) .stg>*{opacity:1;transform:none}
   /* subrayado sobre el texto, no en el borde de la caja: si no, la línea quedaba suelta abajo */
   text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px;white-space:nowrap}
 
-/* para quién */
-.who{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,80px);margin-top:clamp(28px,3.4vw,44px)}
-.who h3{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;padding-bottom:12px;
-  margin-bottom:6px;border-bottom:1px solid var(--line)}
-.who .si h3{color:var(--hot)}
-.who .no h3{color:var(--faint)}
-.who div>p{display:grid;grid-template-columns:16px 1fr;gap:11px;padding:12px 0;border-bottom:1px solid var(--line-2);
-  font-size:clamp(14px,1.05vw,16px);line-height:1.5}
-.who .si p{color:var(--ink)}
-.who .si p::before{content:'→';color:var(--hot);font-weight:700}
-.who .no p{color:var(--faint)}
-.who .no p::before{content:'—';color:var(--faint)}
+/* ══ EL DIAGNÓSTICO ══
+   Dos columnas: lo que descarta a la izquierda, apagado; lo que suma a la derecha,
+   con peso. La lectura termina en el sí, que es donde queremos dejarlo. */
+.diag{margin-top:clamp(32px,3.8vw,52px);display:grid;grid-template-columns:1fr 1.15fr;
+  gap:clamp(24px,4vw,64px);align-items:start}
+.col-tit{display:flex;align-items:center;gap:11px;font-size:clamp(13px,1.2vw,16px);
+  letter-spacing:.16em;text-transform:uppercase;font-weight:900;
+  padding-bottom:12px;margin-bottom:clamp(8px,1vw,14px);border-bottom:1px solid var(--line)}
+.col-tit::before{content:'';width:22px;height:3px;flex-shrink:0}
+.col-no .col-tit{color:var(--dim)}
+.col-no .col-tit::before{background:var(--descarta)}
+.col-si .col-tit{color:var(--ink)}
+.col-si .col-tit::before{background:var(--suma)}
+
+.dx{position:relative;display:grid;grid-template-columns:auto 1fr;gap:clamp(12px,1.5vw,18px);
+  align-items:start;padding:clamp(15px,1.8vw,21px) 0;border-bottom:1px solid var(--line-2);
+  line-height:1.6;transition:color .28s var(--ley)}
+.col-si .dx{font-size:clamp(15px,1.25vw,18px);color:var(--mid)}
+.col-no .dx{font-size:clamp(14px,1.1vw,16px);color:var(--dim)}
+.dx .marca{width:22px;height:22px;flex-shrink:0;position:relative;margin-top:2px;
+  border:1.5px solid var(--line);transition:border-color .28s var(--ley),background .28s var(--ley)}
+.dx .marca::before,.dx .marca::after{content:'';position:absolute;background:currentColor;
+  opacity:0;transition:opacity .35s ease}
+.dx.suma .marca::before{width:8px;height:1.5px;left:3px;top:11px;transform:rotate(45deg);transform-origin:0 50%}
+.dx.suma .marca::after{width:12px;height:1.5px;left:6.5px;top:12.5px;transform:rotate(-50deg);transform-origin:0 50%}
+.dx.descarta .marca::before{width:12px;height:1.5px;left:4px;top:10px;transform:rotate(45deg)}
+.dx.descarta .marca::after{width:12px;height:1.5px;left:4px;top:10px;transform:rotate(-45deg)}
+.dx.on .marca::before,.dx.on .marca::after{opacity:1}
+.col-si .dx.on{color:var(--ink)}
+.dx.suma.on .marca{border-color:var(--suma);color:var(--suma);background:rgba(90,176,124,.12)}
+.dx.descarta.on .marca{border-color:var(--descarta);color:var(--descarta);background:rgba(224,106,82,.1)}
+.dx b{color:var(--ink);font-weight:700}
+html:not(.js-rv) .dx .marca::before,html:not(.js-rv) .dx .marca::after{opacity:1}
+@media(max-width:820px){
+  .diag{grid-template-columns:1fr;gap:clamp(26px,5vw,40px)}
+}
+
 /* la cuenta que cierra: el margen es del cliente, nosotros no prometemos nada */
 /* Nada de tarjeta con franja de color al costado: es el tic más reconocible de las
    webs hechas con IA. Usa el mismo recurso que los rótulos de sección — línea fina
@@ -260,7 +423,7 @@ html:not(.js-rv) .stg>*{opacity:1;transform:none}
 
 /* la sesión */
 /* ── 02 · la prueba: las preguntas las contesta el visitante ── */
-.test{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(26px,4.5vw,72px);
+.test{position:relative;display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(28px,4.5vw,76px);
   margin-top:clamp(30px,3.6vw,48px);align-items:start}
 .qs{counter-reset:q;list-style:none}
 .qs li{counter-increment:q;display:grid;grid-template-columns:auto 1fr;gap:clamp(14px,1.6vw,22px);
@@ -270,7 +433,12 @@ html:not(.js-rv) .stg>*{opacity:1;transform:none}
 .qs li::before{content:counter(q,decimal-leading-zero);color:var(--hot);font-weight:900;
   font-size:clamp(11px,.85vw,13px);letter-spacing:.06em}
 /* filo de 1px, no franja gruesa: la barra de color al costado es el tic de las webs con IA */
-.ver{padding-left:clamp(18px,2vw,30px);border-left:1px solid var(--line);position:sticky;top:96px}
+/* El veredicto vive a la derecha, no debajo: es la respuesta a las tres preguntas
+   y tiene que leerse junto a ellas. Marca naranja arriba para que se despegue. */
+.ver{position:sticky;top:112px;padding:clamp(22px,2.4vw,30px) 0 0 clamp(20px,2.2vw,32px);
+  border-left:1px solid var(--line);border-top:1px solid var(--line)}
+.ver::before{content:'';position:absolute;top:-1px;left:0;width:clamp(40px,4vw,64px);height:2px;
+  background:var(--hot)}
 .ver .v1{font-size:clamp(17px,1.5vw,21px);font-weight:700;line-height:1.35;letter-spacing:-.025em;color:var(--ink)}
 .ver .v1 em{font-style:normal;color:var(--hot)}
 .ver .v2{margin-top:18px;padding-top:18px;border-top:1px solid var(--line-2);
@@ -306,9 +474,13 @@ textarea{resize:vertical;min-height:88px}
 input.bad,textarea.bad{border-color:#ff5b4d}
 .err{font-size:10.5px;color:#ff8b7f;font-weight:600;display:none}
 .err.on{display:block}
+.aviso-priv{font-size:12px;line-height:1.6;color:var(--dim);margin-bottom:14px;max-width:52ch}
+.aviso-priv a{color:var(--hot);text-decoration:underline;text-underline-offset:3px;
+  text-decoration-thickness:1px}
 .send{background:var(--hot);color:#120d08;border:0;padding:15px;font-size:15px;font-weight:900;letter-spacing:-.01em;
   cursor:pointer;font-family:var(--f);transition:transform .18s,background .2s}
-.send:hover{transform:translateY(-2px);background:#ff7c30}
+.send:hover{background:#ff7c30}
+@media(hover:hover) and (pointer:fine){.send:hover{transform:translateY(-2px)}}
 .send:disabled{opacity:.6;cursor:default;transform:none}
 .fine{font-size:11px;color:var(--faint);line-height:1.6}
 .fallo{display:none;border:1px solid #ff5b4d;padding:14px 16px;font-size:13.5px;color:#ffb3aa;line-height:1.55}
@@ -332,7 +504,8 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   margin-bottom:16px;font-weight:700;padding-bottom:10px;border-bottom:2px solid var(--hot);display:inline-block}
 .foot a.l{display:flex;align-items:center;min-height:44px;color:var(--ink);font-size:15px;font-weight:600;
   transition:color .2s,transform .2s}
-.foot a.l:hover{color:var(--hot);transform:translateX(3px)}
+.foot a.l:hover{color:var(--hot)}
+@media(hover:hover) and (pointer:fine){.foot a.l:hover{transform:translateX(3px)}}
 /* ── WhatsApp flotante ──
    Nada de burbuja verde: el verde de WhatsApp pelea con el grafito y el naranja, y la
    burbuja genérica es justo el pegote que no queremos. El glifo solo ya se reconoce. */
@@ -353,9 +526,9 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   -webkit-clip-path:inset(0 0 0 118px round 999px);clip-path:inset(0 0 0 118px round 999px);
   /* entra recién cuando el visitante pasó el hero: en la primera pantalla estorba */
   opacity:0;transform:translateY(14px) scale(.92);pointer-events:none;
-  transition:clip-path .38s cubic-bezier(.2,.85,.2,1),-webkit-clip-path .38s cubic-bezier(.2,.85,.2,1),
+  transition:clip-path .38s cubic-bezier(.16,1,.3,1),-webkit-clip-path .38s cubic-bezier(.16,1,.3,1),
              background .25s,color .25s,border-color .25s,
-             opacity .35s ease,transform .35s cubic-bezier(.2,.85,.2,1)}
+             opacity .35s ease,transform .35s cubic-bezier(.16,1,.3,1)}
 .wa.on{display:inline-flex}
 /* nombre propio: .ver ya lo usa el veredicto del módulo 02 y le pasaba su top:96px */
 .wa.asoma{opacity:1;transform:none;pointer-events:auto}
@@ -386,11 +559,15 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 
 /* Sigue al final y sigue siendo la salida chica — pero se veía tan poco que no existía.
    Ahora tiene marco, marca naranja arriba y un enlace que parece un enlace. */
-.cero{position:relative;margin-top:clamp(26px,3vw,38px);padding:clamp(18px,2.2vw,26px) clamp(18px,2vw,26px);
-  border:1px solid var(--line);background:rgba(242,106,31,.035);
+.banda-cero{position:relative;z-index:10;background:var(--panel);
+  padding:clamp(52px,6vw,84px) var(--pad);border-top:1px solid var(--line-2)}
+.cero{position:relative;max-width:1180px;margin:0 auto;padding:clamp(22px,2.6vw,32px) 0 0;
+  border-top:1px solid var(--line);
   display:grid;grid-template-columns:1fr auto;gap:clamp(14px,2.5vw,32px);align-items:center}
-.cero::before{content:'';position:absolute;top:-1px;left:-1px;width:56px;height:3px;background:var(--hot)}
-.cero p{font-size:clamp(13.5px,1.05vw,15px);color:var(--mid);line-height:1.6;max-width:62ch}
+.cero::before{content:'';position:absolute;top:-1px;left:0;width:64px;height:2px;background:var(--hot)}
+.cero p{font-size:clamp(14.5px,1.2vw,17px);color:var(--mid);line-height:1.7;max-width:60ch}
+.cf-eti{display:block;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
+  font-weight:800;color:var(--hot);margin-bottom:9px}
 .cero p b{color:var(--ink);font-weight:800}
 .cero p b sup{font-size:.6em;color:var(--hot);vertical-align:super}
 .cero a{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:44px;
@@ -399,6 +576,12 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   transition:background .2s,color .2s}
 .cero a:hover{background:var(--hot);color:#120d08}
 @media(max-width:720px){.cero{grid-template-columns:1fr}.cero a{justify-content:flex-start}}
+/* Discreta, pero legible: es la línea que lee el revisor de Meta para atar la marca
+   a la persona. A .42 daba 3.74:1 y no pasaba el mínimo. */
+.razon{margin-top:16px;font-size:11.5px;line-height:1.65;color:rgba(242,240,236,.56);max-width:70ch}
+.legal-l{color:var(--dim);text-decoration:underline;text-underline-offset:3px;
+  text-decoration-thickness:1px;transition:color .2s}
+.legal-l:hover{color:var(--hot)}
 .fg-bot{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;padding-top:20px;
   font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
 
@@ -428,15 +611,20 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   .shead{display:none}
   .srow .a::before,.srow .b::before{display:block;font-size:10px;letter-spacing:.18em;
     text-transform:uppercase;font-weight:800;margin-bottom:6px}
-  .srow .a::before{content:'Hoy';color:rgba(242,240,236,.6)}
+  .srow .a::before{content:'Hoy';color:var(--ink-3)}
   .srow .b::before{content:'Con el sistema';color:var(--hot)}
   .frow{grid-template-columns:1fr}
   .fg-top{grid-template-columns:1fr}
 }
 @media(prefers-reduced-motion:reduce){
+  /* Más suave, no cero: se apaga el desplazamiento y se conservan los desvanecidos
+     de color y opacidad, que orientan sin marear. Antes matábamos todo a .01ms. */
   .js .ch{opacity:1!important;transform:none!important}
   .rail::after{animation:none;left:0}
-  *{transition-duration:.01ms!important}
+  .rv,.js .stg>*{opacity:1!important;transform:none!important;transition:none!important}
+  .btn,.cta-n,.send,.foot a.l,.item,.mod,.srow,.pieza{transform:none!important}
+  .srow::after,.mod::before,.item::before,.pieza .pin{transition:none!important}
+  .wa{transition:opacity .2s,background .2s,color .2s,border-color .2s!important}
 }
 </style>
 </head>
@@ -455,11 +643,12 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 <div class="shell">
 
 <nav class="nav" id="nav">
-  <span class="mark">LEVEL UP<sup>™</sup></span>
+  <span class="mark">LEVEL UP<sup>™</sup> <span class="bar-m">|</span> AIMA</span>
   <div class="nav-r">
     <a href="#prueba">La prueba</a>
     <a href="#sistema">El sistema</a>
     <a href="#quien">Para quién</a>
+    <a href="#soluciones" class="destacado">Soluciones</a>
     <button class="cta-n" data-go="sesion">Pedir la sesión</button>
   </div>
 </nav>
@@ -500,8 +689,9 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   </div>
 </section>
 
-<!-- 03 · LO QUE CAMBIA -->
-<section class="sec" id="cambia">
+<!-- El título vive con su bajada: separados por una pantalla entera, "Ni un feriado"
+     quedaba huérfano al fondo y el titular se leía más grande que el resto. -->
+<section class="sec luz" id="cambia">
   <div class="rv">
     <div class="tag"><span class="bar"></span><i>03</i> Lo que cambia</div>
     <h2>Nadie contesta un domingo a las <em>once de la noche.</em></h2>
@@ -519,43 +709,40 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 </section>
 
 <!-- 03 · EL SISTEMA -->
-<section class="sec alt" id="sistema">
+<section class="sec" id="sistema">
   <div class="rv">
     <div class="tag"><span class="bar"></span><i>04</i> El sistema</div>
-    <h2>Se entrega <em>entero.</em></h2>
+    <h2 class="h-sistema">Un sistema. <em>Se entrega entero.</em></h2>
     <p class="lead">Todo lo que sigue viene adentro. Se instala una vez y queda funcionando.</p>
   </div>
 
+  <!-- Cuatro módulos y no seis: "lo que ves vos" es parte del orden, y "se conecta
+       sin que cambien nada" es parte de la puesta en marcha. Nada de contenido se
+       perdió — se juntó lo que era la misma idea contada dos veces. -->
   <div class="mods">
-    <div class="mod rv"><span class="n">01</span><h3>Se conecta sin que cambien nada</h3>
-      <p><b>Tu número de siempre o uno nuevo</b>, como te convenga: hay quien prefiere una línea aparte para el agente. Si conservás el tuyo, tu equipo sigue contestando desde su celular igual que hoy.
-        <span class="meta">La verificación del negocio en Meta la gestionamos nosotros</span></p></div>
-
-    <div class="mod rv"><span class="n">02</span><h3>El orden — el núcleo</h3>
-      <p>Toda consulta cae en un solo lugar con <b>asignación automática a un responsable</b>. Si nadie respondió en el tiempo acordado, el sistema avisa al vendedor y después a vos.
+    <div class="mod rv"><span class="n">01</span><h3>El orden — el núcleo</h3>
+      <p>Toda consulta cae en un solo lugar con <b>asignación automática a un responsable</b>. Si nadie respondió en el tiempo acordado, el sistema avisa al vendedor y después a vos. Lo ves en el tablero del celular, con reporte mensual y una revisión trimestral del negocio.
         <span class="meta">Origen · responsable · tiempo de respuesta · próximo paso</span></p></div>
 
-    <div class="mod rv"><span class="n">03</span><h3>Lo que ves vos</h3>
-      <p>Tablero en el celular, reporte mensual de infraestructura y una revisión trimestral del negocio con informe.
-        <span class="meta">Trazabilidad y tiempos</span></p></div>
-
-    <div class="mod rv"><span class="n">04</span><h3>LIA<span class="opt">OPCIONAL</span></h3>
+    <div class="mod rv"><span class="n">02</span><h3>LIA<span class="opt">OPCIONAL</span></h3>
       <p>Nuestro agente propio. Atiende las 24 horas, indaga como vendedor del rubro, califica, agenda y deriva con un resumen. Transcribe audios y entiende las fotos que manda el cliente. <b>Viene incluida y se activa solo si la querés.</b>
         <span class="meta">Atiende y califica · el cierre es del equipo</span></p></div>
 
-    <div class="mod rv"><span class="n">05</span><h3>La captación, incluida</h3>
+    <div class="mod rv"><span class="n">03</span><h3>La captación, incluida</h3>
       <p>Campañas en Instagram y Facebook con optimización continua, <b>5 piezas por mes</b> (3 creativos nuevos y 2 variaciones) y una reunión mensual. El reporte de captación va separado: consultas generadas y costo por consulta.
         <span class="meta">La inversión publicitaria la pagás vos, directo a Meta</span></p></div>
 
-    <div class="mod rv"><span class="n">06</span><h3>La puesta en marcha</h3>
-      <p>Dos licencias, capacitación al equipo de dos horas, datos aislados y accesos documentados. <b>Tope de 21 días hábiles</b>: si no está funcionando según el checklist que firmamos los dos, se devuelve el 100% de la implementación.
-        <span class="meta">Sin permanencia · te vas avisando con 30 días y te llevás la base</span></p></div>
+    <div class="mod rv"><span class="n">04</span><h3>La puesta en marcha</h3>
+      <p><b>Tu número de siempre o uno nuevo</b>, como te convenga; si conservás el tuyo, tu equipo sigue contestando desde su celular igual que hoy. Dos licencias, capacitación de dos horas, datos aislados y accesos documentados. <b>Tope de 21 días hábiles</b>: si no está funcionando según el checklist que firmamos los dos, se devuelve el 100% de la implementación.
+        <span class="meta">La verificación en Meta la gestionamos nosotros · sin permanencia, te vas avisando con 30 días y te llevás la base</span></p></div>
   </div>
 
   <div class="rail" aria-hidden="true"></div>
 
+  <!-- Como en la versión publicada: dentro de la misma sección, en dos columnas
+       con la cruz naranja. Centrada y en tres se leía mal. -->
   <div class="rv">
-    <div class="tag"><span class="bar"></span><i>05</i> Lo que no hacemos</div>
+    <span class="grupo-tit">Lo que no hacemos</span>
     <h2>Escrito acá para que <em>no haya sorpresas.</em></h2>
     <div class="nots">
       <div>Manejar tus redes o publicar contenido.</div>
@@ -568,50 +755,46 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   </div>
 </section>
 
-<!-- 05 · EXTRAS -->
-<section class="sec" id="extras">
+<!-- 06 · AIMA · SOLUCIONES — la góndola del costado, NO la vidriera (regla 90/10).
+     El agente lleva su alcance escrito: es la frontera que protege la oferta del
+     Sistema. Acá no se nombra a LIA. CTA a WhatsApp, nunca a la sesión. -->
+<!-- PARA QUIÉN va pegada al Sistema, ANTES de Soluciones: el filtro es del
+     Sistema (concesionarias, alto ticket). Debajo de AIMA se leía como si las
+     soluciones tuvieran los mismos requisitos, y no los tienen. El que no encaja
+     acá ve la puerta de AIMA justo después. -->
+<section class="sec luz" id="quien">
   <div class="rv">
-    <div class="tag"><span class="bar"></span><i>06</i> También, por separado</div>
-    <h2>Dos cosas más, <em>si hacen falta.</em></h2>
-    <p class="lead">Se hablan adentro de la sesión. Desde acá no se compran.</p>
-  </div>
-  <div class="extras rv">
-    <div class="ex">
-      <h3>Radiografía Comercial<sup>™</sup></h3>
-      <p>Una evaluación completa de tu proceso comercial: reconstruimos consulta por consulta el camino que hacen en tu negocio, armamos el mapa de fugas y te entregamos un informe de cinco páginas con una sola prioridad. El informe queda tuyo.</p>
-      <a href="#sesion" data-go="sesion">Empezá por la sesión</a>
-    </div>
-    <div class="ex">
-      <h3>Capacitación de equipos</h3>
-      <p>Protocolo de atención y seguimiento, entrenado sobre tu operación real.</p>
-      <a href="#sesion" data-go="sesion">Empezá por la sesión</a>
-    </div>
-  </div>
-</section>
-
-<!-- 06 · PARA QUIÉN -->
-<section class="sec alt" id="quien">
-  <div class="rv">
-    <div class="tag"><span class="bar"></span><i>07</i> Para quién</div>
+    <div class="tag"><span class="bar"></span><i>05</i> Para quién es el Sistema</div>
     <h2>No trabajamos <em>con todos.</em></h2>
     <p class="lead">Preferimos decirlo ahora y no descubrirlo a los dos meses.</p>
   </div>
-  <div class="who">
-    <div class="si stg">
-      <h3>Sí, si…</h3>
-      <p>Ya vendés y tenés equipo.</p>
-      <p>Te entran consultas todas las semanas y sospechás que se te caen.</p>
-      <p>Cada venta vale lo suficiente como para que una sola cambie el mes.</p>
-      <p>Querés mejorar tu proceso y sabés que te vas a tener que involucrar: no buscás delegarlo y olvidarte.</p>
+  <!-- Lo que descarta a la izquierda y apagado; lo que suma a la derecha y con peso.
+       Cada renglón se resuelve solo al entrar en pantalla. -->
+  <div class="diag" id="diag">
+    <div class="col-no">
+      <span class="col-tit">No es para vos si…</span>
+      <div class="dx descarta"><span class="marca" aria-hidden="true"></span>
+        <span>Estás arrancando de cero.</span></div>
+      <div class="dx descarta"><span class="marca" aria-hidden="true"></span>
+        <span>Te entran pocas consultas: ahí el problema es captación, y te lo vamos a decir.</span></div>
+      <div class="dx descarta"><span class="marca" aria-hidden="true"></span>
+        <span>Buscás que alguien te garantice ventas, o que te manejemos las redes.</span></div>
     </div>
-    <div class="no stg">
-      <h3>No, si…</h3>
-      <p>Estás arrancando de cero.</p>
-      <p>Te entran pocas consultas: ahí el problema es captación, y te lo vamos a decir.</p>
-      <p>Buscás que alguien te garantice ventas.</p>
-      <p>Querés que te manejemos las redes.</p>
+    <div class="col-si">
+      <span class="col-tit">Sí es para vos si…</span>
+      <div class="dx suma"><span class="marca" aria-hidden="true"></span>
+        <span>Ya vendés y tenés equipo.</span></div>
+      <div class="dx suma"><span class="marca" aria-hidden="true"></span>
+        <span>Te entran consultas todas las semanas y <b>sospechás que se te caen.</b></span></div>
+      <div class="dx suma"><span class="marca" aria-hidden="true"></span>
+        <span>Cada venta vale lo suficiente como para que <b>una sola cambie el mes.</b></span></div>
+      <div class="dx suma"><span class="marca" aria-hidden="true"></span>
+        <span>Querés mejorar tu proceso y sabés que <b>te vas a tener que involucrar.</b></span></div>
     </div>
   </div>
+
+  <!-- La cuenta va enganchada acá, no como titular suelto: sola en pantalla se leía
+       como una promesa gigante en vez de como el cierre del filtro. -->
   <div class="cuenta rv">
     <p class="c2">El sistema se paga si recupera <b>una sola operación cada tres meses.</b></p>
     <p class="c3">El margen de esa operación lo sabés vos, y la cuenta la hacés con tus números. Lo que ponemos nosotros es la trazabilidad para saber si apareció de verdad, en vez de discutirlo por sensación.</p>
@@ -620,10 +803,58 @@ input.bad,textarea.bad{border-color:#ff5b4d}
        El bloque .policy sigue en el CSS por si vuelve. -->
 </section>
 
-<!-- 07 · LA SESIÓN -->
-<section class="sec" id="sesion">
+<!-- 04 · AIMA — fusionada con "También, por separado": una sola sección.
+     Es la que tiene que traer trabajo mientras se consiguen clientes del Sistema,
+     así que lleva el mayor carácter de la página. Sin precios, sin abonos.
+     El agente NO se llama LIA acá: LIA viene adentro del Sistema. -->
+<section class="sec" id="soluciones">
   <div class="rv">
-    <div class="tag"><span class="bar"></span><i>08</i> El primer paso</div>
+    <div class="tag"><span class="bar"></span><i>06</i> AIMA · Soluciones con IA</div>
+    <h2 class="h-aima">Agentes, sistemas y automatizaciones. <em>Y tu equipo sabiendo usarlos.</em></h2>
+    <p class="lead lead-aima">Todo se construye a medida de tu operación: no adaptamos un producto enlatado, lo armamos para cómo trabajás vos. Nos contás qué necesitás resolver, lo analizamos, y te decimos si se puede hacer, cómo, y cuánto lleva. <b>Si no es viable o no te conviene, también te lo decimos</b> — y si va, lo construimos y te lo dejamos andando.</p>
+  </div>
+
+  <div class="grupo rv">
+    <span class="grupo-tit">Construimos</span>
+    <div class="items stg">
+      <div class="item">
+        <h3>Agentes de IA</h3>
+        <p>Atienden, responden y agendan. Las 24 horas.</p>
+      </div>
+      <div class="item">
+        <h3>Soluciones a medida para tu empresa</h3>
+        <p>Lo que tu empresa necesita y no viene hecho — <b>o lo que hoy resolvés a mano.</b></p>
+      </div>
+      <div class="item">
+        <h3>Automatización de procesos</h3>
+        <p>Eso que alguien hace todos los días, siempre igual. Reportes, conciliaciones, cargar lo mismo en dos lados — <b>y todo lo que se repite.</b></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grupo rv">
+    <span class="grupo-tit">Miramos y enseñamos</span>
+    <div class="items dos stg">
+      <div class="item">
+        <h3>Radiografía Comercial<sup>™</sup></h3>
+        <p>Una evaluación completa de tu proceso comercial: reconstruimos consulta por consulta el camino que hacen en tu negocio, armamos el mapa de fugas y te entregamos un informe de cinco páginas con una sola prioridad. El informe queda tuyo.</p>
+      </div>
+      <div class="item">
+        <h3>Capacitación de equipos</h3>
+        <p>Protocolo de atención y seguimiento, entrenado sobre tu operación real.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="rv"><a class="g-cta" href="https://wa.me/5493482583784?text=Hola%2C%20vengo%20de%20la%20web.%20Necesito%20resolver%3A%20" target="_blank" rel="noopener">Contanos qué necesitás →</a></div>
+</section>
+
+<!-- PARA QUIÉN — en claro, cierra la zona clara -->
+
+<!-- 07 · LA SESIÓN -->
+<section class="sec alt" id="sesion">
+  <div class="rv">
+    <div class="tag"><span class="bar"></span><i>07</i> El primer paso</div>
     <h2>Una sesión de <em>45 minutos.</em></h2>
     <!-- CUPO: este número vive SOLO acá. Pendiente de recalcular con captación adentro
          (si baja a una por mes, se cambia esta línea y listo). -->
@@ -655,6 +886,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
             <div class="fg"><label for="rubro">Rubro</label><input type="text" id="rubro" placeholder="Concesionaria, maquinaria…" required><span class="err" id="e-rubro">Falta el rubro</span></div>
           </div>
           <div class="fg"><label for="problema">¿Qué es lo que más te preocupa hoy?</label><textarea id="problema" placeholder="Contalo con tus palabras." required></textarea><span class="err" id="e-problema">Contanos aunque sea una línea</span></div>
+          <p class="aviso-priv">Al enviar aceptás nuestra <a href="https://levelup-legal.vercel.app/privacidad-web" target="_blank" rel="noopener">política de privacidad</a>. Usamos tus datos solo para contactarte; no los compartimos con terceros.</p>
           <button type="submit" class="send" id="send">Pedir la sesión</button>
           <p class="fine">Te respondemos por WhatsApp antes de 24 horas. Sin venta disfrazada.</p>
           <div class="fallo" id="fallo">No pudimos enviar el formulario — puede ser la conexión.
@@ -670,6 +902,16 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   </div>
 </section>
 
+<!-- CERO FUGAS: sale del pie y pasa a banda propia, justo antes del footer.
+     Sigue siendo la salida chica y lejos de la oferta principal, pero se ve. -->
+<section class="banda-cero">
+  <div class="cero rv">
+    <p><span class="cf-eti">Todavía no es momento del sistema</span>
+      <b>CERO FUGAS<sup>™</sup></b> es el punto de partida: el método para encontrar por dónde se te escapan las consultas, para hacerlo vos.</p>
+    <a href="https://hellolevelupagency.hotmart.host/cero-fugas-que-ninguna-consulta-se-te-escape-f9d74eb4-6d69-4af6-9989-c2b947294724" target="_blank" rel="noopener">Ver CERO FUGAS™ ↗</a>
+  </div>
+</section>
+
 <footer class="foot">
   <div class="fg-top">
     <div>
@@ -682,7 +924,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
       <a class="l" href="#cambia">Lo que cambia</a>
       <a class="l" href="#sistema">El sistema</a>
       <a class="l" href="#quien">Para quién</a>
-      <a class="l" href="#extras">También, por separado</a>
+      <a class="l" href="#soluciones">Soluciones con IA</a>
     </div>
     <div>
       <h4>Contacto</h4>
@@ -691,11 +933,14 @@ input.bad,textarea.bad{border-color:#ff5b4d}
       <p class="desc" style="margin-top:6px">Reconquista, Santa Fe</p>
     </div>
   </div>
-  <div class="cero">
-    <p>¿Todavía no es momento del sistema? <b>CERO FUGAS<sup>™</sup></b> es el punto de partida: el método para encontrar por dónde se te escapan las consultas, para hacerlo vos.</p>
-    <a href="https://hellolevelupagency.hotmart.host/cero-fugas-que-ninguna-consulta-se-te-escape-f9d74eb4-6d69-4af6-9989-c2b947294724" target="_blank" rel="noopener">Ver CERO FUGAS™ ↗</a>
+  <div class="fg-bot">
+    <span>© 2026 Level Up™ | AIMA</span>
+    <a href="https://levelup-legal.vercel.app/privacidad-web" target="_blank" rel="noopener" class="legal-l">Política de privacidad ↗</a>
+    <span>Ingeniería comercial · nunca agencia</span>
   </div>
-  <div class="fg-bot"><span>© 2026 Level Up™ | AIMA</span><span>Ingeniería comercial · nunca agencia</span></div>
+  <!-- Razón social textual: NO se abrevia ni se reformula. Tiene que coincidir con la
+       constancia de ARCA — es lo que conecta la marca con la persona ante Meta. -->
+  <p class="razon">Level Up™ | AIMA es la marca comercial de Nicolás Óscar Escobar · Reconquista, Santa Fe, Argentina</p>
 </footer>
 
 </div>
@@ -736,7 +981,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 
   /* ── reveals: visibles por defecto; solo se ocultan si el JS puede animarlos ── */
   // .stg entra al mismo observador: escalona a sus hijos en vez de aparecer entero
-  var rvs=[].slice.call(document.querySelectorAll('.rv,.stg'));
+  var rvs=[].slice.call(document.querySelectorAll('.rv,.stg,.enc'));
   if(!reduce && 'IntersectionObserver' in window){
     document.documentElement.classList.add('js-rv');
     document.querySelectorAll('.rv').forEach(function(el){el.style.opacity='0';el.style.transform='translateY(28px)';});
@@ -751,6 +996,27 @@ input.bad,textarea.bad{border-color:#ff5b4d}
     },{threshold:.1,rootMargin:'0px 0px -5% 0px'});
     rvs.forEach(function(el){io.observe(el);});
   }
+
+  /* ══ EL DIAGNÓSTICO ══ cada afirmación se resuelve al entrar, escalonada.
+     Sin JS quedan todas resueltas por CSS: nadie ve una lista a medio marcar. */
+  (function(){
+    var diag=document.getElementById('diag'); if(!diag) return;
+    var filas=[].slice.call(diag.querySelectorAll('.dx'));
+    if(reduce || !('IntersectionObserver' in window)){
+      filas.forEach(function(f){f.classList.add('on');}); return;
+    }
+    var red=setTimeout(function(){filas.forEach(function(f){f.classList.add('on');});},3000);
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(!e.isIntersecting) return;
+        clearTimeout(red);
+        var i=filas.indexOf(e.target);
+        setTimeout(function(){ e.target.classList.add('on'); }, Math.max(0,i%4)*130);
+        io.unobserve(e.target);
+      });
+    },{threshold:.6});
+    filas.forEach(function(f){io.observe(f);});
+  })();
 
   /* ══ EL RECORRIDO ══ */
   var ETAPAS=[{n:'Entra'},{n:'Responde'},{n:'Deriva'},{n:'Seguimiento'},{n:'Cierre',propia:true}];
@@ -809,12 +1075,12 @@ input.bad,textarea.bad{border-color:#ff5b4d}
       ctx.clearRect(0,0,W,H);
 
       ex.forEach(function(s,i){
-        s.luz+=(0-s.luz)*Math.min(dt/260,1);
+        s.luz+=(0-s.luz)*Math.min(dt/520,1);   // se apaga más lento: el toque se ve
         var y0=H*(Y0-.03), alto=H*((Y1-Y0)+.06);
-        ctx.strokeStyle=C(TXT,(.055+s.luz*.30).toFixed(3));
+        ctx.strokeStyle=C(TXT,(.075+s.luz*.55).toFixed(3));
         ctx.lineWidth=1;
         ctx.beginPath();ctx.moveTo(s.x,y0);ctx.lineTo(s.x,y0+alto);ctx.stroke();
-        capEls[i].classList.toggle('on',s.luz>.22);
+        capEls[i].classList.toggle('on',s.luz>.16);
         if(s.propia){
           ctx.strokeStyle=C(ACC,(.30+s.luz*.6).toFixed(3));
           ctx.lineWidth=1.4;
@@ -827,7 +1093,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
         for(var i=0;i<ex.length;i++){
           if(i>t.tocada && t.x>=ex[i].x && (!t.pierde||ex[i].x<=t.finX)){
             t.tocada=i; ex[i].luz=1;
-            pulsos.push({x:ex[i].x,y:t.y,r:0,a:1});
+            pulsos.push({x:ex[i].x,y:t.y,r:0,a:1});   // destello del contacto
           }
         }
         var cabeza=Math.min(t.x,t.finX);
@@ -847,11 +1113,18 @@ input.bad,textarea.bad{border-color:#ff5b4d}
       });
 
       for(var p=pulsos.length-1;p>=0;p--){
-        var q=pulsos[p]; q.r+=dt*.055; q.a-=dt*.0016;
+        var q=pulsos[p]; q.r+=dt*.075; q.a-=dt*.0020;
         if(q.a<=0){pulsos.splice(p,1);continue;}
-        ctx.strokeStyle=C(ACC,(q.a*.5).toFixed(3));
-        ctx.lineWidth=1;
+        // anillo que se abre
+        ctx.strokeStyle=C(ACC,(q.a*.85).toFixed(3));
+        ctx.lineWidth=1.5;
         ctx.beginPath();ctx.arc(q.x,q.y,3+q.r,0,6.283);ctx.stroke();
+        // chispa en el punto exacto del contacto: breve y brillante
+        var chispa=Math.max(0,q.a-.45)*1.8;
+        if(chispa>0){
+          ctx.fillStyle=C(TXT,(chispa*.9).toFixed(3));
+          ctx.beginPath();ctx.arc(q.x,q.y,2.4*chispa+1,0,6.283);ctx.fill();
+        }
       }
       requestAnimationFrame(frame);
     }
@@ -888,13 +1161,14 @@ input.bad,textarea.bad{border-color:#ff5b4d}
     s.style.transform='translate('+dx+'px,'+dy+'px) rotate('+rot+'deg) scale(.86)';
     s.style.filter='blur(7px)';
     setTimeout(function(){
-      s.style.transition='transform .82s cubic-bezier(.16,.9,.24,1), opacity .55s ease, filter .6s ease';
+      // misma ley que el resto de la página: antes opacidad y desenfoque usaban 'ease'
+      s.style.transition='transform .52s var(--ley), opacity .34s var(--ley), filter .38s var(--ley)';
       s.style.transform='none';s.style.opacity='1';s.style.filter='none';
-    },90+i*22);
+    },60+i*13);
   });
 
   var raf=false,mx=0,my=0,listo=false;
-  setTimeout(function(){listo=true;},90+chars.length*22+900);
+  setTimeout(function(){listo=true;},60+chars.length*13+600);
   window.addEventListener('mousemove',function(e){
     mx=e.clientX;my=e.clientY;
     if(!raf&&listo&&!reduce){raf=true;requestAnimationFrame(push);}
@@ -905,7 +1179,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
       var s=chars[i],r=s.getBoundingClientRect();
       var dx=(r.left+r.width/2)-mx, dy=(r.top+r.height/2)-my, d=Math.sqrt(dx*dx+dy*dy);
       if(d<R&&d>0){var f=(1-d/R),k=f*f*26;
-        s.style.transition='transform .28s cubic-bezier(.2,.8,.2,1)';
+        s.style.transition='transform .28s cubic-bezier(.16,1,.3,1)';
         s.style.transform='translate('+(dx/d*k).toFixed(2)+'px,'+(dy/d*k).toFixed(2)+'px)';
       }else if(s.style.transform&&s.style.transform!=='none'){s.style.transform='none';}
     }
