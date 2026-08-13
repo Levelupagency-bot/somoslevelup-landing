@@ -15,6 +15,7 @@
 <!-- Ícono de solapa: monograma LU sobre naranja. El logotipo completo metido en un
      cuadrado se deforma y a 16px no se lee nada; dos letras sí. Varios tamaños para
      que el navegador tome el que le sirve en vez de achicar uno grande. -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -26,6 +27,7 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
   --void:#121110;--panel:#191817;
+  --anillo:conic-gradient(from var(--giro,0deg),#fff4e9,#ffa863 14%,#8a3208 34%,#1c0a02 50%,#8a3208 66%,#ffa863 86%,#fff4e9);
   /* sobre #121110: dim .46 daba 4.28:1 y faint .30 daba 2.54:1 — ambos por debajo del mínimo.
      Medido en pantalla: .62 => 6.8:1 · .52 => 5.2:1 (sobre panel, 4.9:1). Todo pasa el mínimo. */
   --ink:#f2f0ec;--mid:rgba(242,240,236,.66);--dim:rgba(242,240,236,.62);--faint:rgba(242,240,236,.52);
@@ -46,6 +48,10 @@
   --pad:clamp(26px,4.5vw,60px);
 }
 html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+/* Al entrar directo con #soluciones (enlace de la bio de Instagram) el navegador
+   apoya la seccion contra el borde de arriba y el encabezado fijo le come el titulo.
+   Este margen la deja arrancando justo debajo. */
+[id]{scroll-margin-top:86px}
 body{font-family:var(--f);background:var(--void);color:var(--ink);font-size:16px;line-height:1.65;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 
@@ -105,8 +111,8 @@ a{color:inherit;text-decoration:none}
   border-bottom:1px solid var(--line-2);transition:color .2s}
 .menu a.destacado{color:var(--hot)}
 .menu a.menu-cta{margin-top:24px;border-bottom:0;font-size:14px;font-weight:800;
-  letter-spacing:.1em;text-transform:uppercase;background:var(--hot);color:#fff;
-  justify-content:center;min-height:54px}
+  letter-spacing:.1em;text-transform:uppercase;color:#fff;justify-content:center;min-height:54px;
+  border-radius:999px;background:linear-gradient(rgba(255,255,255,.24),rgba(255,255,255,.02) 52%),rgba(242,106,31,.70)}
 
 /* ── hero ── */
 .via{position:fixed;right:0;top:0;width:54vw;height:100svh;z-index:5;pointer-events:none;
@@ -147,32 +153,95 @@ h1 em{font-style:normal;color:var(--hot)}
   transition:transform .34s cubic-bezier(.16,1,.3,1),opacity .3s ease}
 .swap.sale i{transform:translateY(-.55em);opacity:0}
 .swap.entra i{transform:translateY(.55em);opacity:0;transition:none}
-/* nowrap a proposito: flex decide el salto de linea con el ancho NATURAL del texto
-   (los servicios miden ~420px de una linea), asi que con wrap la columna entera se
-   caia a un segundo renglon justo en 1024px. Sin salto, encoge y el texto reparte
-   en dos lineas, que es lo que queremos. */
-.act{display:flex;align-items:flex-start;gap:18px;margin-top:clamp(22px,2.6vw,34px);flex-wrap:nowrap}
-.acol{display:flex;flex-direction:column;align-items:flex-start;gap:9px;min-width:0}
-/* ancho natural en escritorio: asi el subrayado mide lo que mide el texto y no
-   se estira medio hero. En celular pasa a repartirse el sobrante (ver abajo). */
-.serv-col{flex:0 1 auto}
-/* la primera columna no se encoge y el texto del boton no se parte: apretando en
-   1024 el "Pedir la sesion" caia en dos renglones. Lo que cede es el texto largo. */
-.acol:first-child{flex:0 0 auto}
-.btn{white-space:nowrap}
-/* mismo tratamiento que el botón del header: si allá va blanco, acá también */
-.btn{font-family:var(--f);font-size:15px;font-weight:800;padding:15px 30px;background:var(--hot);
-  color:#fff;border:0;cursor:pointer;transition:transform .18s,background .2s}
-.btn:hover{background:#ff7c30}
-@media(hover:hover) and (pointer:fine){.btn:hover{transform:translateY(-2px)}}
+.act{display:flex;align-items:flex-start;margin-top:clamp(22px,2.6vw,34px)}
+/* centrado, no alineado a la izquierda: la leyenda mide 10px menos que el boton y
+   pegada al margen izquierdo se veia corrida. La columna mide lo que mide el boton,
+   asi que centrar dentro de la columna la deja centrada bajo el boton. */
+.acol{display:flex;flex-direction:column;align-items:center;gap:9px;min-width:0}
+
+/* ── el anillo que gira ──
+   Dos capas de fondo: el relleno recortado al padding-box y el degradado conico al
+   border-box, asi el conico solo asoma en el borde. El angulo es una propiedad
+   registrada, que es lo unico que permite ANIMAR un degradado (sin @property un
+   custom property es texto y no interpola). Los dos var() llevan reserva: si el
+   navegador no soporta @property, var(--giro) quedaria invalido y se caeria el
+   fondo entero del boton. */
+@property --giro{syntax:'<angle>';initial-value:0deg;inherits:false}
+@property --relleno{syntax:'<color>';initial-value:rgba(242,106,31,.58);inherits:false}
+@keyframes giro{to{--giro:360deg}}
+/* pausado por defecto: lo enciende el observador cuando el boton entra en pantalla */
+@media(prefers-reduced-motion:no-preference){
+  .btn,.send{animation:giro 7s linear infinite;animation-play-state:paused}
+  .btn.gira,.send.gira{animation-play-state:running}
+}
+/* Vidrio de verdad: el relleno es translucido y detras pasa la animacion del hero,
+   asi que se la ve moverse a traves del boton. El primer degradado es el brillo de
+   la arista superior —lo que hace que lea como vidrio y no como un color pastel—;
+   el ultimo es el anillo, que solo asoma en los 2px del borde. */
+.btn{font-family:var(--f);font-size:15px;font-weight:800;padding:16px 32px;white-space:nowrap;
+  color:#fff;border:2px solid transparent;border-radius:999px;cursor:pointer;
+  background:linear-gradient(rgba(255,255,255,.20),rgba(255,255,255,.02) 52%) padding-box,
+             linear-gradient(var(--relleno,rgba(242,106,31,.58)),var(--relleno,rgba(242,106,31,.58))) padding-box,
+             var(--anillo) border-box;
+  backdrop-filter:blur(16px) saturate(180%);-webkit-backdrop-filter:blur(16px) saturate(180%);
+  transition:transform .26s var(--ley),--relleno .34s var(--ley)}
+@media(hover:hover) and (pointer:fine){
+  .btn:hover{--relleno:rgba(255,124,48,.64);transform:translateY(-1px)}
+}
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:600}
 .btn.ghost:hover{border-color:var(--hot);background:transparent}
 .hint{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim)}
-/* misma voz que el "45 min · sin cargo": chica, espaciada, gris */
-.serv-hero{display:block;max-width:100%;font-size:11px;line-height:1.5;
-  letter-spacing:.15em;text-transform:uppercase;color:var(--dim);
-  border-bottom:1px solid var(--line);padding-bottom:5px;transition:color .25s,border-color .25s}
-.serv-hero:hover{color:var(--hot);border-bottom-color:var(--hot)}
+/* el numero en naranja y de ancho fijo: en negro dentro de un parrafo el conteo
+   pasaba desapercibido, y sin ancho fijo el texto de al lado bailaba al contar */
+[data-cuenta]{color:var(--hot);font-variant-numeric:tabular-nums}
+
+/* ── la franja de AIMA ──
+   Toda la banda es el enlace: en el celular el blanco de toque es la pantalla entera
+   de ancho, no un renglon de texto. */
+.puerta{position:relative;z-index:10;display:block;text-decoration:none;overflow:hidden;
+  padding:clamp(32px,4.4vw,50px) var(--pad);background:#17110d;
+  border-top:1px solid rgba(242,106,31,.30);border-bottom:1px solid var(--line)}
+.puerta::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(130% 210% at 93% 50%,rgba(242,106,31,.17),transparent 60%)}
+.puerta::after{content:'';position:absolute;top:-1px;left:0;height:1px;width:110px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,#ffb279,var(--hot),transparent);
+  transform:translateX(-110px);opacity:0}
+@keyframes recorre{
+  0%{transform:translateX(-110px);opacity:0}
+  7%{opacity:1} 88%{opacity:1}
+  100%{transform:translateX(100vw);opacity:0}}
+@media(prefers-reduced-motion:no-preference){
+  .puerta.gira::after{animation:recorre 4.8s linear infinite}
+}
+.puerta-in{position:relative;display:flex;align-items:center;justify-content:space-between;
+  gap:clamp(13px,2.4vw,28px);flex-wrap:wrap}
+.puerta-k{font-size:clamp(21px,3.3vw,32px);font-weight:800;color:var(--ink);letter-spacing:-.02em;
+  line-height:1.12}
+.puerta-k b{font-weight:900;color:var(--hot);letter-spacing:.01em}
+/* vidrio: hay un resplandor naranja detras, asi que el desenfoque tiene algo que hacer */
+.puerta-c{position:relative;display:inline-flex;align-items:center;gap:12px;overflow:hidden;
+  padding:14px 22px;min-height:48px;border-radius:999px;border:1px solid rgba(242,240,236,.22);
+  background:linear-gradient(rgba(255,255,255,.13),rgba(255,255,255,.02) 55%),rgba(242,240,236,.05);
+  backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);
+  transition:border-color .25s var(--ley)}
+/* el relleno entra deslizandose desde la izquierda */
+.puerta-c::before{content:'';position:absolute;inset:0;background:var(--hot);
+  transform:scaleX(0);transform-origin:0 50%;transition:transform .44s var(--ley)}
+.puerta-t,.flecha{position:relative}
+.puerta-t{font-size:clamp(14px,1.5vw,16.5px);font-weight:700;color:var(--ink);
+  letter-spacing:-.01em;transition:color .3s var(--ley)}
+.flecha{width:20px;height:9px;flex-shrink:0;color:var(--hot);
+  transition:transform .38s var(--ley),color .3s var(--ley)}
+.flecha::before{content:'';position:absolute;left:0;top:4px;width:100%;height:1.5px;background:currentColor}
+.flecha::after{content:'';position:absolute;right:0;top:1px;width:8px;height:8px;
+  border-top:1.5px solid currentColor;border-right:1.5px solid currentColor;transform:rotate(45deg)}
+@media(hover:hover) and (pointer:fine){
+  .puerta:hover .puerta-c{border-color:var(--hot)}
+  .puerta:hover .puerta-c::before{transform:scaleX(1)}
+  .puerta:hover .puerta-t,.puerta:hover .flecha{color:#120d08}
+  .puerta:hover .flecha{transform:translateX(5px)}
+}
+.puerta:focus-visible{outline:2px solid var(--hot);outline-offset:-3px}
 
 /* ── secciones ── */
 /* El corte no se consigue estirando la sección — así quedan larguísimas. Se consigue
@@ -288,8 +357,11 @@ html:not(.js-rv) .stg>*{opacity:1;transform:none}
   padding-left:16px;border-left:2px solid var(--hot);transition:color .25s ease}
 /* lo que depende de activar LIA va marcado aparte: el sistema es el orden, el agente es opcional.
    Ojo: la clase .opt ya existe más abajo (la chapita OPCIONAL del módulo 04). */
-.srow .b .si-lia{display:block;margin-top:9px;font-style:normal;font-weight:400;font-size:.86em;
-  color:var(--dim);padding-left:12px;border-left:1px dashed var(--hot);max-width:44ch}
+/* aclaracion, no argumento: mas chica y mas apagada que el texto que aclara, y el
+   borde punteado deja de ser naranja pleno para no pedir la misma atencion */
+.srow .b .si-lia{display:block;margin-top:9px;font-style:normal;font-weight:400;font-size:.76em;
+  line-height:1.55;color:var(--faint);padding-left:11px;
+  border-left:1px dashed rgba(242,106,31,.42);max-width:44ch}
 .srow .b .si-lia b{color:var(--hot);font-weight:700}
 .shead{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,4vw,64px);padding-bottom:10px;
   font-size:13px;letter-spacing:.16em;text-transform:uppercase;font-weight:800}
@@ -330,11 +402,17 @@ html:not(.js-rv) .stg>*{opacity:1;transform:none}
 .lead-aima b{color:var(--ink);font-weight:700}
 
 .grupo{margin-top:clamp(38px,4.6vw,66px)}
+/* separacion real entre los dos grupos: se marca con una linea y aire, no
+   estirando el bloque —igual que el corte entre secciones— */
+.grupo+.grupo{margin-top:clamp(52px,5.6vw,84px);padding-top:clamp(30px,3.4vw,46px);
+  border-top:1px solid var(--line-2)}
 /* rótulos de grupo: son títulos secundarios, no etiquetitas. Barra naranja al
    costado + tamaño de subtítulo real. */
-.grupo-tit{display:flex;align-items:center;gap:13px;font-size:clamp(15px,1.5vw,20px);
-  letter-spacing:.14em;text-transform:uppercase;font-weight:900;color:var(--ink);
-  margin-bottom:clamp(22px,2.6vw,34px)}
+/* el rotulo tiene que pesar MAS que sus items: con 15px contra 18px se leian como
+   una lista plana de cuatro cosas equivalentes, y son dos grupos distintos */
+.grupo-tit{display:flex;align-items:center;gap:13px;font-size:clamp(20px,1.9vw,25px);
+  letter-spacing:.12em;text-transform:uppercase;font-weight:900;color:var(--ink);
+  margin-bottom:clamp(20px,2.6vw,34px)}
 .grupo-tit::before{content:'';width:clamp(22px,2.4vw,34px);height:3px;background:var(--hot);flex-shrink:0}
 .items{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,44px)}
 .items.dos{grid-template-columns:repeat(2,1fr)}
@@ -343,7 +421,7 @@ html:not(.js-rv) .stg>*{opacity:1;transform:none}
 .item::before{content:'';position:absolute;top:-1px;left:0;right:0;height:2px;background:var(--hot);
   transform-origin:0 50%;transform:scaleX(var(--marca,.18));
   transition:transform .22s cubic-bezier(.16,1,.3,1)}
-.item h3{font-weight:800;font-size:clamp(18px,1.6vw,23px);letter-spacing:-.03em;line-height:1.2}
+.item h3{font-weight:800;font-size:clamp(16.5px,1.6vw,23px);letter-spacing:-.03em;line-height:1.24}
 .item h3 sup{font-size:9px;color:var(--hot);vertical-align:super}
 .item p{margin-top:10px;color:var(--mid);font-size:clamp(14px,1.05vw,16px);line-height:1.72}
 .item p b{color:var(--ink);font-weight:700}
@@ -520,10 +598,16 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 .aviso-priv{font-size:12px;line-height:1.6;color:var(--dim);margin-bottom:14px;max-width:52ch}
 .aviso-priv a{color:var(--hot);text-decoration:underline;text-underline-offset:3px;
   text-decoration-thickness:1px}
-.send{background:var(--hot);color:#120d08;border:0;padding:15px;font-size:15px;font-weight:900;letter-spacing:-.01em;
-  cursor:pointer;font-family:var(--f);transition:transform .18s,background .2s}
-.send:hover{background:#ff7c30}
-@media(hover:hover) and (pointer:fine){.send:hover{transform:translateY(-2px)}}
+.send{color:#fff;border:2px solid transparent;border-radius:999px;padding:16px;font-size:15px;font-weight:900;letter-spacing:-.01em;
+  cursor:pointer;font-family:var(--f);
+  background:linear-gradient(rgba(255,255,255,.20),rgba(255,255,255,.02) 52%) padding-box,
+             linear-gradient(var(--relleno,rgba(242,106,31,.58)),var(--relleno,rgba(242,106,31,.58))) padding-box,
+             var(--anillo) border-box;
+  backdrop-filter:blur(16px) saturate(180%);-webkit-backdrop-filter:blur(16px) saturate(180%);
+  transition:transform .26s var(--ley),--relleno .34s var(--ley)}
+@media(hover:hover) and (pointer:fine){
+  .send:hover{--relleno:rgba(255,124,48,.64);transform:translateY(-1px)}
+}
 .send:disabled{opacity:.6;cursor:default;transform:none}
 .fine{font-size:11px;color:var(--faint);line-height:1.6}
 .fallo{display:none;border:1px solid #ff5b4d;padding:14px 16px;font-size:13.5px;color:#ffb3aa;line-height:1.55}
@@ -564,7 +648,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   display:none;align-items:center;flex-direction:row-reverse;justify-content:flex-start;
   gap:11px;white-space:nowrap;
   width:174px;height:56px;padding:0 16px;border-radius:999px;contain:layout paint;
-  background:rgba(25,24,23,.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  background:rgba(25,24,23,.96);backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);
   border:1px solid rgba(242,106,31,.5);color:var(--hot);
   -webkit-clip-path:inset(0 0 0 118px round 999px);clip-path:inset(0 0 0 118px round 999px);
   /* entra recién cuando el visitante pasó el hero: en la primera pantalla estorba */
@@ -664,10 +748,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   .mark{white-space:nowrap}
   /* 168+18+157 = 343 en 338 disponibles: los dos botones no entraban por 5px y el
      segundo caía solo. Con menos relleno entran juntos y el "45 min" baja limpio. */
-  /* la columna de servicios se queda con el sobrante de la fila en vez de empujar
-     un salto de linea: apiladas, el bloque crecia 44px y se comia la animacion. */
-  .act{gap:12px}
-  .serv-col{flex:1 1 0}
+
   /* En 320px los dos botones mas el aire no entran en 268: el relleno se afina con
      el ancho real de pantalla en vez de dejar que la fila desborde. */
   .btn{padding:15px clamp(11px,4.6vw,22px);font-size:14.5px}
@@ -736,22 +817,29 @@ input.bad,textarea.bad{border-color:#ff5b4d}
     <h1 id="h1"><span class="ln">Ordenamos tu</span><span class="ln"><em>proceso comercial.</em></span></h1>
     <p class="deny"><b>No tus ventas.</b> Esas las cierra tu equipo. Cada consulta entra con
       <span class="swap" id="swap"><i>responsable</i></span>.</p>
-    <!-- Cada leyenda cuelga de SU boton. Sueltas en una fila, el "45 min" quedaba
-         al lado de "Ver servicios" y los servicios debajo de los dos: no se sabia
-         cual explicaba a cual. Que se vea antes de scrollear: en celular el 90%
-         no llega hasta AIMA. -->
+    <!-- Un solo camino en el hero. La puerta de AIMA se fue a su propia franja,
+         justo abajo: aca adentro entraba todo en una pantalla y amontonaba. -->
     <div class="act">
       <div class="acol">
         <button class="btn" data-go="sesion">Pedir la sesión</button>
         <span class="hint">45 min · sin cargo</span>
       </div>
-      <div class="acol serv-col">
-        <button class="btn ghost" data-go="soluciones">Ver servicios</button>
-        <a class="serv-hero" href="#soluciones" data-go="soluciones">Agentes de IA · Sistemas a medida · Automatizaciones</a>
-      </div>
     </div>
   </div>
 </header>
+
+<!-- Puerta a AIMA. Franja propia y fondo propio —ni el del hero ni el de la seccion
+     siguiente— para que se lea como OTRA cosa sin tener que explicarlo. "AIMA" hace
+     de separador porque es nombre de marca y ya viene del logo del header. -->
+<a class="puerta" href="#soluciones" data-go="soluciones">
+  <span class="puerta-in">
+    <span class="puerta-k"><b>AIMA</b> · Soluciones con IA</span>
+    <span class="puerta-c">
+      <span class="puerta-t">Agentes, sistemas a medida y automatizaciones</span>
+      <i class="flecha" aria-hidden="true"></i>
+    </span>
+  </span>
+</a>
 
 <!-- 02 · LA PRUEBA — la pone el visitante, no nosotros -->
 <section class="sec alt" id="prueba">
@@ -769,7 +857,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
     </ol>
     <div class="ver rv">
       <p class="v1">Si no podés contestarlas, ese es el problema. <em>Y no es de tu equipo.</em></p>
-      <p class="v2">La venta más larga que vimos tardó <b>30 días de seguimiento</b>. El cliente nunca dijo que no. Lo que al día dos parece perdido, al día treinta seguía vivo — mientras alguien lo estuviera mirando.</p>
+      <p class="v2">La venta más larga que vimos tardó <b><span data-cuenta="30">30</span> días de seguimiento</b>. El cliente nunca dijo que no. Lo que al día dos parece perdido, al día treinta seguía vivo — mientras alguien lo estuviera mirando.</p>
     </div>
   </div>
 </section>
@@ -818,7 +906,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
         <span class="meta">La inversión publicitaria la pagás vos, directo a Meta</span></p></div>
 
     <div class="mod rv"><span class="n">04</span><h3>La puesta en marcha</h3>
-      <p><b>Tu número de siempre o uno nuevo</b>, como te convenga; si conservás el tuyo, tu equipo sigue contestando desde su celular igual que hoy. Dos licencias, capacitación de dos horas, datos aislados y accesos documentados. <b>Tope de 21 días hábiles</b>: si no está funcionando según el checklist que firmamos los dos, se devuelve el 100% de la implementación.
+      <p><b>Tu número de siempre o uno nuevo</b>, como te convenga; si conservás el tuyo, tu equipo sigue contestando desde su celular igual que hoy. Dos licencias, capacitación de dos horas, datos aislados y accesos documentados. <b>Tope de <span data-cuenta="21">21</span> días hábiles</b>: si no está funcionando según el checklist que firmamos los dos, se devuelve el 100% de la implementación.
         <span class="meta">La verificación en Meta la gestionamos nosotros · sin permanencia, te vas avisando con 30 días y te llevás la base</span></p></div>
   </div>
 
@@ -912,7 +1000,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
       </div>
       <div class="item">
         <h3>Automatización de procesos</h3>
-        <p>Eso que alguien hace todos los días, siempre igual. Reportes, conciliaciones, cargar lo mismo en dos lados — <b>y todo lo que se repite.</b></p>
+        <p>Reportes, conciliaciones, cargar lo mismo en dos lados — <b>y todo lo que se repite.</b></p>
       </div>
     </div>
   </div>
@@ -922,7 +1010,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
     <div class="items dos stg">
       <div class="item">
         <h3>Radiografía Comercial<sup>™</sup></h3>
-        <p>Una evaluación completa de tu proceso comercial: reconstruimos consulta por consulta el camino que hacen en tu negocio, armamos el mapa de fugas y te entregamos un informe de cinco páginas con una sola prioridad. El informe queda tuyo.</p>
+        <p>Seguimos tus últimas 20 consultas una por una y te entregamos el mapa de fugas con una sola prioridad. El informe queda tuyo.</p>
       </div>
       <div class="item">
         <h3>Capacitación de equipos</h3>
@@ -1052,6 +1140,53 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   var ACC=rgb('--hot','#f26a1f'), TRZ=rgb('--trace','#e6e2db'), TXT=rgb('--ink','#f2f0ec');
 
   /* ── ir a una sección ── */
+  /* El anillo solo gira mientras el boton se ve: es infinito y no tiene sentido que
+     gaste bateria cuando nadie lo mira. */
+  (function(){
+    if(reduce) return;
+    var aros=[].slice.call(document.querySelectorAll('.btn,.send,.puerta'));
+    if(!aros.length) return;
+    if(!('IntersectionObserver' in window)){ aros.forEach(function(b){b.classList.add('gira');}); return; }
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ e.target.classList.toggle('gira',e.isIntersecting); });
+    },{rootMargin:'80px'});
+    aros.forEach(function(b){ io.observe(b); });
+  })();
+
+  /* Contador. El numero DEBE terminar en su valor real: rAF no corre con la pestana
+     oculta, asi que ademas del bucle hay un reloj de guardia que lo fija igual. Y
+     solo se pone en cero lo que todavia no se ve: lo que ya esta en pantalla se deja
+     quieto, porque no se anima un numero que el visitante ya esta leyendo. */
+  (function(){
+    var nums=[].slice.call(document.querySelectorAll('[data-cuenta]'));
+    if(!nums.length) return;
+    var fijar=function(el){ el.textContent=el.getAttribute('data-cuenta'); };
+    if(reduce||!('IntersectionObserver' in window)){ nums.forEach(fijar); return; }
+    /* El numero real NO se toca hasta el momento exacto de contar. Ponerlo en cero
+       al cargar dejaba "0 dias de seguimiento" escrito en la pagina si el observador
+       no llegaba a dispararse: un dato falso publicado. Asi, en el peor caso no hay
+       animacion, pero el numero siempre dice la verdad. */
+    var pendientes=nums.filter(function(el){ return el.getBoundingClientRect().top>innerHeight*.9; });
+    if(!pendientes.length) return;
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(!e.isIntersecting) return; io.unobserve(e.target); correr(e.target); });
+    },{threshold:.15,rootMargin:'0px 0px -8% 0px'});
+    pendientes.forEach(function(el){ io.observe(el); });
+
+    function correr(el){
+      var fin=parseInt(el.getAttribute('data-cuenta'),10), dur=980, t0=null;
+      el.textContent='0';
+      var guarda=setTimeout(function(){ fijar(el); },dur+500);
+      requestAnimationFrame(function paso(t){
+        if(document.hidden){ clearTimeout(guarda); fijar(el); return; }
+        if(t0===null) t0=t;
+        var p=Math.min(1,(t-t0)/dur);
+        el.textContent=Math.round(fin*(1-Math.pow(1-p,3)));
+        if(p<1) requestAnimationFrame(paso); else { clearTimeout(guarda); fijar(el); }
+      });
+    }
+  })();
+
   document.querySelectorAll('[data-go]').forEach(function(b){
     b.addEventListener('click',function(e){
       e.preventDefault();
