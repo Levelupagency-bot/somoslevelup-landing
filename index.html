@@ -594,8 +594,16 @@ input.bad,textarea.bad{border-color:#ff5b4d}
     -webkit-mask-image:linear-gradient(0deg,#000 45%,transparent);mask-image:linear-gradient(0deg,#000 45%,transparent)}
   /* 26% y no 8%: abajo del todo quedaban justo debajo del botón de WhatsApp, que en
      el celular está fijo en el rincón. A 8% la leyenda "Cierre" quedaba tapada siempre. */
-  .cap{bottom:26%;font-size:8.5px}
-  .hero{min-height:100svh;justify-content:flex-start;padding-top:16vh}
+  /* Las cinco leyendas suman 359px en una pantalla de 390: no entran en un renglón.
+     Van alternadas en dos alturas, así cada una tiene el hueco entre dos estaciones
+     para respirar y ninguna pisa a la vecina. */
+  .cap{bottom:30%;font-size:8.5px;letter-spacing:.12em}
+  .cap:nth-child(even){bottom:calc(30% - 26px)}
+  .cap.own::after{font-size:8px}
+  /* El contenido se centra en la franja de arriba del canvas: antes quedaba pegado
+     arriba y dejaba 380px de vacío en el medio, casi media pantalla. */
+  .hero{min-height:100svh;justify-content:center;padding-top:clamp(70px,11vh,100px);
+    padding-bottom:38svh}
   .hero-in{max-width:none}
   .mod{grid-template-columns:44px 1fr}
   .mod p{grid-column:2}
@@ -606,6 +614,10 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 @media(max-width:720px){
   h1{font-size:clamp(32px,10vw,54px)}
   .nav-r a{display:none}
+  /* 168+18+157 = 343 en 338 disponibles: los dos botones no entraban por 5px y el
+     segundo caía solo. Con menos relleno entran juntos y el "45 min" baja limpio. */
+  .act{gap:12px}
+  .btn{padding:15px 22px;font-size:14.5px}
   .srow{grid-template-columns:1fr;gap:14px}
   /* apiladas, las dos chapas de arriba pierden sentido: cada fila se rotula sola */
   .shead{display:none}
