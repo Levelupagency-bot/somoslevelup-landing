@@ -76,11 +76,33 @@ a{color:inherit;text-decoration:none}
   transition:transform .35s cubic-bezier(.16,1,.3,1)}
 .nav-r a.destacado{position:relative}
 @media(hover:hover) and (pointer:fine){.nav-r a.destacado:hover::after{transform:scaleX(1)}}
-.cta-n{background:var(--hot);color:#fff;font-weight:800;font-size:14px;letter-spacing:.01em;
-  padding:12px 22px;min-height:44px;border:0;cursor:pointer;font-family:var(--f);
-  transition:transform .18s,background .2s}
-.cta-n:hover{background:#ff7c30}
-@media(hover:hover) and (pointer:fine){.cta-n:hover{transform:translateY(-1px)}}
+
+/* ══ MENÚ DE CELULAR ══ */
+.hamb{display:none;width:44px;height:44px;background:none;border:0;cursor:pointer;
+  flex-direction:column;justify-content:center;align-items:flex-end;gap:5px;padding:0}
+.hamb span{display:block;width:22px;height:2px;background:var(--ink);
+  transition:transform .28s var(--ley),opacity .2s ease,width .28s var(--ley)}
+.hamb span:nth-child(3){width:15px}
+.hamb[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamb[aria-expanded="true"] span:nth-child(2){opacity:0}
+.hamb[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg);width:22px}
+
+/* [hidden] es display:none del navegador, pero cualquier display en la clase lo pisa:
+   el panel quedaba renderizado y tapaba la pantalla entera, invisible pero bloqueando
+   todos los clics. Esta línea va sí o sí. */
+.menu[hidden]{display:none}
+.menu{position:fixed;inset:0;z-index:49;background:rgba(18,17,16,.97);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  display:flex;flex-direction:column;justify-content:center;gap:2px;padding:0 var(--pad);
+  opacity:0;transition:opacity .28s ease}
+.menu.abierto{opacity:1}
+.menu a{display:flex;align-items:center;min-height:58px;font-size:clamp(23px,6.6vw,32px);
+  font-weight:900;letter-spacing:-.03em;color:var(--ink);
+  border-bottom:1px solid var(--line-2);transition:color .2s}
+.menu a.destacado{color:var(--hot)}
+.menu a.menu-cta{margin-top:24px;border-bottom:0;font-size:14px;font-weight:800;
+  letter-spacing:.1em;text-transform:uppercase;background:var(--hot);color:#fff;
+  justify-content:center;min-height:54px}
 
 /* ── hero ── */
 .via{position:fixed;right:0;top:0;width:54vw;height:100svh;z-index:5;pointer-events:none;
@@ -101,7 +123,7 @@ a{color:inherit;text-decoration:none}
 
 .hero{position:relative;z-index:10;min-height:100svh;display:flex;flex-direction:column;justify-content:center;
   padding:0 var(--pad)}
-.hero-in{max-width:min(54vw,720px)}
+.hero-in{position:relative;z-index:2;max-width:min(54vw,720px)}
 .eyebrow{display:inline-flex;align-items:center;gap:11px;font-size:10.5px;letter-spacing:.22em;
   text-transform:uppercase;color:var(--hot);margin-bottom:clamp(16px,2.2vw,24px);font-weight:600}
 .eyebrow::before{content:'';width:24px;height:1px;background:var(--hot)}
@@ -130,6 +152,11 @@ h1 em{font-style:normal;color:var(--hot)}
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:600}
 .btn.ghost:hover{border-color:var(--hot);background:transparent}
 .hint{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim)}
+/* misma voz que el "45 min · sin cargo": chica, espaciada, gris */
+.serv-hero{display:inline-block;max-width:100%;margin-top:clamp(15px,2vh,22px);font-size:11px;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--dim);
+  border-bottom:1px solid var(--line);padding-bottom:5px;transition:color .25s,border-color .25s}
+.serv-hero:hover{color:var(--hot);border-bottom-color:var(--hot)}
 
 /* ── secciones ── */
 /* El corte no se consigue estirando la sección — así quedan larguísimas. Se consigue
@@ -590,7 +617,10 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 :focus-visible{outline:2px solid var(--hot);outline-offset:2px}
 
 @media(max-width:1000px){
-  .via{width:100%;height:40svh;top:auto;bottom:0;opacity:.6;
+  /* De fijo a absoluto: pegado al viewport, el canvas se quedaba abajo mientras el
+     contenido subía, y el hueco entre ambos crecía a medida que scrolleabas. Ahora
+     vive dentro del hero y se va con él. */
+  .via{position:absolute;left:0;z-index:0;width:100%;height:40svh;top:auto;bottom:0;opacity:.6;
     -webkit-mask-image:linear-gradient(0deg,#000 45%,transparent);mask-image:linear-gradient(0deg,#000 45%,transparent)}
   /* 26% y no 8%: abajo del todo quedaban justo debajo del botón de WhatsApp, que en
      el celular está fijo en el rincón. A 8% la leyenda "Cierre" quedaba tapada siempre. */
@@ -614,6 +644,8 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 @media(max-width:720px){
   h1{font-size:clamp(32px,10vw,54px)}
   .nav-r a{display:none}
+  .hamb{display:flex}
+  .mark{white-space:nowrap}
   /* 168+18+157 = 343 en 338 disponibles: los dos botones no entraban por 5px y el
      segundo caía solo. Con menos relleno entran juntos y el "45 min" baja limpio. */
   .act{gap:12px}
@@ -634,7 +666,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   .js .ch{opacity:1!important;transform:none!important}
   .rail::after{animation:none;left:0}
   .rv,.js .stg>*{opacity:1!important;transform:none!important;transition:none!important}
-  .btn,.cta-n,.send,.foot a.l,.item,.mod,.srow,.pieza{transform:none!important}
+  .btn,.send,.foot a.l,.item,.mod,.srow,.pieza{transform:none!important}
   .srow::after,.mod::before,.item::before,.pieza .pin{transition:none!important}
   .wa{transition:opacity .2s,background .2s,color .2s,border-color .2s!important}
 }
@@ -643,11 +675,6 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 <body>
 <a href="#sesion" class="skip">Ir al formulario</a>
 <div class="bg" aria-hidden="true"></div>
-
-<div class="via" aria-hidden="true">
-  <canvas id="via"></canvas>
-  <div class="caps" id="caps"></div>
-</div>
 <div class="grain" aria-hidden="true"></div>
 
 <div class="prog" id="prog" aria-hidden="true"></div>
@@ -661,12 +688,28 @@ input.bad,textarea.bad{border-color:#ff5b4d}
     <a href="#sistema">El sistema</a>
     <a href="#quien">Para quién</a>
     <a href="#soluciones" class="destacado">Soluciones</a>
-    <button class="cta-n" data-go="sesion">Pedir la sesión</button>
+    <button class="hamb" id="hamb" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
 
+<!-- Menú de celular: "Servicios" va PRIMERO, no en el orden de la página — es lo que
+     nadie ve porque está al final, y el 90% del tráfico entra desde el teléfono. -->
+<div class="menu" id="menu" hidden>
+  <a href="#soluciones" data-go="soluciones" class="destacado">Servicios</a>
+  <a href="#prueba" data-go="prueba">La prueba</a>
+  <a href="#sistema" data-go="sistema">El sistema</a>
+  <a href="#quien" data-go="quien">Para quién</a>
+  <a href="#sesion" data-go="sesion" class="menu-cta">Pedir la sesión</a>
+</div>
+
 <!-- 01 · HERO -->
 <header class="hero" id="inicio">
+  <div class="via" aria-hidden="true">
+    <canvas id="via"></canvas>
+    <div class="caps" id="caps"></div>
+  </div>
   <div class="hero-in">
     <span class="eyebrow">Ingeniería comercial · Alto ticket</span>
     <h1 id="h1"><span class="ln">Ordenamos tu</span><span class="ln"><em>proceso comercial.</em></span></h1>
@@ -674,9 +717,11 @@ input.bad,textarea.bad{border-color:#ff5b4d}
       <span class="swap" id="swap"><i>responsable</i></span>.</p>
     <div class="act">
       <button class="btn" data-go="sesion">Pedir la sesión</button>
-      <button class="btn ghost" data-go="sistema">Ver el sistema</button>
+      <button class="btn ghost" data-go="soluciones">Ver servicios</button>
       <span class="hint">45 min · sin cargo</span>
     </div>
+    <!-- Que se vea antes de scrollear: en celular el 90% no llega hasta AIMA. -->
+    <a class="serv-hero" href="#soluciones" data-go="soluciones">Agentes de IA · Sistemas a medida · Automatizaciones</a>
   </div>
 </header>
 
@@ -1028,6 +1073,39 @@ input.bad,textarea.bad{border-color:#ff5b4d}
       });
     },{threshold:.6});
     filas.forEach(function(f){io.observe(f);});
+  })();
+
+  /* ══ MENÚ DE CELULAR ══ */
+  (function(){
+    var hamb=document.getElementById('hamb'), menu=document.getElementById('menu');
+    if(!hamb||!menu) return;
+    var abierto=false, previo=null;
+
+    function abrir(){
+      previo=document.activeElement;
+      menu.hidden=false; void menu.offsetWidth;      // reflow: sin esto no hay transición
+      menu.classList.add('abierto');
+      hamb.setAttribute('aria-expanded','true');
+      hamb.setAttribute('aria-label','Cerrar menú');
+      document.body.style.overflow='hidden';
+      abierto=true;
+      var p=menu.querySelector('a'); if(p) p.focus();
+    }
+    function cerrar(){
+      menu.classList.remove('abierto');
+      hamb.setAttribute('aria-expanded','false');
+      hamb.setAttribute('aria-label','Abrir menú');
+      document.body.style.overflow='';
+      abierto=false;
+      setTimeout(function(){ if(!abierto) menu.hidden=true; },300);
+      if(previo && previo.focus) previo.focus();
+    }
+    hamb.addEventListener('click',function(){ abierto?cerrar():abrir(); });
+    /* el enlace navega solo; acá únicamente se cierra el panel */
+    menu.addEventListener('click',function(e){ if(e.target.closest('a')) cerrar(); });
+    addEventListener('keydown',function(e){ if(e.key==='Escape'&&abierto) cerrar(); });
+    /* si la pantalla se agranda, el menú no puede quedar abierto tapando todo */
+    matchMedia('(min-width:821px)').addEventListener('change',function(m){ if(m.matches&&abierto) cerrar(); });
   })();
 
   /* ══ EL RECORRIDO ══ */
