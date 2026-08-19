@@ -610,6 +610,27 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 }
 .send:disabled{opacity:.6;cursor:default;transform:none}
 .fine{font-size:11px;color:var(--faint);line-height:1.6}
+
+/* ── casilla de consentimiento ── */
+/* el blanco de toque es todo el renglon, no los 20px del cuadrito */
+/* Este formulario estiliza label{} e input{} por elemento (rotulitos en mayuscula y
+   campos de 46px de alto), asi que la casilla los heredaba: se veia como un recuadro
+   grande con el texto en VERSALITAS. Importa mas de lo que parece — consent_text
+   guarda el textContent, que sigue en minusculas, y quedaba diciendo algo distinto de
+   lo que la persona leyo en pantalla. Por eso se anulan uno por uno. */
+.consent{display:flex;align-items:flex-start;gap:11px;cursor:pointer;min-height:44px;
+  margin-top:4px;padding:10px 0 6px;font-size:13.5px;font-weight:400;letter-spacing:normal;text-transform:none;
+  line-height:1.5;color:var(--mid);max-width:44ch}
+.consent input{appearance:none;-webkit-appearance:none;position:relative;flex-shrink:0;
+  width:20px;height:20px;min-height:0;padding:0;margin:1px 0 0;
+  border:1.5px solid var(--line);border-radius:5px;
+  background:transparent;cursor:pointer;
+  transition:background .2s var(--ley),border-color .2s var(--ley)}
+.consent input:checked{background:var(--hot);border-color:var(--hot)}
+.consent input:checked::after{content:'';position:absolute;left:6px;top:2px;width:5px;height:10px;
+  border:solid #120d08;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.consent input:focus-visible{outline:2px solid var(--hot);outline-offset:3px}
+@media(hover:hover) and (pointer:fine){.consent:hover input{border-color:var(--hot)}}
 .fallo{display:none;border:1px solid #ff5b4d;padding:14px 16px;font-size:13.5px;color:#ffb3aa;line-height:1.55}
 .fallo.on{display:block}
 .fallo a{color:var(--hot);border-bottom:1px solid var(--hot)}
@@ -1049,7 +1070,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 
     <div class="rv">
       <div id="formView">
-        <form id="form" novalidate>
+        <form id="form" data-form-id="sesion" novalidate>
           <div class="frow">
             <div class="fg"><label for="nombre">Nombre</label><input type="text" id="nombre" autocomplete="name" placeholder="Tu nombre" required><span class="err" id="e-nombre">Falta el nombre</span></div>
             <div class="fg"><label for="email">Email</label><input type="email" id="email" autocomplete="email" placeholder="vos@tunegocio.com" required><span class="err" id="e-email">Revisá el email</span></div>
@@ -1059,6 +1080,14 @@ input.bad,textarea.bad{border-color:#ff5b4d}
             <div class="fg"><label for="rubro">Rubro</label><input type="text" id="rubro" placeholder="Concesionaria, maquinaria…" required><span class="err" id="e-rubro">Falta el rubro</span></div>
           </div>
           <div class="fg"><label for="problema">¿Qué es lo que más te preocupa hoy?</label><textarea id="problema" placeholder="Contalo con tus palabras." required></textarea><span class="err" id="e-problema">Contanos aunque sea una línea</span></div>
+          <!-- Consentimiento para escribir primero por WhatsApp. Va DESMARCADA de fábrica:
+               una casilla premarcada no es consentimiento y Meta la trata como inválida.
+               No bloquea el envío. El enlace va fuera del <label> a propósito: adentro,
+               tocarlo marcaría la casilla en vez de abrir la política. -->
+          <label class="consent">
+            <input type="checkbox" id="consent">
+            <span id="consent-txt">Acepto recibir respuestas por WhatsApp sobre mi consulta</span>
+          </label>
           <p class="aviso-priv">Al enviar aceptás nuestra <a href="https://levelup-legal.vercel.app/privacidad-web" target="_blank" rel="noopener">política de privacidad</a>. Usamos tus datos solo para contactarte; no los compartimos con terceros.</p>
           <button type="submit" class="send" id="send">Pedir la sesión</button>
           <p class="fine">Te respondemos por WhatsApp antes de 24 horas. Sin venta disfrazada.</p>
@@ -1558,6 +1587,22 @@ input.bad,textarea.bad{border-color:#ff5b4d}
     datos.fbclid        = qs.get('fbclid')       || '';   // atribución de Meta Ads
     datos.referrer      = document.referrer || '';
     datos.enviado_en    = new Date().toISOString();
+
+    /* Consentimiento. El texto se LEE de la pantalla en vez de estar escrito acá una
+       segunda vez: si mañana alguien cambia la redacción de la casilla, lo que se
+       guarda cambia solo y no puede quedar desfasado de lo que la persona vio.
+       No bloquea nada: si no la marca, entra igual con consent:false y lo único que
+       cambia es que el sistema no le escribe primero. */
+    var casilla=document.getElementById('consent'), textoCasilla=document.getElementById('consent-txt');
+    datos.consent        = !!(casilla && casilla.checked);
+    datos.consent_text   = textoCasilla ? textoCasilla.textContent.trim() : '';
+    /* Identifica el FORMULARIO, no el sitio: el dia que haya dos en la misma pagina,
+       este dato dice de cual vino cada consentimiento. Sale del data-form-id del
+       propio formulario, asi que uno nuevo trae el suyo sin tocar este codigo.
+       Sin www para que no dependa de por cual de los dos hosts entro la persona. */
+    var anclaForm=form.getAttribute('data-form-id')
+                  || (form.closest('section') && form.closest('section').id) || 'form';
+    datos.consent_source = location.host.replace(/^www\./,'') + location.pathname + '#' + anclaForm;
 
     fetch('https://n8n.srv1035755.hstgr.cloud/webhook/e48fc3b6-eb6c-42d5-be1e-9e56a1fe25a1',{
       method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(datos)
