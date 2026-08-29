@@ -22,7 +22,7 @@
 <meta name="theme-color" content="#121110">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800;900&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -67,7 +67,7 @@ a{color:inherit;text-decoration:none}
 .nav.stuck{background:rgba(18,17,16,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:var(--line)}
 .mark{font-weight:900;font-size:16px;letter-spacing:-.045em}
 .mark .bar-m{color:var(--hot);font-weight:600;margin:0 1px}
-.mark sup{font-size:7px;font-weight:500;vertical-align:super}
+.mark sup{font-size:7px;font-weight:600;vertical-align:super}
 .nav-r{display:flex;align-items:center;gap:clamp(14px,2.4vw,30px)}
 /* alto mínimo de 44: entre 720 y 1000px estos links se ven Y se tocan (tablet) */
 .nav-r a{display:inline-flex;align-items:center;min-height:44px;
@@ -143,16 +143,18 @@ h1 em{font-style:normal;color:var(--hot)}
 .ch{display:inline-block;will-change:transform,opacity}
 .js .ch{opacity:0}
 .deny{font-size:clamp(15px,1.4vw,19px);color:var(--mid);max-width:46ch;margin-top:clamp(16px,1.8vw,24px);line-height:1.55}
-.deny b{color:var(--ink);font-weight:700}
+.deny b{color:var(--ink);font-weight:800}
 /* palabra que rota. El estado de reposo es VISIBLE: si el JS se traba o los timers
    se estrangulan con la pestaña de fondo, la palabra se lee igual en vez de quedar
    fantasma a media transición. Sin overflow:hidden — cortaba la p de "próximo". */
-.swap{display:inline-block;color:var(--hot);font-weight:700;vertical-align:baseline}
+.swap{display:inline-block;color:var(--hot);font-weight:800;vertical-align:baseline}
 .swap i{font-style:normal;display:inline-block;
   transition:transform .34s cubic-bezier(.16,1,.3,1),opacity .3s ease}
 .swap.sale i{transform:translateY(-.55em);opacity:0}
 .swap.entra i{transform:translateY(.55em);opacity:0;transition:none}
-.act{display:flex;align-items:flex-start;margin-top:clamp(22px,2.6vw,34px)}
+.act{display:flex;align-items:flex-start;gap:12px;flex-wrap:nowrap;margin-top:clamp(22px,2.6vw,34px)}
+/* el secundario no compite con el primario: mismo vidrio, sin el relleno naranja */
+.btn.suave{--relleno:rgba(242,240,236,.07);color:var(--ink);border-color:rgba(255,255,255,.26)}
 /* centrado, no alineado a la izquierda: la leyenda mide 10px menos que el boton y
    pegada al margen izquierdo se veia corrida. La columna mide lo que mide el boton,
    asi que centrar dentro de la columna la deja centrada bajo el boton. */
@@ -175,6 +177,7 @@ h1 em{font-style:normal;color:var(--hot)}
   transition:transform .26s var(--ley),--relleno .34s var(--ley)}
 @media(hover:hover) and (pointer:fine){
   .btn:hover{--relleno:rgba(255,124,48,.64);transform:translateY(-1px)}
+  .btn.suave:hover{--relleno:rgba(242,240,236,.14);border-color:rgba(255,255,255,.42)}
 }
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:600}
 .btn.ghost:hover{border-color:var(--hot);background:transparent}
@@ -218,7 +221,7 @@ h1 em{font-style:normal;color:var(--hot)}
 .puerta-c::before{content:'';position:absolute;inset:0;background:var(--hot);
   transform:scaleX(0);transform-origin:0 50%;transition:transform .24s var(--ley)}
 .puerta-t,.flecha{position:relative}
-.puerta-t{font-size:clamp(14px,1.5vw,16.5px);font-weight:700;color:var(--ink);
+.puerta-t{font-size:clamp(14px,1.5vw,16.5px);font-weight:800;color:var(--ink);
   letter-spacing:-.01em;transition:color .2s var(--ley)}
 .flecha{width:20px;height:9px;flex-shrink:0;color:var(--hot);
   transition:transform .2s var(--ley),color .2s var(--ley)}
@@ -277,6 +280,9 @@ h2 em{font-style:normal;color:var(--hot)}
 @media(max-width:900px){.h-sistema{white-space:normal;max-width:14ch}}
 .lead{font-size:clamp(15px,1.15vw,18px);color:var(--mid);max-width:54ch;margin-top:0;line-height:1.75}
 .lead b{color:var(--ink);font-weight:600}
+/* tres parrafos seguidos con margin-top:0 se leian como un bloque unico: cada beat
+   del texto necesita su respiro. Solo entre hermanos, no debajo del titulo. */
+.lead+.lead{margin-top:clamp(14px,1.5vw,20px)}
 
 .rv{opacity:0;transform:translateY(16px);
   transition:opacity .42s cubic-bezier(.16,1,.3,1),transform .42s cubic-bezier(.16,1,.3,1)}
@@ -345,9 +351,9 @@ html:not(.js-rv) .stg>*{opacity:1;transform:none}
 .srow .b{transition:color .3s ease}
 /* la columna HOY iba tan apagada que no se leía. La jerarquía ahora la marca el peso
    y el filo de color, no la falta de contraste: gris legible vs. tinta plena en negrita. */
-.srow .a{color:var(--ink-3);font-size:clamp(15px,1.22vw,18.5px);line-height:1.6;font-weight:500;
+.srow .a{color:var(--ink-3);font-size:clamp(15px,1.22vw,18.5px);line-height:1.6;font-weight:600;
   padding-left:16px;border-left:2px solid var(--line);transition:color .25s ease,border-color .25s ease}
-.srow .b{color:var(--ink);font-size:clamp(15px,1.22vw,18.5px);line-height:1.6;font-weight:700;
+.srow .b{color:var(--ink);font-size:clamp(15px,1.22vw,18.5px);line-height:1.6;font-weight:800;
   padding-left:16px;border-left:2px solid var(--hot);transition:color .25s ease}
 /* lo que depende de activar LIA va marcado aparte: el sistema es el orden, el agente es opcional.
    Ojo: la clase .opt ya existe más abajo (la chapita OPCIONAL del módulo 04). */
@@ -356,7 +362,7 @@ html:not(.js-rv) .stg>*{opacity:1;transform:none}
 .srow .b .si-lia{display:block;margin-top:9px;font-style:normal;font-weight:400;font-size:.76em;
   line-height:1.55;color:var(--faint);padding-left:11px;
   border-left:1px dashed rgba(242,106,31,.42);max-width:44ch}
-.srow .b .si-lia b{color:var(--hot);font-weight:700}
+.srow .b .si-lia b{color:var(--hot);font-weight:800}
 .shead{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,4vw,64px);padding-bottom:10px;
   font-size:13px;letter-spacing:.16em;text-transform:uppercase;font-weight:800}
 /* chapas, igual que el número de sección: la comparación es el corazón del módulo
@@ -380,20 +386,151 @@ html:not(.js-rv) .stg>*{opacity:1;transform:none}
   .mod:hover{--marca:1;background:var(--hover-bg)}
   .mod:hover h3{color:var(--hot)}
 }
-.mod .n{font-size:12px;color:var(--hot);font-weight:700;letter-spacing:.08em;padding-top:5px}
+.mod .n{font-size:12px;color:var(--hot);font-weight:800;letter-spacing:.08em;padding-top:5px}
 .mod h3{font-weight:800;font-size:clamp(17px,1.6vw,23px);letter-spacing:-.03em;line-height:1.15}
 .mod p{color:var(--mid);font-size:clamp(14px,1.05vw,16px);line-height:1.72}
 .mod p b{color:var(--ink);font-weight:600}
 .mod .meta{display:block;font-size:10.5px;letter-spacing:.06em;color:var(--faint);margin-top:9px;text-transform:uppercase}
-.opt{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.1em;color:var(--hot);
+.opt{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.1em;color:var(--hot);
   border:1px solid var(--hot);padding:2px 6px;margin-left:8px;vertical-align:3px}
 
 /* ══ AIMA · la sección con más carácter ══
    Sin cajas: dos grupos, cada uno con su rótulo y sus renglones. El hover ilumina
    la fila entera y estira la marca naranja — el circuito que se conecta. */
+/* absuelve sin sacar el filtro: va más apagada que las preguntas, es una nota al pie
+   de ellas y no un argumento nuevo */
+.absuelve{margin-top:clamp(22px,2.6vw,32px);max-width:52ch;font-size:clamp(14px,1.05vw,16px);
+  line-height:1.7;color:var(--dim);padding-left:14px;border-left:2px solid var(--line)}
+.absuelve em{font-style:normal;color:var(--hot);font-weight:800}
+/* ── AIMA: bloques en secuencia, no en grilla ── */
+.bloque-a{margin-top:clamp(38px,4.6vw,66px)}
+.bloque-a+.bloque-a{padding-top:clamp(30px,3.4vw,46px);border-top:1px solid var(--line-2)}
+.bloque-a .lead-aima+.lead-aima{margin-top:clamp(14px,1.5vw,20px)}
+.bloque-a .grupo-tit{margin-bottom:clamp(16px,2vw,24px)}
+
+/* ── LA CUENTA · calculadora ──
+   Se llama .calc y NO .cuenta: esa clase ya era el bloque de "el sistema se paga" y
+   le robaba su barra naranja. Tercer choque de nombres en esta página — grep antes. */
+.calc{margin-top:clamp(26px,3vw,38px);padding:clamp(20px,2.4vw,32px);
+  background:var(--panel);border:1px solid var(--line-2);border-radius:16px}
+.calc h3{font-size:clamp(19px,2vw,26px);font-weight:800;letter-spacing:-.03em;line-height:1.2}
+.calc-k{margin-top:clamp(20px,2.2vw,28px);font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;font-weight:800;color:var(--dim)}
+.chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:11px}
+.chip{font-family:var(--f);font-size:13.5px;font-weight:600;color:var(--mid);cursor:pointer;
+  min-height:44px;padding:10px 16px;border-radius:999px;
+  background:transparent;border:1px solid var(--line);
+  transition:color .2s var(--ley),border-color .2s var(--ley),background .2s var(--ley)}
+.chip[aria-pressed="true"]{background:var(--hot);border-color:var(--hot);color:#120d08;font-weight:800}
+.chip:focus-visible{outline:2px solid var(--hot);outline-offset:3px}
+@media(hover:hover) and (pointer:fine){
+  .chip:hover{border-color:var(--hot);color:var(--ink)}
+  .chip[aria-pressed="true"]:hover{color:#120d08}
+}
+.chips.horas{display:grid;grid-template-columns:repeat(5,1fr)}
+.chips.horas .chip{padding:10px 4px;text-align:center}
+/* el resultado es tiempo, nunca plata: una promesa economica esta prohibida */
+.calc-r{margin-top:clamp(22px,2.4vw,30px);padding-top:clamp(18px,2vw,24px);
+  border-top:1px solid var(--line)}
+.calc-r b{display:block;font-size:clamp(30px,4.6vw,54px);font-weight:900;
+  letter-spacing:-.04em;line-height:1.02;color:var(--hot)}
+.calc-r span{display:block;margin-top:7px;font-size:clamp(15px,1.2vw,18px);color:var(--mid)}
+.calc .g-cta{margin-top:clamp(20px,2.2vw,28px)}
+
+/* ── LA PLATAFORMA · tarjetas de interfaz ──
+   Van en la zona clara, así que los colores salen de los tokens de .luz (fondo marfil,
+   naranja más oscuro para que aguante contraste sobre claro). La tarjeta es blanca
+   sobre el marfil; adentro, cada dato es su propio bloque. La leyenda va DEBAJO de la
+   tarjeta, no adentro: la tarjeta muestra, la leyenda explica. */
+.plata{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(20px,2.4vw,32px);
+  margin-top:clamp(28px,3.4vw,44px);align-items:start}
+.pieza{display:flex;flex-direction:column;min-width:0}
+.tarj{flex:1;background:#fffdfa;border:1px solid rgba(22,21,19,.11);border-radius:14px;
+  padding:clamp(13px,1.4vw,17px)}
+.tarj-k{font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;
+  color:rgba(22,21,19,.62);padding:2px 2px 13px}
+.pie-t{margin-top:14px}
+.pie-t b{display:block;font-size:clamp(14.5px,1.15vw,16.5px);color:var(--ink);
+  font-weight:800;letter-spacing:-.02em}
+.pie-t span{display:block;margin-top:3px;font-size:clamp(13px,1.05vw,14.5px);
+  color:var(--dim);line-height:1.6}
+
+/* 1 · los números del mes */
+.stat{background:#fff;border:1px solid rgba(22,21,19,.09);border-radius:10px;padding:12px 14px}
+.stat+.stat{margin-top:10px}
+.stat i{display:block;font-style:normal;font-size:9.5px;letter-spacing:.15em;
+  text-transform:uppercase;font-weight:800;color:rgba(22,21,19,.62)}
+.stat b{display:block;margin-top:5px;font-size:clamp(30px,3.2vw,40px);font-weight:800;
+  letter-spacing:-.035em;line-height:1.02}
+.stat em{display:block;margin-top:2px;font-style:normal;font-size:12.5px;color:var(--dim)}
+/* El único acento: lo que todavía no tocó nadie. Se marca con el número y un tinte,
+   NO con una franja lateral de color — está en la lista de rechazados y además es el
+   tic más reconocible de las interfaces hechas con IA. */
+.stat.ojo{border-color:rgba(176,67,12,.34);background:rgba(176,67,12,.05)}
+.stat.ojo i{color:var(--hot)}
+.stat.ojo b{color:var(--hot)}
+
+/* 2 · la consulta con dueño */
+.ficha{display:grid;gap:9px}
+.ficha dt{font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;font-weight:800;
+  color:rgba(22,21,19,.62)}
+.ficha dd{margin:0 0 4px;font-size:clamp(14px,1.1vw,15.5px);color:var(--ink);font-weight:600;
+  padding-bottom:9px;border-bottom:1px solid rgba(22,21,19,.08)}
+.ficha dd:last-child{border-bottom:0;padding-bottom:0}
+.marca-f{display:inline-block;background:rgba(176,67,12,.10);color:var(--hot);
+  font-weight:800;padding:5px 10px;border-radius:7px}
+
+/* 3 · la actividad */
+.linea{list-style:none;display:grid;gap:0}
+.linea li{position:relative;display:grid;grid-template-columns:52px 1fr;gap:18px;
+  align-items:baseline;padding:9px 0;font-size:clamp(13px,1.05vw,14.5px);color:var(--mid);
+  border-bottom:1px solid rgba(22,21,19,.07)}
+.linea li:last-child{border-bottom:0}
+.linea li p{margin:0}
+.linea li b{color:var(--ink);font-weight:800}
+.linea span{font-size:12px;color:rgba(22,21,19,.62);font-variant-numeric:tabular-nums}
+/* El punto marca lo que hizo el sistema solo, sin nadie del equipo. Vive en el hueco
+   entre la hora y el texto —de ahí que el hueco sea de 18px— porque pegado al texto
+   se leía como un asterisco. */
+.linea li.sist::before{content:'';position:absolute;left:57px;top:50%;
+  transform:translateY(-50%);width:5px;height:5px;border-radius:50%;background:var(--hot)}
+
+/* 4 · los motivos de pérdida */
+.barras{list-style:none;display:grid;gap:13px}
+.barras li{display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:clamp(13px,1.05vw,14.5px)}
+.barras span{color:var(--mid)}
+.barras i{font-style:normal;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+.barras u{grid-column:1/-1;height:5px;border-radius:3px;background:rgba(22,21,19,.10);
+  text-decoration:none;position:relative;overflow:hidden}
+.barras u::after{content:'';position:absolute;inset:0 auto 0 0;width:var(--v);
+  background:var(--hot);border-radius:3px}
+
+.cierre-plata{margin-top:clamp(30px,3.6vw,48px);max-width:60ch;
+  font-size:clamp(15px,1.15vw,18px);line-height:1.75;color:var(--mid);
+  padding-left:16px;border-left:2px solid var(--hot)}
+.cierre-plata b{color:var(--ink);font-weight:800}
+
+@media(max-width:860px){
+  .plata{grid-template-columns:1fr;gap:clamp(26px,4vw,34px)}
+}
+/* El corte entre los dos movimientos se MARCA, no se estira: una línea, aire y una
+   chapa naranja corta, igual que el corte entre secciones. El titular baja un escalón
+   respecto del h2 de arriba —es el segundo acto de la misma idea, no otra sección—. */
+.acto2{margin-top:clamp(52px,6vw,86px);padding-top:clamp(34px,4vw,54px);
+  border-top:1px solid var(--line);position:relative}
+.acto2::before{content:'';position:absolute;top:-2px;left:0;width:64px;height:3px;background:var(--hot)}
+.h-acto{font-size:clamp(26px,4.4vw,44px);font-weight:900;letter-spacing:-.04em;
+  line-height:1.06;max-width:18ch;margin-bottom:clamp(14px,1.6vw,20px)}
+.h-acto em{font-style:normal;color:var(--hot)}
 .h-aima{max-width:22ch}
+/* el diálogo vive donde el texto lo levanta, no como titular suelto */
+.dialogo{margin:0 0 clamp(18px,2vw,26px);padding-left:16px;border-left:2px solid var(--hot)}
+.dialogo p{font-size:clamp(16px,1.5vw,21px);font-weight:600;color:var(--ink);line-height:1.5}
+.dialogo em{font-style:normal;color:var(--hot);font-weight:800}
+.quienes{background:var(--void)}
+.h-q{max-width:20ch}
 .lead-aima{max-width:66ch}
-.lead-aima b{color:var(--ink);font-weight:700}
+.lead-aima b{color:var(--ink);font-weight:800}
 
 .grupo{margin-top:clamp(38px,4.6vw,66px)}
 /* separacion real entre los dos grupos: se marca con una linea y aire, no
@@ -418,7 +555,7 @@ html:not(.js-rv) .stg>*{opacity:1;transform:none}
 .item h3{font-weight:800;font-size:clamp(16.5px,1.6vw,23px);letter-spacing:-.03em;line-height:1.24}
 .item h3 sup{font-size:9px;color:var(--hot);vertical-align:super}
 .item p{margin-top:10px;color:var(--mid);font-size:clamp(14px,1.05vw,16px);line-height:1.72}
-.item p b{color:var(--ink);font-weight:700}
+.item p b{color:var(--ink);font-weight:800}
 @media(hover:hover){
   .item:hover{--marca:1;background:var(--hover-bg)}
   .item:hover h3{color:var(--hot)}
@@ -429,6 +566,8 @@ html:not(.js-rv) .stg>*{opacity:1;transform:none}
   padding:0 24px;border:1px solid var(--hot);color:var(--hot);font-weight:800;font-size:12.5px;
   letter-spacing:.1em;text-transform:uppercase;transition:background .25s,color .25s}
 .g-cta:hover{background:var(--hot);color:#120d08}
+/* sin esto el atributo hidden no hace nada: cualquier display en la clase le gana */
+.g-cta[hidden]{display:none}
 @media(max-width:860px){
   .items,.items.dos{grid-template-columns:1fr;gap:0}
   .item{margin-left:0;padding-left:0;padding-right:0}
@@ -472,7 +611,7 @@ html:not(.js-rv) .stg>*{opacity:1;transform:none}
 .ex p{color:var(--mid);font-size:clamp(13.5px,1vw,15.5px);line-height:1.55}
 /* inline-flex + alto mínimo: en el celular era un renglón de 22px, imposible de acertar */
 .ex a{display:inline-flex;align-items:center;min-height:44px;margin-top:2px;
-  font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--hot);
+  font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--hot);
   /* subrayado sobre el texto, no en el borde de la caja: si no, la línea quedaba suelta abajo */
   text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px;white-space:nowrap}
 
@@ -507,7 +646,7 @@ html:not(.js-rv) .stg>*{opacity:1;transform:none}
 .col-si .dx.on{color:var(--ink)}
 .dx.suma.on .marca{border-color:var(--suma);color:var(--suma);background:rgba(90,176,124,.12)}
 .dx.descarta.on .marca{border-color:var(--descarta);color:var(--descarta);background:rgba(224,106,82,.1)}
-.dx b{color:var(--ink);font-weight:700}
+.dx b{color:var(--ink);font-weight:800}
 html:not(.js-rv) .dx .marca::before,html:not(.js-rv) .dx .marca::after{opacity:1}
 @media(max-width:820px){
   .diag{grid-template-columns:1fr;gap:clamp(26px,5vw,40px)}
@@ -534,7 +673,7 @@ html:not(.js-rv) .dx .marca::before,html:not(.js-rv) .dx .marca::after{opacity:1
 }
 .policy{margin-top:clamp(26px,3vw,40px);padding-top:18px;border-top:1px solid var(--line);
   font-size:clamp(14px,1.05vw,16px);color:var(--mid);line-height:1.6}
-.policy b{color:var(--hot);font-weight:700}
+.policy b{color:var(--hot);font-weight:800}
 
 /* la sesión */
 /* ── 02 · la prueba: las preguntas las contesta el visitante ── */
@@ -554,11 +693,11 @@ html:not(.js-rv) .dx .marca::before,html:not(.js-rv) .dx .marca::after{opacity:1
   border-left:1px solid var(--line);border-top:1px solid var(--line)}
 .ver::before{content:'';position:absolute;top:-1px;left:0;width:clamp(40px,4vw,64px);height:2px;
   background:var(--hot)}
-.ver .v1{font-size:clamp(17px,1.5vw,21px);font-weight:700;line-height:1.35;letter-spacing:-.025em;color:var(--ink)}
+.ver .v1{font-size:clamp(17px,1.5vw,21px);font-weight:800;line-height:1.35;letter-spacing:-.025em;color:var(--ink)}
 .ver .v1 em{font-style:normal;color:var(--hot)}
 .ver .v2{margin-top:18px;padding-top:18px;border-top:1px solid var(--line-2);
   font-size:clamp(13.5px,1vw,15px);color:var(--dim);line-height:1.65}
-.ver .v2 b{color:var(--ink);font-weight:700}
+.ver .v2 b{color:var(--ink);font-weight:800}
 @media(max-width:820px){
   .test{grid-template-columns:1fr;gap:clamp(24px,4vw,36px)}
   .ver{padding-left:0;border-left:0;position:static}
@@ -568,15 +707,15 @@ html:not(.js-rv) .dx .marca::before,html:not(.js-rv) .dx .marca::after{opacity:1
 .three{counter-reset:t;margin-top:4px}
 .three p{counter-increment:t;display:grid;grid-template-columns:26px 1fr;gap:12px;padding:13px 0;
   border-bottom:1px solid var(--line-2);font-size:clamp(14px,1.05vw,16px);color:var(--mid);line-height:1.5}
-.three p::before{content:counter(t,decimal-leading-zero);color:var(--hot);font-weight:700;font-size:11px;padding-top:3px}
+.three p::before{content:counter(t,decimal-leading-zero);color:var(--hot);font-weight:800;font-size:11px;padding-top:3px}
 .ask{margin-top:22px;padding:16px 18px;border-left:2px solid var(--hot);background:rgba(242,106,31,.06);
-  font-size:clamp(15px,1.25vw,18px);font-weight:700;letter-spacing:-.02em;line-height:1.4}
+  font-size:clamp(15px,1.25vw,18px);font-weight:800;letter-spacing:-.02em;line-height:1.4}
 .hon{font-size:13px;color:var(--dim);margin-top:16px;line-height:1.65}
 
 form{display:grid;gap:12px}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .fg{display:grid;gap:6px;min-width:0}
-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+label{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
 input,textarea{background:rgba(242,240,236,.04);border:1px solid var(--line);color:var(--ink);
   /* 16px es obligatorio: con menos, Safari del iPhone hace zoom solo al tocar el campo
      y el visitante queda con la página descuadrada justo cuando va a dejar los datos.
@@ -642,7 +781,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 /* el pie era una mancha gris: encabezado casi invisible y links sin peso.
    El encabezado se marca con la regla naranja; los links van en tinta plena. */
 .foot h4{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,240,236,.9);
-  margin-bottom:16px;font-weight:700;padding-bottom:10px;border-bottom:2px solid var(--hot);display:inline-block}
+  margin-bottom:16px;font-weight:800;padding-bottom:10px;border-bottom:2px solid var(--hot);display:inline-block}
 .foot a.l{display:flex;align-items:center;min-height:44px;color:var(--ink);font-size:15px;font-weight:600;
   transition:color .2s,transform .2s}
 .foot a.l:hover{color:var(--hot)}
@@ -674,7 +813,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 /* nombre propio: .ver ya lo usa el veredicto del módulo 02 y le pasaba su top:96px */
 .wa.asoma{opacity:1;transform:none;pointer-events:auto}
 .wa svg{width:23px;height:23px;fill:currentColor;flex-shrink:0}
-.wa span{opacity:0;font-weight:700;font-size:14px;letter-spacing:-.01em;transition:opacity .22s ease}
+.wa span{opacity:0;font-weight:800;font-size:14px;letter-spacing:-.01em;transition:opacity .22s ease}
 /* se abre solo donde hay mouse: en el celular queda el círculo y listo */
 @media(hover:hover){
   .wa:hover{-webkit-clip-path:inset(0 round 999px);clip-path:inset(0 round 999px);
@@ -727,7 +866,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
 
 .skip{position:absolute;left:-9999px}
-.skip:focus{left:10px;top:10px;z-index:99;background:var(--hot);color:#120d08;padding:10px 16px;font-weight:700}
+.skip:focus{left:10px;top:10px;z-index:99;background:var(--hot);color:#120d08;padding:10px 16px;font-weight:800}
 :focus-visible{outline:2px solid var(--hot);outline-offset:2px}
 
 @media(max-width:1000px){
@@ -803,7 +942,8 @@ input.bad,textarea.bad{border-color:#ff5b4d}
     <a href="#prueba">La prueba</a>
     <a href="#sistema">El sistema</a>
     <a href="#quien">Para quién</a>
-    <a href="#soluciones" class="destacado">Soluciones</a>
+    <a href="#soluciones" class="destacado">Qué construimos</a>
+    <a href="#nosotros">Quiénes somos</a>
     <button class="hamb" id="hamb" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
       <span></span><span></span><span></span>
     </button>
@@ -813,10 +953,11 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 <!-- Menú de celular: "Servicios" va PRIMERO, no en el orden de la página — es lo que
      nadie ve porque está al final, y el 90% del tráfico entra desde el teléfono. -->
 <div class="menu" id="menu" hidden>
-  <a href="#soluciones" data-go="soluciones" class="destacado">Servicios</a>
+  <a href="#soluciones" data-go="soluciones" class="destacado">Qué construimos</a>
   <a href="#prueba" data-go="prueba">La prueba</a>
   <a href="#sistema" data-go="sistema">El sistema</a>
   <a href="#quien" data-go="quien">Para quién</a>
+  <a href="#nosotros" data-go="nosotros">Quiénes somos</a>
   <a href="#sesion" data-go="sesion" class="menu-cta">Pedir la sesión</a>
 </div>
 
@@ -833,11 +974,15 @@ input.bad,textarea.bad{border-color:#ff5b4d}
       <span class="swap" id="swap"><i>responsable</i></span>.</p>
     <!-- Un solo camino en el hero. La puerta de AIMA se fue a su propia franja,
          justo abajo: aca adentro entraba todo en una pantalla y amontonaba. -->
+    <!-- Dos niveles de compromiso: el que ya decidio pide la sesion, el curioso prueba.
+         Pedirle 45 minutos al que recien llega es mucho, y el que no esta listo se iba
+         sin dejar rastro. La leyenda cuelga del boton al que corresponde. -->
     <div class="act">
       <div class="acol">
         <button class="btn" data-go="sesion">Pedir la sesión</button>
         <span class="hint">45 min · sin cargo</span>
       </div>
+      <button class="btn suave" data-go="probalo">Probalo ahora</button>
     </div>
   </div>
 </header>
@@ -847,9 +992,9 @@ input.bad,textarea.bad{border-color:#ff5b4d}
      de separador porque es nombre de marca y ya viene del logo del header. -->
 <a class="puerta" href="#soluciones" data-go="soluciones">
   <span class="puerta-in">
-    <span class="puerta-k"><b>AIMA</b> · Soluciones con IA</span>
+    <span class="puerta-k"><b>AIMA</b> · Soluciones</span>
     <span class="puerta-c">
-      <span class="puerta-t">Agentes, sistemas a medida y automatizaciones</span>
+      <span class="puerta-t">Sistemas, automatizaciones y agentes</span>
       <i class="flecha" aria-hidden="true"></i>
     </span>
   </span>
@@ -869,6 +1014,10 @@ input.bad,textarea.bad{border-color:#ff5b4d}
       <li>¿Cuántas quedaron sin respuesta?</li>
       <li>¿Qué pasó con la última venta que se te cayó: qué se le dijo y cuándo?</li>
     </ol>
+    <!-- Sin esta línea las preguntas dejan gusto a reproche, y el reproche cierra al
+         visitante. Absuelve sin sacar el filtro. -->
+    <p class="absuelve">Si respondiste que no a alguna, nadie en tu negocio hizo nada mal.
+      Es que ese dato no vive en ningún lado — <em>todavía.</em></p>
     <div class="ver rv">
       <p class="v1">Si no podés contestarlas, ese es el problema. <em>Y no es de tu equipo.</em></p>
       <p class="v2">La venta más larga que vimos tardó <b>30 días de seguimiento</b>. El cliente nunca dijo que no. Lo que al día dos parece perdido, al día treinta seguía vivo — mientras alguien lo estuviera mirando.</p>
@@ -889,16 +1038,99 @@ input.bad,textarea.bad{border-color:#ff5b4d}
     <div class="shead"><span>Hoy</span><span>Con el sistema</span></div>
     <div class="srow"><p class="a">Domingo 23:47: la consulta llega y nadie la ve.</p><p class="b">Entra al sistema con hora, origen y responsable asignado. El lunes nadie tiene que acordarse: ya está en la lista de alguien.<em class="si-lia">Si activás <b>LIA</b>, además contesta en el momento, indaga y agenda.</em></p></div>
     <div class="srow"><p class="a">“¿Qué pasó con el de la Hilux?” — nadie sabe.</p><p class="b">Cada consulta con responsable, último contacto y próximo paso, en tu celular.</p></div>
-    <div class="srow"><p class="a">El seguimiento depende de que alguien se acuerde.</p><p class="b">Si algo se demora, el sistema avisa: primero al vendedor, después a vos.</p></div>
+    <div class="srow"><p class="a">El seguimiento depende de que alguien se acuerde.</p><p class="b">Las consultas sin responder quedan a la vista en una lista aparte, no perdidas entre las demás.</p></div>
     <div class="srow"><p class="a">“¿La publicidad sirve?” — una sensación.</p><p class="b">Cada consulta con su origen y su costo. Números para decidir.</p></div>
     <div class="srow"><p class="a">El negocio depende de que estés encima.</p><p class="b">El proceso corre solo. Vos decidís con información.</p></div>
   </div>
+
+  <!-- Segundo movimiento de la MISMA sección: arriba se cuenta qué cambia, acá se ve.
+       Eran dos secciones contando lo mismo desde dos ángulos, cada una con su titular
+       y su bajada. Se unieron sin sacar contenido: lo que se fue es el andamiaje
+       repetido, no la información. -->
+  <div class="rv acto2" id="plataforma">
+    <h3 class="h-acto">Esto es lo que ves <em>cuando entrás.</em></h3>
+    <p class="lead">No es una promesa: es la pantalla. Un sistema de gestión de clientes
+      construido por nosotros, donde vive todo lo que entra a tu negocio.</p>
+  </div>
+
+  <div class="plata stg">
+    <div class="pieza">
+      <div class="tarj">
+        <div class="tarj-k">Tu mes</div>
+        <div class="stat"><i>Consultas</i><b>147</b><em>este mes</em></div>
+        <div class="stat ojo"><i>Sin tocar</i><b>9</b><em>para atender</em></div>
+        <div class="stat"><i>Visitas agendadas</i><b>38</b><em>confirmadas</em></div>
+      </div>
+      <p class="pie-t"><b>Cuántas entraron.</b><span>Y cuántas nadie tocó todavía.</span></p>
+    </div>
+
+    <div class="pieza">
+      <div class="tarj">
+        <div class="tarj-k">Cada consulta, con dueño</div>
+        <dl class="ficha">
+          <dt>Consulta</dt><dd>Camioneta 0km · llegó por Instagram</dd>
+          <dt>Responsable</dt><dd>Sofía</dd>
+          <dt>Próximo paso</dt><dd><span class="marca-f">Llamar · mar 21</span></dd>
+        </dl>
+      </div>
+      <p class="pie-t"><b>Nada queda en el celular de nadie.</b><span>Todo tiene un responsable y una fecha para volver a contactar.</span></p>
+    </div>
+
+    <div class="pieza">
+      <div class="tarj">
+        <div class="tarj-k">Actividad</div>
+        <ul class="linea">
+          <li class="sist"><span>22:15</span><p>Atendió la consulta</p></li>
+          <li class="sist"><span>22:18</span><p>Calificó: <b>caliente</b></p></li>
+          <li class="sist"><span>22:21</span><p>Agendó visita <b>mar 21</b></p></li>
+          <li><span>09:40</span><p><b>Sofía</b> abrió la consulta</p></li>
+          <li><span>11:02</span><p><b>Sofía</b> la movió a Presupuesto</p></li>
+        </ul>
+      </div>
+      <p class="pie-t"><b>Quién hizo qué, y cuándo.</b><span>Incluido lo que hizo el sistema solo.</span></p>
+    </div>
+
+    <div class="pieza">
+      <div class="tarj">
+        <div class="tarj-k">Por qué se pierden</div>
+        <ul class="barras">
+          <li><span>Precio</span><i>41%</i><u style="--v:41%"></u></li>
+          <li><span>Compró en otro lado</span><i>26%</i><u style="--v:26%"></u></li>
+          <li><span>No tenía la unidad</span><i>18%</i><u style="--v:18%"></u></li>
+          <li><span>Sin financiación</span><i>15%</i><u style="--v:15%"></u></li>
+        </ul>
+      </div>
+      <p class="pie-t"><b>Por qué se caen.</b><span>Escrito al cerrar cada una, no adivinado a fin de mes.</span></p>
+    </div>
+  </div>
+
+  <p class="cierre-plata rv">LIA es una parte de esto — la que contesta cuando no hay nadie.
+    <b>El sistema es todo lo demás:</b> dónde queda cada consulta, quién la sigue, y qué ves vos.</p>
 </section>
 
-<!-- 03 · EL SISTEMA -->
+<!-- 04 · LA DEMOSTRACIÓN — el visitante lo comprueba solo, no se lo explicamos.
+     La promesa es verificable: el número atiende como Level Up, así que lo que se
+     ofrece es ver cómo atiende NUESTRO propio negocio, no simular el suyo. -->
+<section class="sec alt" id="probalo">
+  <div class="rv">
+    <div class="tag"><span class="bar"></span><i>04</i> La demostración</div>
+    <h2>No nos creas. <em>Probalo.</em></h2>
+    <p class="lead">Escribinos ahora. A la hora que sea — un domingo a la noche, un feriado,
+      las tres de la mañana.</p>
+    <p class="lead">Te va a contestar el mismo sistema que construimos para nuestros clientes,
+      andando en nuestro propio negocio: te responde al instante, te hace las preguntas
+      correctas y, si querés, te agenda la sesión ahí mismo.</p>
+    <p class="lead"><b>Así se siente del otro lado.</b> Con tu información y tu forma de hablar,
+      haría lo mismo en el tuyo.</p>
+    <a class="g-cta" href="https://wa.me/5493482583784?text=Hola%2C%20vengo%20de%20la%20web%20y%20quiero%20probar%20el%20sistema."
+       target="_blank" rel="noopener">Probalo ahora →</a>
+  </div>
+</section>
+
+<!-- 05 · EL SISTEMA -->
 <section class="sec" id="sistema">
   <div class="rv">
-    <div class="tag"><span class="bar"></span><i>04</i> El sistema</div>
+    <div class="tag"><span class="bar"></span><i>05</i> El sistema</div>
     <h2 class="h-sistema">Un sistema. <em>Se entrega entero.</em></h2>
     <p class="lead">Todo lo que sigue viene adentro. Se instala una vez y queda funcionando.</p>
   </div>
@@ -908,7 +1140,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
        perdió — se juntó lo que era la misma idea contada dos veces. -->
   <div class="mods">
     <div class="mod rv"><span class="n">01</span><h3>El orden — el núcleo</h3>
-      <p>Toda consulta cae en un solo lugar con <b>asignación automática a un responsable</b>. Si nadie respondió en el tiempo acordado, el sistema avisa al vendedor y después a vos. Lo ves en el tablero del celular, con reporte mensual y una revisión trimestral del negocio.
+      <p>Toda consulta cae en un solo lugar con <b>asignación automática a un responsable</b>. Las consultas sin responder quedan a la vista en una lista aparte, no perdidas entre las demás. Lo ves en el tablero del celular, con reporte mensual y una revisión trimestral del negocio.
         <span class="meta">Origen · responsable · tiempo de respuesta · próximo paso</span></p></div>
 
     <div class="mod rv"><span class="n">02</span><h3>LIA<span class="opt">OPCIONAL</span></h3>
@@ -942,7 +1174,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   </div>
 </section>
 
-<!-- 06 · AIMA · SOLUCIONES — la góndola del costado, NO la vidriera (regla 90/10).
+<!-- 06 · PARA QUIÉN — la góndola del costado, NO la vidriera (regla 90/10).
      El agente lleva su alcance escrito: es la frontera que protege la oferta del
      Sistema. Acá no se nombra a LIA. CTA a WhatsApp, nunca a la sesión. -->
 <!-- PARA QUIÉN va pegada al Sistema, ANTES de Soluciones: el filtro es del
@@ -951,7 +1183,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
      acá ve la puerta de AIMA justo después. -->
 <section class="sec luz" id="quien">
   <div class="rv">
-    <div class="tag"><span class="bar"></span><i>05</i> Para quién es el Sistema</div>
+    <div class="tag"><span class="bar"></span><i>06</i> Para quién es el Sistema</div>
     <h2>No trabajamos <em>con todos.</em></h2>
     <p class="lead">Preferimos decirlo ahora y no descubrirlo a los dos meses.</p>
   </div>
@@ -990,32 +1222,77 @@ input.bad,textarea.bad{border-color:#ff5b4d}
        El bloque .policy sigue en el CSS por si vuelve. -->
 </section>
 
-<!-- 04 · AIMA — fusionada con "También, por separado": una sola sección.
+<!-- 07 · AIMA — fusionada con "También, por separado": una sola sección.
      Es la que tiene que traer trabajo mientras se consiguen clientes del Sistema,
      así que lleva el mayor carácter de la página. Sin precios, sin abonos.
      El agente NO se llama LIA acá: LIA viene adentro del Sistema. -->
 <section class="sec" id="soluciones">
   <div class="rv">
-    <div class="tag"><span class="bar"></span><i>06</i> AIMA · Soluciones con IA</div>
-    <h2 class="h-aima">Agentes, sistemas y automatizaciones. <em>Y tu equipo sabiendo usarlos.</em></h2>
-    <p class="lead lead-aima">Todo se construye a medida de tu operación: no adaptamos un producto enlatado, lo armamos para cómo trabajás vos. Nos contás qué necesitás resolver, lo analizamos, y te decimos si se puede hacer, cómo, y cuánto lleva. <b>Si no es viable o no te conviene, también te lo decimos</b> — y si va, lo construimos y te lo dejamos andando.</p>
+    <div class="tag"><span class="bar"></span><i>07</i> AIMA · Soluciones</div>
+    <!-- Abre por el PROBLEMA, nunca por "IA" ni por "agentes". El contraste con el
+         software genérico ES el argumento: no lleva explicación encima. -->
+    <h2 class="h-aima">Construimos el sistema que tu negocio necesita. <em>No el que te tocó.</em></h2>
+    <p class="lead lead-aima">Tres cosas, y se cotizan por separado: <b>sistemas a medida</b> para lo que hoy
+      hacés a mano, <b>agentes</b> que atienden cuando no hay nadie, y <b>automatizaciones</b> para todo lo que se repite.</p>
   </div>
 
-  <div class="grupo rv">
-    <span class="grupo-tit">Construimos</span>
-    <div class="items stg">
-      <div class="item">
-        <h3>Agentes de IA</h3>
-        <p>Atienden, responden y agendan. Las 24 horas.</p>
+  <div class="bloque-a rv">
+    <span class="grupo-tit">Sistemas a medida</span>
+    <blockquote class="dialogo">
+      <p>— ¿Por qué lo cargan así?</p>
+      <p><em>— Porque el sistema no me deja.</em></p>
+    </blockquote>
+    <p class="lead lead-aima">Esa frase se dice todos los días, en miles de negocios: gente trabajando
+      como el programa quiere, no como el negocio necesita. Usando el 10% de lo que pagan
+      — sin la única función que de verdad les falta.</p>
+    <p class="lead lead-aima"><b>Un sistema a medida es lo contrario.</b> Cada pantalla existe porque tu
+      negocio la necesita, y no hay nada más. Se arma por piezas, en semanas: la primera sola
+      ya trabaja, las siguientes se suman cuando hacen falta. Clínica, taller, campo, comercio
+      — da igual.</p>
+  </div>
+
+  <div class="bloque-a rv">
+    <span class="grupo-tit">Agentes</span>
+    <p class="lead lead-aima">Atienden, responden y agendan cuando no hay nadie. Para cualquier rubro
+      donde una consulta sin respuesta es una oportunidad perdida.</p>
+  </div>
+
+  <div class="bloque-a rv">
+    <span class="grupo-tit">Automatizaciones</span>
+    <p class="lead lead-aima">Las tareas repetitivas que se hacen solas.</p>
+
+    <!-- LA CUENTA · el resultado es SIEMPRE tiempo, nunca plata: "13 días al año" es
+         aritmética, "ahorrás $X" sería una promesa. Sin formulario ni registro. -->
+    <div class="calc" id="calc">
+      <h3>¿Cuánto te cuesta lo que hacés a mano?</h3>
+
+      <p class="calc-k">Elegí tu tarea</p>
+      <!-- data-t va en infinitivo: se inserta en "en mi negocio [tarea] nos lleva unas
+           X horas", y en primera persona el mensaje quedaba roto. -->
+      <div class="chips" id="chips" role="group" aria-label="Elegí tu tarea">
+        <button type="button" class="chip" data-t="cargar el mismo dato en dos lugares">Cargar el mismo dato en dos lugares</button>
+        <button type="button" class="chip" data-t="armar el reporte de los lunes">Armar el reporte de los lunes</button>
+        <button type="button" class="chip" data-t="pasar los pedidos de WhatsApp a la planilla">Pasar pedidos de WhatsApp a la planilla</button>
+        <button type="button" class="chip" data-t="contestar siempre las mismas preguntas">Contestar siempre las mismas preguntas</button>
+        <button type="button" class="chip" data-t="buscar en qué quedó una conversación">Buscar en qué quedó una conversación</button>
+        <button type="button" class="chip" data-t="algo que hacemos a mano">Otra</button>
       </div>
-      <div class="item">
-        <h3>Soluciones a medida para tu empresa</h3>
-        <p>Lo que tu empresa necesita y no viene hecho — <b>o lo que hoy resolvés a mano.</b></p>
+
+      <p class="calc-k">¿Cuántas horas por semana se lleva?</p>
+      <div class="chips horas" id="horas" role="group" aria-label="Horas por semana">
+        <button type="button" class="chip" data-h="1">1</button>
+        <button type="button" class="chip" data-h="2">2</button>
+        <button type="button" class="chip" data-h="3">3</button>
+        <button type="button" class="chip" data-h="5">5</button>
+        <button type="button" class="chip" data-h="8">8+</button>
       </div>
-      <div class="item">
-        <h3>Automatización de procesos</h3>
-        <p>Reportes, conciliaciones, cargar lo mismo en dos lados — <b>y todo lo que se repite.</b></p>
+
+      <div class="calc-r" id="calcR" hidden aria-live="polite">
+        <b id="calcH">0 horas al año.</b>
+        <span id="calcD">—</span>
       </div>
+
+      <a class="g-cta" id="calcCta" href="https://wa.me/5493482583784" target="_blank" rel="noopener" hidden>Contanos y te decimos si se puede resolver →</a>
     </div>
   </div>
 
@@ -1033,15 +1310,18 @@ input.bad,textarea.bad{border-color:#ff5b4d}
     </div>
   </div>
 
-  <div class="rv"><a class="g-cta" href="https://wa.me/5493482583784?text=Hola%2C%20vengo%20de%20la%20web.%20Necesito%20resolver%3A%20" target="_blank" rel="noopener">Contanos qué necesitás →</a></div>
+  <!-- La línea de viabilidad es regla fija de la marca y se cayó con la reestructura:
+       vuelve acá, que es donde sostiene al CTA sin meterse en los tres bloques. -->
+  <p class="lead lead-aima rv" style="margin-top:clamp(30px,3.6vw,46px)"><b>Si no es viable o no te conviene, también te lo decimos.</b></p>
+  <div class="rv"><a class="g-cta" href="https://wa.me/5493482583784?text=Hola%2C%20vengo%20de%20la%20web.%20Esto%20es%20lo%20que%20mi%20sistema%20no%20me%20deja%20hacer%3A%20" target="_blank" rel="noopener">Contanos qué es lo que tu sistema (o tu Excel) no te deja hacer →</a></div>
 </section>
 
 <!-- PARA QUIÉN — en claro, cierra la zona clara -->
 
-<!-- 07 · LA SESIÓN -->
+<!-- 08 · LA SESIÓN -->
 <section class="sec alt" id="sesion">
   <div class="rv">
-    <div class="tag"><span class="bar"></span><i>07</i> El primer paso</div>
+    <div class="tag"><span class="bar"></span><i>08</i> El primer paso</div>
     <h2>Una sesión de <em>45 minutos.</em></h2>
     <!-- CUPO: este número vive SOLO acá. Pendiente de recalcular con captación adentro
          (si baja a una por mes, se cambia esta línea y listo). -->
@@ -1094,6 +1374,20 @@ input.bad,textarea.bad{border-color:#ff5b4d}
         Mientras tanto, así pensamos: <a href="https://www.instagram.com/levelup.aima/" target="_blank" rel="noopener">Instagram</a>.</p>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- QUIÉNES SOMOS — va DESPUÉS del formulario a propósito: antes sacaría al
+     visitante de la página justo antes de la oferta. Sin número de sección: no es
+     parte del argumento, es la salida. El botón promete contenido ("Vernos
+     trabajar"), no pide un follow, y abre en pestaña nueva para no perderlo. -->
+<section class="sec quienes" id="nosotros">
+  <div class="rv">
+    <h2 class="h-q">¿Quiénes somos?</h2>
+    <p class="lead">Eso no se cuenta en una página. <b>Se ve trabajando.</b></p>
+    <p class="lead">En nuestro Instagram mostramos lo que construimos cada semana:
+      los sistemas, las decisiones — y lo que sale mal, también.</p>
+    <a class="g-cta" href="https://instagram.com/levelup.aima" target="_blank" rel="noopener">Vernos trabajar →</a>
   </div>
 </section>
 
@@ -1173,6 +1467,46 @@ input.bad,textarea.bad{border-color:#ff5b4d}
       es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('gira'); io.unobserve(e.target); } });
     },{rootMargin:'80px'});
     io.observe(franja);
+  })();
+
+  /* LA CUENTA. Aritmetica pura y a la vista: horas x 52 semanas, y esas horas
+     divididas en jornadas de 8. El resultado es SIEMPRE tiempo — una cifra de plata
+     seria una promesa economica y esta prohibida. Sin formulario ni registro. */
+  (function(){
+    var caja=document.getElementById('calc');
+    if(!caja) return;
+    var tarea=null, horas=null;
+    var res=document.getElementById('calcR'), cta=document.getElementById('calcCta');
+    var elH=document.getElementById('calcH'), elD=document.getElementById('calcD');
+
+    function elegir(grupo,btn){
+      [].forEach.call(grupo.querySelectorAll('.chip'),function(c){
+        c.setAttribute('aria-pressed', c===btn ? 'true' : 'false');
+      });
+    }
+    function pintar(){
+      if(tarea===null||horas===null) return;
+      var alAnio=horas*52, dias=Math.round(alAnio/8);
+      elH.textContent=alAnio+' horas al año.';
+      elD.textContent=letras(dias)+' laborales haciendo lo mismo.';
+      res.hidden=false;
+      cta.href='https://wa.me/5493482583784?text='+encodeURIComponent(
+        'Hola, en mi negocio '+tarea+' nos lleva unas '+horas+' horas por semana. ¿Se puede resolver?');
+      cta.hidden=false;
+    }
+    var N=['cero','un','dos','tres','cuatro','cinco','seis','siete','ocho','nueve','diez',
+           'once','doce','trece','catorce','quince','dieciséis','diecisiete','dieciocho',
+           'diecinueve','veinte'];
+    function letras(d){
+      var t=(d<=20? N[d] : String(d));
+      return (t.charAt(0).toUpperCase()+t.slice(1))+(d===1?' día':' días');
+    }
+
+    var gT=document.getElementById('chips'), gH=document.getElementById('horas');
+    gT.addEventListener('click',function(e){var b=e.target.closest('.chip'); if(!b)return;
+      tarea=b.getAttribute('data-t'); elegir(gT,b); pintar();});
+    gH.addEventListener('click',function(e){var b=e.target.closest('.chip'); if(!b)return;
+      horas=parseInt(b.getAttribute('data-h'),10); elegir(gH,b); pintar();});
   })();
 
   document.querySelectorAll('[data-go]').forEach(function(b){
