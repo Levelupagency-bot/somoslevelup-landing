@@ -434,6 +434,11 @@ html:not(.js-rv) .stg>*{opacity:1;transform:none}
   border-top:1px solid var(--line)}
 .calc-r b{display:block;font-size:clamp(30px,4.6vw,54px);font-weight:900;
   letter-spacing:-.04em;line-height:1.02;color:var(--hot)}
+/* mientras es ejemplo va apagado: el naranja se enciende recién con SU número */
+.calc-eg{display:block;margin-bottom:8px;font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;font-weight:800;color:var(--faint)}
+.calc-r.ejemplo b{color:var(--dim)}
+.calc-r:not(.ejemplo) .calc-eg{display:none}
 .calc-r span{display:block;margin-top:7px;font-size:clamp(15px,1.2vw,18px);color:var(--mid)}
 .calc .g-cta{margin-top:clamp(20px,2.2vw,28px)}
 
@@ -1081,7 +1086,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
         <div class="tarj-k">Actividad</div>
         <ul class="linea">
           <li class="sist"><span>22:15</span><p>Atendió la consulta</p></li>
-          <li class="sist"><span>22:18</span><p>Calificó: <b>caliente</b></p></li>
+          <li class="sist"><span>22:18</span><p>Calificó: <b>listo para visita</b></p></li>
           <li class="sist"><span>22:21</span><p>Agendó visita <b>mar 21</b></p></li>
           <li><span>09:40</span><p><b>Sofía</b> abrió la consulta</p></li>
           <li><span>11:02</span><p><b>Sofía</b> la movió a Presupuesto</p></li>
@@ -1287,9 +1292,10 @@ input.bad,textarea.bad{border-color:#ff5b4d}
         <button type="button" class="chip" data-h="8">8+</button>
       </div>
 
-      <div class="calc-r" id="calcR" hidden aria-live="polite">
-        <b id="calcH">0 horas al año.</b>
-        <span id="calcD">—</span>
+      <div class="calc-r ejemplo" id="calcR" aria-live="polite">
+        <span class="calc-eg" id="calcEg">Ejemplo · 2 horas por semana</span>
+        <b id="calcH">104 horas al año.</b>
+        <span id="calcD">Trece días laborales haciendo lo mismo.</span>
       </div>
 
       <a class="g-cta" id="calcCta" href="https://wa.me/5493482583784" target="_blank" rel="noopener" hidden>Contanos y te decimos si se puede resolver →</a>
@@ -1487,9 +1493,9 @@ input.bad,textarea.bad{border-color:#ff5b4d}
     function pintar(){
       if(tarea===null||horas===null) return;
       var alAnio=horas*52, dias=Math.round(alAnio/8);
+      res.classList.remove('ejemplo');
       elH.textContent=alAnio+' horas al año.';
       elD.textContent=letras(dias)+' laborales haciendo lo mismo.';
-      res.hidden=false;
       cta.href='https://wa.me/5493482583784?text='+encodeURIComponent(
         'Hola, en mi negocio '+tarea+' nos lleva unas '+horas+' horas por semana. ¿Se puede resolver?');
       cta.hidden=false;
