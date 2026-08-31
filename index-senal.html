@@ -2,7 +2,11 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- minimum-scale=1 bloquea SOLO el alejar. Acercar sigue habilitado —esa es la
+     direccion que importa para accesibilidad, y no se toca maximum-scale ni
+     user-scalable—. Alejar por debajo del 100% no le sirve a nadie y deja el header
+     fijo estirado al viewport visual mientras el contenido queda en el de maquetado. -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1">
 <title>Level Up™ | AIMA — Ordenamos tu proceso comercial</title>
 <meta name="description" content="Ingeniería comercial para negocios de alto ticket. Cada consulta entra con responsable, tiempo de respuesta y próximo paso.">
 <meta property="og:title" content="Level Up™ | AIMA — Ordenamos tu proceso comercial">
