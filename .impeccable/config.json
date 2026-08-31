@@ -1,0 +1,22 @@
+{
+  "detector": {
+    "ignoreRules": [
+      "aphoristic-cadence"
+    ],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "space grotesk",
+        "createdAt": "2026-08-10T15:49:12.101Z",
+        "reason": "Nico la eligio entre 7 especimenes a ciegas (probe-tipos.html); es la tipografia de seunghyuk.com, referencia que aprobo"
+      },
+      {
+        "rule": "bounce-easing",
+        "value": "cubic-bezier(.2, .85, .3, 1.18)",
+        "createdAt": "2026-08-12T14:28:13.462Z",
+        "reason": "Nico pidió explícitamente el snap con sobrepaso corto: es la firma visual de la sección AIMA (piezas que encastran)"
+      }
+    ]
+  }
+}
