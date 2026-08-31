@@ -1,0 +1,207 @@
+{
+  "name": "Web — Formulario somoslevelup.com",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "e48fc3b6-eb6c-42d5-be1e-9e56a1fe25a1",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "https://somoslevelup.com, https://www.somoslevelup.com, http://localhost:8899"
+        }
+      },
+      "id": "a1000000-0000-4000-8000-000000000001",
+      "name": "Formulario de la web",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -260,
+        300
+      ],
+      "webhookId": "e48fc3b6-eb6c-42d5-be1e-9e56a1fe25a1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normaliza lo que manda el formulario y arma el lead que va al sistema.\n// Si algo viene mal, tira error y el visitante ve \"Reintentar\" en vez de un falso OK.\n\nconst b = $json.body ?? $json;\n\nconst limpio = (v) => String(v ?? '').trim();\nconst digitos = (v) => String(v ?? '').replace(/\\D/g, '');\n\n// Argentina: 54 9 + característica (sin el 0) + número (sin el 15)\nfunction aE164(bruto) {\n  let d = digitos(bruto);\n  if (!d) return '';\n  if (d.startsWith('00')) d = d.slice(2);\n  if (d.startsWith('54')) {\n    d = d.slice(2);\n    if (d.startsWith('9')) d = d.slice(1);\n  }\n  if (d.startsWith('0')) d = d.slice(1);\n  // el 15 va pegado después de la característica (2 a 4 dígitos)\n  for (const largo of [2, 3, 4]) {\n    if (d.length > largo + 2 && d.slice(largo, largo + 2) === '15') {\n      const resto = d.slice(largo + 2);\n      if (resto.length >= 6) { d = d.slice(0, largo) + resto; break; }\n    }\n  }\n  return d.length >= 8 ? '549' + d : '';\n}\n\nconst lead = {\n  nombre:        limpio(b.nombre),\n  email:         limpio(b.email).toLowerCase(),\n  whatsapp:      limpio(b.whatsapp),\n  whatsapp_e164: aE164(b.whatsapp),\n  rubro:         limpio(b.rubro),\n  problema:      limpio(b.problema),\n\n  origen:        limpio(b.origen) || 'web',\n  pagina:        limpio(b.pagina),\n  utm_source:    limpio(b.utm_source),\n  utm_medium:    limpio(b.utm_medium),\n  utm_campaign:  limpio(b.utm_campaign),\n  utm_content:   limpio(b.utm_content),\n  fbclid:        limpio(b.fbclid),\n  referrer:      limpio(b.referrer),\n\n  enviado_en:    limpio(b.enviado_en) || new Date().toISOString(),\n  recibido_en:   new Date().toISOString()\n};\n\nif (!lead.nombre) throw new Error('Falta el nombre');\nif (!/^\\S+@\\S+\\.\\S+$/.test(lead.email)) throw new Error('Email inválido: ' + lead.email);\n\nreturn [{ json: lead }];"
+      },
+      "id": "a1000000-0000-4000-8000-000000000002",
+      "name": "Normalizar el lead",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -40,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://PEGAR-ACA-LA-URL-DEL-CRM/api/lead-intake",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer PEGAR-ACA-EL-TOKEN"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "timeout": 15000,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "a1000000-0000-4000-8000-000000000003",
+      "name": "Guardar en el sistema",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        180,
+        300
+      ],
+      "notes": "La ruta es /api/lead-intake. NO existe /api/leads: cualquier cosa apuntada ahi se come un 404. El flujo VIVO en n8n es la fuente de verdad — este archivo es solo respaldo de la forma, no importarlo encima.",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// El CRM contesta: 201 lead nuevo · 200 ya existia (created:false) · 400 payload\n// invalido · 401 token · 500 error del servidor.\n// Los 400 y 401 NO se reintentan: van a fallar siempre igual. Por eso el reintento\n// ciego de n8n esta apagado; el reintento real lo hace el visitante con el boton.\n\nconst r      = $json;\nconst codigo = Number(r.statusCode);\nconst cuerpo = r.body ?? {};\n\nif (codigo >= 200 && codigo < 300) {\n  return [{ json: { ok: true, codigo, creado: cuerpo.created !== false, lead: cuerpo } }];\n}\n\nif (codigo === 400 || codigo === 401) {\n  // Esto es un problema NUESTRO, no del visitante. Reintentar no arregla nada.\n  // Enganchar acá un aviso (WhatsApp o mail) si querés enterarte en el momento.\n  throw new Error('REVISAR EL FLUJO — ' + codigo + ': ' + JSON.stringify(cuerpo));\n}\n\nthrow new Error('CRM caido — ' + codigo + ': ' + JSON.stringify(cuerpo));\n"
+      },
+      "id": "a1000000-0000-4000-8000-000000000006",
+      "name": "Revisar respuesta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        300
+      ],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: true }) }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "={{ ['https://somoslevelup.com','https://www.somoslevelup.com'].includes($('Formulario de la web').first().json.headers.origin) ? $('Formulario de la web').first().json.headers.origin : 'https://somoslevelup.com' }}"
+              },
+              {
+                "name": "Vary",
+                "value": "Origin"
+              }
+            ]
+          }
+        }
+      },
+      "id": "a1000000-0000-4000-8000-000000000004",
+      "name": "Responder OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        660,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: false, error: 'No se pudo guardar el lead' }) }}",
+        "options": {
+          "responseCode": 500,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "={{ ['https://somoslevelup.com','https://www.somoslevelup.com'].includes($('Formulario de la web').first().json.headers.origin) ? $('Formulario de la web').first().json.headers.origin : 'https://somoslevelup.com' }}"
+              },
+              {
+                "name": "Vary",
+                "value": "Origin"
+              }
+            ]
+          }
+        }
+      },
+      "id": "a1000000-0000-4000-8000-000000000005",
+      "name": "Responder ERROR",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        660,
+        420
+      ]
+    }
+  ],
+  "connections": {
+    "Formulario de la web": {
+      "main": [
+        [
+          {
+            "node": "Normalizar el lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalizar el lead": {
+      "main": [
+        [
+          {
+            "node": "Guardar en el sistema",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar en el sistema": {
+      "main": [
+        [
+          {
+            "node": "Revisar respuesta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Revisar respuesta": {
+      "main": [
+        [
+          {
+            "node": "Responder OK",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Responder ERROR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}
