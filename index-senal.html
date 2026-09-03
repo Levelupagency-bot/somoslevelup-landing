@@ -1513,10 +1513,19 @@ input.bad,textarea.bad{border-color:#ff5b4d}
     }
 
     var gT=document.getElementById('chips'), gH=document.getElementById('horas');
+    var rotulo=null;
     gT.addEventListener('click',function(e){var b=e.target.closest('.chip'); if(!b)return;
-      tarea=b.getAttribute('data-t'); elegir(gT,b); pintar();});
+      tarea=b.getAttribute('data-t'); rotulo=b.textContent.trim(); elegir(gT,b); pintar();});
     gH.addEventListener('click',function(e){var b=e.target.closest('.chip'); if(!b)return;
       horas=parseInt(b.getAttribute('data-h'),10); elegir(gH,b); pintar();});
+
+    /* El resumen queda colgado del bloque para que el formulario —que vive en otra
+       seccion y en otro alcance— pueda leerlo sin variables globales. */
+    var guardar=function(){
+      if(tarea===null||horas===null) return;
+      caja.dataset.resumen='Calculadora: '+rotulo+' · '+horas+' h por semana · '+(horas*52)+' h al año';
+    };
+    gT.addEventListener('click',guardar); gH.addEventListener('click',guardar);
   })();
 
   document.querySelectorAll('[data-go]').forEach(function(b){
@@ -1867,6 +1876,8 @@ input.bad,textarea.bad{border-color:#ff5b4d}
       var el=document.getElementById(id), err=document.getElementById('e-'+id);
       var mal=!el.value.trim();
       if(id==='email') mal=!/^\S+@\S+\.\S+$/.test(el.value.trim());
+      /* Quien ya contesto en la calculadora no tiene que volver a escribirlo acá */
+      if(id==='problema' && mal && (document.getElementById('calc')||{dataset:{}}).dataset.resumen) mal=false;
       el.classList.toggle('bad',mal);
       if(err)err.classList.toggle('on',mal);
       el.setAttribute('aria-invalid',mal?'true':'false');
@@ -1876,6 +1887,16 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 
     btn.disabled=true; btn.textContent='Enviando…';
     var datos={}; CAMPOS.forEach(function(id){datos[id]=document.getElementById(id).value.trim();});
+
+    /* La tarea y las horas de la calculadora son las dos respuestas mas valiosas de la
+       pagina y hasta hoy morian en el navegador. Viajan ANTEPUESTAS al campo problema,
+       que ya existe: agregar un campo obligaria a tocar el flujo de n8n del otro lado,
+       y enriquecer un texto no rompe nada aguas abajo. Si nadie uso la calculadora no
+       se agrega ninguna linea — un "sin completar" solo ensucia el dato. */
+    var resumenCalc=(document.getElementById('calc')||{dataset:{}}).dataset.resumen;
+    if(resumenCalc) datos.problema = datos.problema
+      ? resumenCalc+'\n\n'+datos.problema
+      : resumenCalc;
 
     /* Metadatos de origen para el CRM. Son campos ADITIVOS: el webhook de n8n sigue
        recibiendo los cinco de siempre, así que el flujo actual no se entera. Sin esto
