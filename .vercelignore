@@ -1,1 +1,17 @@
+# Este sitio no tiene paso de build: Vercel publica la raíz del repo tal cual,
+# así que TODO archivo commiteado es público salvo que esté acá. Lo que se
+# excluye se verifica en vivo con un 404 — la documentación de Vercel no aclara
+# si este archivo vale para los deploys desde Git.
+
+# el generador de las páginas legales, con rutas y notas internas
 legales/
+
+# el brief interno de producto
+PRODUCT.md
+
+# el archivo de trabajo: es una copia de index.html, y publicado era la home
+# duplicada en otra dirección. Se sigue editando acá y copiando a index.html.
+index-senal.html
+
+# respaldo del flujo de n8n del formulario
+n8n-formulario-web.json
