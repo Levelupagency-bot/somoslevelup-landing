@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1">
+<meta name="robots" content="noindex">
+<title>Términos del servicio del agente | Level Up™ | AIMA</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!--
+  commit: cccdbd0
+  texto:  sha256 bd5888fa09bf289c
+  estado: archivo · fecha 2026-09-21 · rige 2026-09-21
+-->
+<style>
+:root{
+  --void:#121110;--panel:#191817;
+  --ink:#f2f0ec;--ink-2:rgba(242,240,236,.88);--mid:rgba(242,240,236,.66);
+  --line:rgba(242,240,236,.14);--hot:#f26a1f;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--void);color:var(--ink-2);
+  font:16.5px/1.68 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+
+.borrador{background:var(--hot);color:var(--void);font-weight:700;font-size:14px;
+  text-align:center;padding:10px 16px;line-height:1.4}
+
+.barra{border-bottom:1px solid var(--line)}
+.barra a{display:block;max-width:72ch;margin:0 auto;padding:18px 22px;
+  color:var(--ink);text-decoration:none;font-weight:800;letter-spacing:-.01em}
+.barra a span{color:var(--hot)}
+
+main{max-width:72ch;margin:0 auto;padding:48px 22px 88px}
+.version{font-size:14px;color:var(--mid);margin:0 0 30px;padding-bottom:18px;
+  border-bottom:1px solid var(--line)}
+h1{color:var(--ink);font-size:clamp(23px,4.2vw,32px);line-height:1.2;
+  letter-spacing:-.01em;margin:0 0 10px;text-wrap:balance}
+h1+p{color:var(--mid);font-size:14.5px;margin:0 0 36px}
+h2{color:var(--ink);font-size:20px;line-height:1.3;margin:52px 0 14px}
+h3{color:var(--ink);font-size:17px;margin:32px 0 10px}
+h1,h2,h3{scroll-margin-top:24px}
+p{margin:0 0 16px}
+ul,ol{margin:0 0 18px;padding-left:22px}
+li{margin:0 0 8px}
+strong{color:var(--ink);font-weight:650}
+em{color:var(--mid)}
+a{color:var(--hot);text-underline-offset:3px}
+
+/* las tablas legales son anchas: en el celular se desplazan dentro de su
+   caja, nunca la página entera */
+.tabla{overflow-x:auto;margin:0 0 22px;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.5}
+th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+th{background:var(--panel);color:var(--ink);font-weight:650}
+
+/* en el celular, cada fila es una ficha con el nombre de cada columna arriba
+   de su dato. El encabezado se oculta a la vista pero no a los lectores de
+   pantalla. */
+@media (max-width:560px){
+  .tabla{overflow:visible}
+  .tabla table,.tabla tbody,.tabla tr,.tabla td{display:block;width:100%}
+  .tabla thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .tabla tr{border:1px solid var(--line);border-radius:8px;margin:0 0 12px;padding:6px 0;
+    background:var(--panel)}
+  .tabla td{border:0;padding:7px 14px}
+  .tabla td::before{content:attr(data-label);display:block;font-size:12.5px;
+    color:var(--mid);margin-bottom:1px}
+}
+
+/* las notas van en un panel, sin borde de color al costado */
+blockquote{margin:22px 0;padding:14px 18px;background:var(--panel);border-radius:8px}
+blockquote p:last-child{margin:0}
+hr{border:0;border-top:1px solid var(--line);margin:44px 0}
+
+footer{border-top:1px solid var(--line)}
+footer div{max-width:72ch;margin:0 auto;padding:24px 22px 40px;font-size:14px;color:var(--mid)}
+footer a{color:var(--ink-2)}
+footer nav{display:flex;flex-wrap:wrap;gap:8px 22px;margin-bottom:10px}
+</style>
+</head>
+<body>
+
+<header class="barra"><a href="/">Level Up<span>™</span> | AIMA</a></header>
+<main>
+<p class="version">Versión publicada el 21 de septiembre de 2026. <a href="/aima/agente/terminos/">Ver la versión vigente</a></p>
+<h1 id="terminos-del-servicio-aima-agente-de-atencion">TÉRMINOS DEL SERVICIO — AIMA · Agente de atención</h1>
+<p><strong>Última actualización:</strong> 21 de septiembre de 2026</p>
+<h2 id="1-quienes-somos">1. Quiénes somos</h2>
+<p>Estos términos rigen la relación con <strong>Nicolás Óscar Escobar</strong>, con domicilio en <strong>Reconquista,
+Provincia de Santa Fe, República Argentina</strong>, que opera comercialmente bajo la marca <strong>Level Up™ |
+AIMA</strong> (en adelante, <strong>"Level Up"</strong>), titular del agente de atención <strong>AIMA</strong>.</p>
+<p>Se aplican a <strong>el negocio que contrata el agente</strong> (en adelante, <strong>"el Negocio"</strong>) y, en lo pertinente,
+a <strong>la persona que escribe al canal atendido por el agente</strong>.</p>
+<h2 id="2-aceptacion">2. Aceptación</h2>
+<p>El Negocio contrata el servicio <strong>firmando las Condiciones particulares</strong>, que fijan el precio y la
+forma de pago de la implementación y remiten a estos términos y a la <strong>Política de Privacidad de
+AIMA</strong>, que acepta con esa firma. Quien escribe a un canal atendido por AIMA los acepta, en lo que le
+corresponde, al interactuar con él.</p>
+<h2 id="3-que-es-el-agente-y-que-hace">3. Qué es el agente y qué hace</h2>
+<p>AIMA es un <strong>agente de atención automatizada sobre WhatsApp</strong>. Conectado al número del Negocio:</p>
+<ul>
+<li><strong>Responde</strong> las consultas que recibe, con el criterio, el tono y la información que el Negocio
+  provee</li>
+<li><strong>Indaga</strong> para entender qué necesita la persona</li>
+<li><strong>Registra</strong> los datos que la persona proporciona durante la conversación</li>
+<li><strong>Deriva a una persona del equipo</strong> del Negocio cuando la conversación lo requiere</li>
+</ul>
+<p><strong>El agente atiende. Cerrar la venta corresponde al equipo del Negocio.</strong> El agente no toma decisiones
+comerciales —precio final, descuentos, condiciones— y las deriva.</p>
+<p>Las respuestas son generadas automáticamente y <strong>pueden contener errores</strong>. Lo que el agente informe
+<strong>no constituye oferta vinculante</strong> hasta que el Negocio lo confirme.</p>
+<p><strong>Si el agente no puede generar una respuesta</strong>, el sistema no deja la consulta sin contestar: emite un
+mensaje informando que una persona responderá, registra la consulta y avisa al Negocio.</p>
+<h2 id="4-puesta-en-marcha">4. Puesta en marcha</h2>
+<p><strong>4.1</strong> El cargo de implementación comprende: la carga del criterio y la información del Negocio, la
+conexión de su número de WhatsApp, <strong>el registro de la dirección de recepción ante Meta</strong>, la prueba
+de funcionamiento de punta a punta y el alta en el sistema.</p>
+<p><strong>4.2 Cuándo se considera entregado.</strong> <strong>La puesta en marcha no se da por terminada cuando el agente
+queda creado, sino cuando se verifica que un mensaje enviado al número del Negocio recibe respuesta
+del agente.</strong> Esa verificación se realiza con el Negocio y se asienta en el <strong>Anexo I</strong>.</p>
+<blockquote>
+<p>Esta condición existe porque el paso de registro ante Meta, si se omite, <strong>deja al agente
+aparentemente funcionando y sin recibir un solo mensaje</strong>. Level Up verifica ese registro
+consultándolo a Meta, no dándolo por hecho.</p>
+</blockquote>
+<p><strong>4.3 Obligaciones del Negocio.</strong> Para que la puesta en marcha pueda completarse, el Negocio debe: ser
+titular del número que conecta o contar con autorización para operarlo; <strong>entregar la información con
+la que el agente va a responder</strong>; designar a quién se derivan las conversaciones; y tener en orden su
+documentación cuando sea condición de la verificación ante Meta.</p>
+<p><strong>4.4</strong> El plazo de puesta en marcha <strong>se suspende</strong> mientras esté pendiente información, acceso o
+decisión a cargo del Negocio, y <strong>mientras esté pendiente una aprobación de Meta</strong>, cuyo plazo Level Up
+no controla.</p>
+<h2 id="5-que-no-incluye">5. Qué no incluye</h2>
+<ul>
+<li><strong>No se garantizan ventas, cantidad de consultas ni facturación</strong></li>
+<li><strong>No agenda turnos ni citas.</strong> Si el Negocio lo requiere, se cotiza como desarrollo aparte</li>
+<li><strong>No transcribe notas de voz ni interpreta imágenes.</strong> Registra que fueron enviadas</li>
+<li>No opera sobre Instagram, Facebook ni otros canales: <strong>únicamente WhatsApp</strong></li>
+<li>No incluye filtro de postulantes, atención de consultas internas del equipo ni lectura de
+  comprobantes. <strong>Son desarrollos distintos y se cotizan aparte</strong></li>
+<li>No incluye la administración de las redes sociales del Negocio ni la generación de la información
+  con la que el agente responde: <strong>esa información la provee el Negocio</strong></li>
+</ul>
+<h2 id="6-precio-y-forma-de-pago">6. Precio y forma de pago</h2>
+<p><strong>El precio de la implementación y del abono mensual es el que fijan las Condiciones particulares</strong>
+que el Negocio firma al contratar. Las cláusulas de esta sección se refieren a esos importes.</p>
+<p><strong>6.1</strong> La implementación se abona <strong>en uno o dos pagos</strong>, según las Condiciones particulares: el
+primero <strong>antes de comenzar</strong>; el saldo, si lo hay, <strong>se factura al firmarse el Anexo I y vence a los
+10 días corridos</strong> de esa fecha. Lo abonado <strong>no es reembolsable una vez iniciado el trabajo de
+alta</strong>.</p>
+<p><strong>6.2</strong> El abono se factura por mes adelantado. <strong>El primer abono se devenga el mes siguiente a la
+entrega</strong> conforme la cláusula 4.2, <strong>en el día de facturación que se fija en el Anexo I</strong> —un día
+entre el 1 y el 5; si no se fija, el día 1—, que rige para todos los períodos siguientes. Lo que
+resta del mes en curso al momento de la entrega no se cobra. <strong>Cada abono vence a los 10 días
+corridos de su fecha de facturación.</strong></p>
+<p><strong>6.3 Moneda.</strong> Los importes <strong>de las Condiciones particulares y de estos términos</strong> <strong>son obligaciones en dólares estadounidenses</strong>. Las
+partes <strong>acuerdan que se cancelan exclusivamente en pesos argentinos</strong>, por el monto que resulte de
+convertirlos al <strong>tipo de cambio vendedor billete del Banco de la Nación Argentina</strong> del <strong>día hábil
+anterior a la fecha de facturación</strong>, y que <strong>el pago así calculado tiene pleno efecto cancelatorio</strong>.
+Si la cotización tomada de otra fuente difiere de la publicada por el Banco de la Nación Argentina,
+<strong>prevalece la del Banco</strong>. <strong>Las facturas se emiten en pesos</strong> e informan el tipo de cambio aplicado y
+su fecha. Los importes <strong>no incluyen los impuestos</strong> que pudieran corresponder.</p>
+<p><strong>6.4 Actualización.</strong> Los valores <strong>de las Condiciones particulares</strong> pueden actualizarse <strong>una vez cada seis meses</strong>, con un <strong>tope del
+10%</strong> y <strong>aviso previo de 30 días</strong>. Si el Negocio no acepta el nuevo valor, puede dar de baja el
+servicio dentro de ese plazo <strong>sin cargo</strong> y sin que el nuevo valor le sea aplicado. <strong>La variación del
+importe en pesos que resulta de la conversión de la cláusula 6.3 no constituye una actualización de
+valores</strong>: el tope, el aviso y el derecho a baja se refieren al <strong>precio en dólares</strong>.</p>
+<h2 id="7-que-cubre-el-abono">7. Qué cubre el abono</h2>
+<ul>
+<li><strong>Que el agente siga funcionando</strong>: monitoreo y corrección de fallas</li>
+<li><strong>Las mejoras del motor</strong>, que se aplican a todos los agentes</li>
+<li><strong>El procesamiento de las conversaciones</strong>, sin facturación por separado</li>
+<li><strong>Hasta dos ajustes por mes</strong> de la información o el criterio del agente —precios nuevos, respuestas
+  nuevas, cambios de tono o de reglas de derivación—, solicitados por escrito</li>
+</ul>
+<p><strong>No cubre:</strong> canales adicionales, funciones que el agente no realiza hoy, integraciones con otros
+sistemas, ni ningún cambio que requiera desarrollo. <strong>Se cotizan aparte.</strong></p>
+<blockquote>
+<p><strong>La regla que separa una cosa de la otra:</strong> si el cambio se resuelve <strong>configurando</strong> lo que el
+sistema ya hace, está incluido. Si requiere <strong>construir</strong> algo que no hace, es un desarrollo nuevo.</p>
+</blockquote>
+<h2 id="8-el-costo-de-la-mensajeria-lo-factura-meta">8. El costo de la mensajería lo factura Meta</h2>
+<p>El costo de las plantillas de mensaje de WhatsApp y de cualquier inversión publicitaria <strong>lo factura
+Meta directamente al Negocio</strong>, con el medio de pago cargado en su propia cuenta. <strong>Esos importes no
+pasan por Level Up</strong> ni están incluidos en el abono.</p>
+<h2 id="9-baja-del-servicio-y-datos">9. Baja del servicio y datos</h2>
+<p><strong>9.1 Sin permanencia mínima.</strong> El Negocio puede dar de baja el servicio en cualquier momento avisando
+por escrito con <strong>30 días</strong> de anticipación. Durante ese período el servicio sigue activo y se factura
+normalmente. <strong>No se cobra cargo por cancelar.</strong> La implementación abonada no se reintegra.</p>
+<p><strong>9.2 Falta de pago.</strong> Si un importe facturado —un abono o el saldo de la implementación— no se paga dentro de su plazo
+(cláusulas 6.1 y 6.2), se notifica al Negocio y se otorgan <strong>15 días corridos</strong>
+para regularizar. Vencido ese plazo el agente puede suspenderse.</p>
+<p><strong>9.3 Los datos al finalizar</strong> se rigen por la cláusula 12 del <strong>Acuerdo de Tratamiento de Datos
+Personales</strong>: copia remitida dentro de los 5 días corridos y destrucción completa a los 15 días
+corridos de esa remisión.</p>
+<h2 id="10-propiedad-y-datos">10. Propiedad y datos</h2>
+<p><strong>10.1</strong> El software, el motor del agente y la marca <strong>Level Up™ | AIMA</strong> son <strong>propiedad exclusiva de
+Level Up</strong>. Este contrato otorga un <strong>derecho de uso no exclusivo e intransferible</strong> mientras esté
+vigente y <strong>no transfiere la propiedad de nada</strong>.</p>
+<p><strong>10.2</strong> <strong>La información que el Negocio provee y las conversaciones que recibe son del Negocio.</strong>
+Level Up no adquiere derechos sobre ellas y <strong>no las utiliza para entrenar modelos</strong> ni para ningún fin
+ajeno a la prestación del servicio.</p>
+<p><strong>10.3</strong> El tratamiento de datos personales se rige por el <strong>Acuerdo de Tratamiento de Datos
+Personales</strong>, que el Negocio suscribe junto con estos términos.</p>
+<h2 id="11-disponibilidad-y-dependencia-de-terceros">11. Disponibilidad y dependencia de terceros</h2>
+<p>El servicio se presta <strong>sin un compromiso de disponibilidad garantizada</strong>. AIMA depende de plataformas
+de terceros —Meta Platforms, entre otras— para enviar y recibir mensajes. <strong>Los cambios de política,
+las suspensiones de cuenta y las indisponibilidades de esas plataformas están fuera del control de
+Level Up.</strong></p>
+<p><strong>AIMA no está afiliada a Meta Platforms, Inc.</strong> WhatsApp es una marca de Meta Platforms, Inc.</p>
+<h2 id="12-limitacion-de-responsabilidad">12. Limitación de responsabilidad</h2>
+<p>El servicio se ofrece "tal cual". Level Up no responde por daños indirectos, lucro cesante ni pérdida
+de oportunidades comerciales. <strong>En ningún caso su responsabilidad total excede los importes
+efectivamente abonados por el Negocio en los 12 meses anteriores</strong> al hecho que la origine.</p>
+<p><strong>No se garantizan resultados comerciales.</strong> Lo que el servicio provee es la atención automatizada de
+las consultas y su derivación.</p>
+<p>Nada de esta cláusula limita los derechos que la normativa reconozca de manera imperativa.</p>
+<h2 id="13-ley-aplicable-y-jurisdiccion">13. Ley aplicable y jurisdicción</h2>
+<p>Estos términos se rigen por las <strong>leyes de la República Argentina</strong>, con jurisdicción de los
+<strong>tribunales ordinarios de la ciudad de Reconquista, Provincia de Santa Fe</strong>, sin perjuicio de las
+normas imperativas de protección al consumidor.</p>
+<h2 id="14-cambios">14. Cambios</h2>
+<p>Estos términos pueden actualizarse. Cada versión se publica en su propia dirección, con su fecha, y
+la página indica cuál es la vigente.</p>
+<p><strong>Cambios sustanciales.</strong> Son los que modifican el alcance del servicio, las obligaciones o la
+responsabilidad de alguna de las partes, o el tratamiento de los datos personales. Se notifican por
+correo a la dirección que el Negocio indicó al contratar, con <strong>30 días de anticipación</strong>: <strong>para los
+Negocios ya contratados rigen a los 30 días de esa notificación</strong>, y hasta entonces sigue rigiendo la
+versión que les regía. Si el Negocio no acepta el cambio, puede darse de baja dentro de ese plazo sin cargo
+y sin que el nuevo texto se le aplique. Los Negocios que contraten después de la publicación quedan
+sujetos a la versión publicada desde su firma.</p>
+<p><strong>Los demás cambios</strong> rigen desde su publicación. <strong>Los valores se rigen por la cláusula 6.4.</strong></p>
+<h2 id="15-contacto">15. Contacto</h2>
+<p><strong>info@somoslevelup.com</strong></p>
+<p><em>Level Up | AIMA — Nicolás Óscar Escobar · Reconquista, Provincia de Santa Fe, República Argentina</em></p>
+</main>
+<footer><div>
+  <nav>
+    <a href="/aima/agente/terminos/">Términos del servicio del agente</a>
+    <a href="/aima/privacidad/">Política de privacidad de AIMA</a>
+  </nav>
+  Level Up™ | AIMA · Reconquista, Santa Fe
+</div></footer>
+</body>
+</html>
