@@ -52,6 +52,23 @@ CRM = Path.home() / "productos_digitales" / "CRM"
 REFERENCIA = "origin/main"
 PLANTILLA = RAIZ / "legales" / "plantilla.html"
 
+# LO QUE SALE A INTERNET. Todo lo que está en una página publicada se lee en su
+# código fuente, comentarios incluidos. Por eso el comentario de cada página
+# lleva solo lo que el script necesita para rearmarla —commit, huella del texto,
+# fechas— y nada de rutas locales, nombres de repos ni de herramientas
+# ("cumplir no es exponer", legales 21/9). Por la misma razón las explicaciones
+# viven acá y no en la plantilla: por ejemplo, que estas páginas usan la
+# tipografía del sistema y no piden nada a terceros porque el sitio principal
+# carga Archivo desde Google Fonts, que le manda la IP de cada visitante a
+# Google. Y esta carpeta entera está en .vercelignore: el sitio sirve cualquier
+# archivo del repo, y este script tiene rutas y notas internas.
+
+# Las versiones archivadas no se indexan: siguen públicas en su dirección —para
+# que un documento firmado se pueda verificar—, pero el buscador muestra solo la
+# vigente. La vigente sí se indexa: una política de privacidad tiene que poder
+# encontrarse.
+ROBOTS_ARCHIVO = '<meta name="robots" content="noindex">'
+
 DOCUMENTOS = {
     "terminos": {
         "fuente": "legales/terminos-agente-aima.md",
@@ -287,9 +304,6 @@ def armar(nombre, publicar, fecha, version="", estado=None, rige=None):
     estado = estado or ("publicado" if publicar else "borrador")
     procedencia = (
         "<!--\n"
-        "  PÁGINA GENERADA — no se edita a mano. Se corrige la fuente y se vuelve a correr\n"
-        "  python3 legales/construir.py\n"
-        f"  fuente: ~/productos_digitales/CRM/{doc['fuente']} ({REFERENCIA})\n"
         f"  commit: {commit}\n"
         f"  texto:  sha256 {huella}\n"
         f"  estado: {estado}" + (f" · fecha {fecha}" if fecha else "")
@@ -299,7 +313,8 @@ def armar(nombre, publicar, fecha, version="", estado=None, rige=None):
     pagina = (PLANTILLA.read_text()
               .replace("{{titulo}}", doc["titulo"])
               .replace("{{procedencia}}", procedencia)
-              .replace("{{robots}}", "" if publicar else '<meta name="robots" content="noindex,nofollow">')
+              .replace("{{robots}}", ROBOTS_ARCHIVO if estado == "archivo" else
+                       "" if publicar else '<meta name="robots" content="noindex,nofollow">')
               .replace("{{aviso_borrador}}", "" if publicar else
                        '<div class="borrador">BORRADOR — no publicado. '
                        'Pendiente de revisión del abogado.</div>')
@@ -388,7 +403,8 @@ def vigente_desde_archivo(nombre):
                       html, count=1, flags=re.DOTALL)
     if n != 1:
         raise Rechazo(f"{nombre}: la versión del {fecha} no tiene la línea de versión")
-    return html.replace("  estado: archivo", "  estado: publicado", 1)
+    return (html.replace("  estado: archivo", "  estado: publicado", 1)
+                .replace(ROBOTS_ARCHIVO, "", 1))
 
 
 def main():
