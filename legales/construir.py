@@ -4,7 +4,11 @@ Arma las páginas legales de AIMA a partir de la fuente, que vive en el repo del
 
     python3 legales/construir.py                 # borrador: con cartel y noindex
     python3 legales/construir.py --verificar     # ¿las páginas están al día con la fuente?
-    python3 legales/construir.py --publicar --fecha 2026-10-05
+    python3 legales/construir.py --publicar --fecha 2026-10-05   # la fecha de HOY
+
+Cada publicación deja la versión vigente en /aima/agente/terminos/ y una copia
+que no cambia nunca más en /aima/agente/terminos/2026-10-05/ — ver
+publicar_documento().
 
 LA FUENTE NO ESTÁ ACÁ. Está en ~/productos_digitales/CRM/legales/, y se lee siempre
 de origin/main —nunca del disco—: lo que manda es lo mergeado, no lo que alguien
@@ -34,6 +38,7 @@ import re
 import subprocess
 import sys
 import unicodedata
+from datetime import date
 from pathlib import Path
 
 try:
@@ -158,10 +163,52 @@ def ancla(valor, separador):
     return re.sub(r"[^a-z0-9]+", separador, valor.lower()).strip(separador)
 
 
-def armar(nombre, publicar, fecha):
+def base_url(nombre):
+    return "/" + DOCUMENTOS[nombre]["destino"].removesuffix("index.html")
+
+
+def fecha_corta(iso):
+    anio, mes, dia = (int(x) for x in iso.split("-"))
+    return f"{dia}/{mes}/{anio}"
+
+
+def versiones_publicadas(nombre):
+    carpeta = RAIZ / DOCUMENTOS[nombre]["destino"]
+    carpeta = carpeta.parent
+    if not carpeta.exists():
+        return []
+    return sorted((d.name for d in carpeta.iterdir()
+                   if re.match(r"^\d{4}-\d{2}-\d{2}$", d.name) and (d / "index.html").exists()),
+                  reverse=True)
+
+
+def linea_vigente(nombre, fecha):
+    url = base_url(nombre)
+    anteriores = [v for v in versiones_publicadas(nombre) if v != fecha]
+    texto = (f'Versión vigente, publicada el {fecha_larga(fecha)}. '
+             f'<a href="{url}{fecha}/">Dirección permanente de esta versión</a>')
+    if anteriores:
+        texto += " · Versiones anteriores: " + ", ".join(
+            f'<a href="{url}{v}/">{fecha_corta(v)}</a>' for v in anteriores)
+    return f'<p class="version">{texto}</p>'
+
+
+def linea_archivo(nombre, fecha):
+    return (f'<p class="version">Versión publicada el {fecha_larga(fecha)}. '
+            f'<a href="{base_url(nombre)}">Ver la versión vigente</a></p>')
+
+
+def armar(nombre, publicar, fecha, version="", estado=None):
     doc = DOCUMENTOS[nombre]
     texto, commit = leer_fuente(doc["fuente"])
     publico = extraer(texto, nombre)
+    # La fecha de publicación se pone en UN solo lugar: acá, con --fecha. Si la
+    # fuente ya trajera una, la dirección de la versión y la fecha impresa
+    # podrían no coincidir — que es justo lo que las Condiciones particulares
+    # no pueden tolerar, porque citan "la versión del dd/mm/aaaa".
+    if publicar and "[FECHA]" not in publico:
+        raise Rechazo(f"{nombre}: la fuente ya no dice «[FECHA]». La fecha de publicación la "
+                      "pone este script, una sola vez — la fuente tiene que dejar el hueco.")
     if fecha:
         publico = publico.replace("[FECHA]", fecha_larga(fecha))
     avisos = revisar(publico, nombre, publicar)
@@ -174,7 +221,7 @@ def armar(nombre, publicar, fecha):
     cuerpo = cuerpo.replace("<table>", '<div class="tabla"><table>').replace("</table>", "</table></div>")
 
     huella = hashlib.sha256(publico.encode()).hexdigest()[:16]
-    estado = "publicado" if publicar else "borrador"
+    estado = estado or ("publicado" if publicar else "borrador")
     procedencia = (
         "<!--\n"
         "  PÁGINA GENERADA — no se edita a mano. Se corrige la fuente y se vuelve a correr\n"
@@ -192,6 +239,7 @@ def armar(nombre, publicar, fecha):
               .replace("{{aviso_borrador}}", "" if publicar else
                        '<div class="borrador">BORRADOR — no publicado. '
                        'Pendiente de revisión del abogado.</div>')
+              .replace("{{version}}", version)
               .replace("{{contenido}}", cuerpo))
     return doc["destino"], pagina, commit, avisos
 
@@ -200,10 +248,47 @@ def sin_commit(html):
     return re.sub(r"^  commit: .*$", "", html, flags=re.MULTILINE)
 
 
+def publicar_documento(nombre, fecha):
+    """
+    UNA DIRECCIÓN POR VERSIÓN (pedido de legales, 21/9). Las Condiciones
+    particulares atan cada firma a "la versión del dd/mm/aaaa" de los términos.
+    Si la página cambia después, el documento firmado apuntaría a un texto que
+    ya no está en línea. Por eso cada publicación escribe dos archivos:
+
+      /aima/agente/terminos/              la vigente, que cambia con cada versión
+      /aima/agente/terminos/2026-10-05/   esa versión, que NO cambia nunca más
+
+    Una versión ya publicada no se pisa: si la carpeta con esa fecha existe y el
+    contenido difiere, el script se niega. Publicar un cambio es publicar con
+    otra fecha.
+    """
+    destino = RAIZ / DOCUMENTOS[nombre]["destino"]
+    archivo = destino.parent / fecha / "index.html"
+    publicadas = versiones_publicadas(nombre)
+    if publicadas and fecha < publicadas[0]:
+        raise Rechazo(f"{nombre}: ya hay una versión más nueva ({publicadas[0]}); "
+                      f"no se publica una del {fecha} por encima")
+
+    _, pagina_archivo, commit, avisos = armar(nombre, True, fecha,
+                                              linea_archivo(nombre, fecha), estado="archivo")
+    if archivo.exists() and archivo.read_text() != pagina_archivo:
+        raise Rechazo(f"{nombre}: la versión del {fecha} ya está publicada y su texto es otro. "
+                      "Una versión publicada no se pisa: publicá el cambio con otra fecha.")
+    _, pagina_vigente, _, _ = armar(nombre, True, fecha, linea_vigente(nombre, fecha))
+
+    archivo.parent.mkdir(parents=True, exist_ok=True)
+    archivo.write_text(pagina_archivo)
+    destino.write_text(pagina_vigente)
+    return commit, avisos, archivo
+
+
 def main():
     p = argparse.ArgumentParser(description="Páginas legales de AIMA desde la fuente del CRM.")
-    p.add_argument("--publicar", action="store_true", help="sin cartel de borrador ni noindex")
-    p.add_argument("--fecha", help="AAAA-MM-DD para «Última actualización»")
+    p.add_argument("--publicar", action="store_true",
+                   help="sin cartel ni noindex; escribe la vigente y la versión con fecha")
+    p.add_argument("--fecha", help="AAAA-MM-DD, la fecha REAL de publicación")
+    p.add_argument("--otra-fecha", action="store_true",
+                   help="permite una --fecha distinta de hoy (solo si sabés por qué)")
     p.add_argument("--verificar", action="store_true", help="compara lo escrito con la fuente, sin escribir")
     p.add_argument("--solo", choices=DOCUMENTOS, help="un solo documento")
     p.add_argument("--sin-fetch", action="store_true", help="no traer origin/main antes de leer")
@@ -211,6 +296,16 @@ def main():
 
     if a.fecha and not re.match(r"^\d{4}-\d{2}-\d{2}$", a.fecha):
         sys.exit("--fecha va como AAAA-MM-DD")
+    if a.publicar:
+        if not a.fecha:
+            sys.exit("--publicar necesita --fecha AAAA-MM-DD")
+        # "Última actualización" tiene que ser la fecha real de publicación, no la
+        # del armado (legales, 21/9). Se publica el mismo día que se arma.
+        hoy = date.today().isoformat()
+        if a.fecha != hoy and not a.otra_fecha:
+            sys.exit(f"--fecha {a.fecha} no es hoy ({hoy}). La fecha tiene que ser la del día en que "
+                     "esto llega a producción: armá y publicá el mismo día. "
+                     "Si hay una razón para otra fecha, agregá --otra-fecha.")
     if not a.sin_fetch:
         try:
             git("fetch", "-q", "origin", "main")
@@ -220,37 +315,44 @@ def main():
     fallo = False
     for nombre in ([a.solo] if a.solo else DOCUMENTOS):
         destino = RAIZ / DOCUMENTOS[nombre]["destino"]
-        publicar, fecha = a.publicar, a.fecha
-        if a.verificar:
-            if not destino.exists():
-                print(f"✗ {nombre}: {destino.relative_to(RAIZ)} no existe")
-                fallo = True
-                continue
-            actual = destino.read_text()
-            publicar = "estado: publicado" in actual
-            m = re.search(r"fecha (\d{4}-\d{2}-\d{2})", actual)
-            fecha = m.group(1) if m else None
         try:
-            ruta, pagina, commit, avisos = armar(nombre, publicar, fecha)
+            if a.publicar:
+                commit, avisos, archivo = publicar_documento(nombre, a.fecha)
+                for aviso in avisos:
+                    print(f"  ⚠ {nombre} — marca, avisar a legales: {aviso}", file=sys.stderr)
+                print(f"✓ {nombre}: {DOCUMENTOS[nombre]['destino']} y "
+                      f"{archivo.relative_to(RAIZ)}  (publicable, fuente {commit})")
+                continue
+
+            if a.verificar:
+                if not destino.exists():
+                    print(f"✗ {nombre}: {destino.relative_to(RAIZ)} no existe")
+                    fallo = True
+                    continue
+                actual = destino.read_text()
+                m = re.search(r"fecha (\d{4}-\d{2}-\d{2})", actual)
+                if "estado: publicado" in actual and m:
+                    _, pagina, commit, _ = armar(nombre, True, m.group(1),
+                                                 linea_vigente(nombre, m.group(1)))
+                else:
+                    _, pagina, commit, _ = armar(nombre, False, None)
+                if sin_commit(actual) == sin_commit(pagina):
+                    print(f"✓ {nombre}: al día con {REFERENCIA} ({commit})")
+                else:
+                    print(f"✗ {nombre}: NO coincide con {REFERENCIA} ({commit}) — volver a construir")
+                    fallo = True
+                continue
+
+            ruta, pagina, commit, avisos = armar(nombre, False, None)
         except Rechazo as e:
             print(f"✗ {e}", file=sys.stderr)
             fallo = True
             continue
         for aviso in avisos:
             print(f"  ⚠ {nombre} — marca, avisar a legales: {aviso}", file=sys.stderr)
-
-        if a.verificar:
-            if sin_commit(actual) == sin_commit(pagina):
-                print(f"✓ {nombre}: al día con {REFERENCIA} ({commit})")
-            else:
-                print(f"✗ {nombre}: NO coincide con {REFERENCIA} ({commit}) — volver a construir")
-                fallo = True
-            continue
-
         destino.parent.mkdir(parents=True, exist_ok=True)
         destino.write_text(pagina)
-        estado = "publicable" if publicar else "borrador"
-        print(f"✓ {nombre}: {ruta}  ({estado}, fuente {commit})")
+        print(f"✓ {nombre}: {ruta}  (borrador, fuente {commit})")
 
     sys.exit(1 if fallo else 0)
 
