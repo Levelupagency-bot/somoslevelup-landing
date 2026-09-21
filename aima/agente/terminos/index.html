@@ -12,8 +12,8 @@
   PÁGINA GENERADA — no se edita a mano. Se corrige la fuente y se vuelve a correr
   python3 legales/construir.py
   fuente: ~/productos_digitales/CRM/legales/terminos-agente-aima.md (origin/main)
-  commit: 761cd94
-  texto:  sha256 c243ef93a1cf3548
+  commit: cccdbd0
+  texto:  sha256 f1296ce98c24af66
   estado: borrador
 -->
 <!--
@@ -63,6 +63,20 @@ a{color:var(--hot);text-underline-offset:3px}
 table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.5}
 th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
 th{background:var(--panel);color:var(--ink);font-weight:650}
+
+/* en el celular, cada fila es una ficha con el nombre de cada columna arriba
+   de su dato. El encabezado se oculta a la vista pero no a los lectores de
+   pantalla. */
+@media (max-width:560px){
+  .tabla{overflow:visible}
+  .tabla table,.tabla tbody,.tabla tr,.tabla td{display:block;width:100%}
+  .tabla thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .tabla tr{border:1px solid var(--line);border-radius:8px;margin:0 0 12px;padding:6px 0;
+    background:var(--panel)}
+  .tabla td{border:0;padding:7px 14px}
+  .tabla td::before{content:attr(data-label);display:block;font-size:12.5px;
+    color:var(--mid);margin-bottom:1px}
+}
 
 /* las notas van en un panel, sin borde de color al costado */
 blockquote{margin:22px 0;padding:14px 18px;background:var(--panel);border-radius:8px}
@@ -217,8 +231,16 @@ las consultas y su derivación.</p>
 <strong>tribunales ordinarios de la ciudad de Reconquista, Provincia de Santa Fe</strong>, sin perjuicio de las
 normas imperativas de protección al consumidor.</p>
 <h2 id="14-cambios">14. Cambios</h2>
-<p>Estos términos pueden actualizarse. La versión vigente está siempre publicada en esta página con su
-fecha. <strong>Los cambios sustanciales se notifican con 30 días de anticipación.</strong></p>
+<p>Estos términos pueden actualizarse. Cada versión se publica en su propia dirección, con su fecha, y
+la página indica cuál es la vigente.</p>
+<p><strong>Cambios sustanciales.</strong> Son los que modifican el alcance del servicio, las obligaciones o la
+responsabilidad de alguna de las partes, o el tratamiento de los datos personales. Se notifican por
+correo a la dirección que el Negocio indicó al contratar, con <strong>30 días de anticipación</strong>: <strong>para los
+Negocios ya contratados rigen a los 30 días de esa notificación</strong>, y hasta entonces sigue rigiendo la
+versión que les regía. Si el Negocio no acepta el cambio, puede darse de baja dentro de ese plazo sin cargo
+y sin que el nuevo texto se le aplique. Los Negocios que contraten después de la publicación quedan
+sujetos a la versión publicada desde su firma.</p>
+<p><strong>Los demás cambios</strong> rigen desde su publicación. <strong>Los valores se rigen por la cláusula 6.4.</strong></p>
 <h2 id="15-contacto">15. Contacto</h2>
 <p><strong>info@somoslevelup.com</strong></p>
 <p><em>Level Up | AIMA — Nicolás Óscar Escobar · Reconquista, Provincia de Santa Fe, República Argentina</em></p>

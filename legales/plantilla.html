@@ -57,6 +57,20 @@ table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.5}
 th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
 th{background:var(--panel);color:var(--ink);font-weight:650}
 
+/* en el celular, cada fila es una ficha con el nombre de cada columna arriba
+   de su dato. El encabezado se oculta a la vista pero no a los lectores de
+   pantalla. */
+@media (max-width:560px){
+  .tabla{overflow:visible}
+  .tabla table,.tabla tbody,.tabla tr,.tabla td{display:block;width:100%}
+  .tabla thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .tabla tr{border:1px solid var(--line);border-radius:8px;margin:0 0 12px;padding:6px 0;
+    background:var(--panel)}
+  .tabla td{border:0;padding:7px 14px}
+  .tabla td::before{content:attr(data-label);display:block;font-size:12.5px;
+    color:var(--mid);margin-bottom:1px}
+}
+
 /* las notas van en un panel, sin borde de color al costado */
 blockquote{margin:22px 0;padding:14px 18px;background:var(--panel);border-radius:8px}
 blockquote p:last-child{margin:0}

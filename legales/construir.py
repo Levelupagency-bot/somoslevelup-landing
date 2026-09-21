@@ -34,6 +34,7 @@ usa, no se cambian acá — se le avisa a legales.
 
 import argparse
 import hashlib
+import html
 import re
 import subprocess
 import sys
@@ -163,6 +164,27 @@ def ancla(valor, separador):
     return re.sub(r"[^a-z0-9]+", separador, valor.lower()).strip(separador)
 
 
+def apilable(m):
+    """
+    Cada celda lleva el título de su columna en data-label, para que en el
+    celular la tabla se lea apilada, una ficha por fila. Deslizando de costado
+    no alcanzaba: en la tabla de proveedores de la privacidad, la columna
+    "Dónde" —a qué país viajan los datos, lo legalmente importante— quedaba
+    cortada en "Determinac…", sin ninguna señal de que seguía.
+    """
+    tabla = m.group(0)
+    titulos = [html.escape(re.sub(r"<[^>]+>", "", t).strip(), quote=True)
+               for t in re.findall(r"<th[^>]*>(.*?)</th>", tabla, flags=re.DOTALL)]
+
+    def fila(mf):
+        celdas = iter(titulos)
+        return re.sub(r"<td([^>]*)>",
+                      lambda mc: f'<td{mc.group(1)} data-label="{next(celdas, "")}">', mf.group(0))
+
+    tabla = re.sub(r"<tr>.*?</tr>", fila, tabla, flags=re.DOTALL)
+    return f'<div class="tabla">{tabla}</div>'
+
+
 def base_url(nombre):
     return "/" + DOCUMENTOS[nombre]["destino"].removesuffix("index.html")
 
@@ -172,33 +194,74 @@ def fecha_corta(iso):
     return f"{dia}/{mes}/{anio}"
 
 
+HOY = date.today().isoformat()   # se puede fijar con --hoy, solo para probar
+
+
+def meta(pagina_html):
+    """Fecha de publicación y rige-desde anotadas en el comentario de una página."""
+    f = re.search(r"· fecha (\d{4}-\d{2}-\d{2})", pagina_html)
+    r = re.search(r"· rige (\d{4}-\d{2}-\d{2})", pagina_html)
+    fecha = f.group(1) if f else None
+    return fecha, (r.group(1) if r else fecha)
+
+
 def versiones_publicadas(nombre):
-    carpeta = RAIZ / DOCUMENTOS[nombre]["destino"]
-    carpeta = carpeta.parent
+    """Las versiones archivadas, de la más nueva a la más vieja: [(fecha, rige), …]."""
+    carpeta = (RAIZ / DOCUMENTOS[nombre]["destino"]).parent
     if not carpeta.exists():
         return []
-    return sorted((d.name for d in carpeta.iterdir()
-                   if re.match(r"^\d{4}-\d{2}-\d{2}$", d.name) and (d / "index.html").exists()),
-                  reverse=True)
+    fechas = sorted((d.name for d in carpeta.iterdir()
+                     if re.match(r"^\d{4}-\d{2}-\d{2}$", d.name) and (d / "index.html").exists()),
+                    reverse=True)
+    return [(f, meta((carpeta / f / "index.html").read_text())[1] or f) for f in fechas]
 
 
-def linea_vigente(nombre, fecha):
+def linea_vigente(nombre, fecha, rige):
+    """
+    La línea que dice qué versión rige HOY. Redacción de legales (21/9), textual.
+
+    Mientras hay un aviso abierto (la rige-desde de esta versión todavía no
+    llegó), para los Negocios ya contratados sigue rigiendo "la versión que les
+    regía": la última publicada cuya rige-desde ya pasó. No "la anterior a
+    esta" — con dos avisos seguidos esa sería una que nunca rigió.
+
+    Cuando el aviso vence, la línea correcta pasa a ser la de una sola fecha.
+    La página vigente es estática, así que eso requiere volver a armarla:
+    --verificar lo detecta y --refrescar lo hace.
+    """
     url = base_url(nombre)
-    anteriores = [v for v in versiones_publicadas(nombre) if v != fecha]
-    texto = (f'Versión vigente, publicada el {fecha_larga(fecha)}. '
-             f'<a href="{url}{fecha}/">Dirección permanente de esta versión</a>')
-    if anteriores:
+    otras = [(f, r) for f, r in versiones_publicadas(nombre) if f != fecha]
+    permanente = f'<a href="{url}{fecha}/">Dirección permanente de esta versión</a>'
+
+    if rige <= HOY:
+        texto = f"Versión vigente, publicada el {fecha_larga(fecha)}. {permanente}"
+    else:
+        regia = next(((f, r) for f, r in otras if r <= HOY), None)
+        if regia is None:
+            raise Rechazo(f"{nombre}: aviso abierto hasta el {rige}, pero no hay ninguna versión "
+                          "que ya esté rigiendo para nombrar")
+        texto = (f"Versión publicada el {fecha_larga(fecha)}. Para los Negocios que ya contrataron, "
+                 f"rige desde el {fecha_larga(rige)}; hasta entonces sigue rigiendo la "
+                 f'<a href="{url}{regia[0]}/">versión del {fecha_larga(regia[0])}</a>. '
+                 f"Los Negocios que contraten desde hoy quedan sujetos a esta. {permanente}")
+    if otras:
         texto += " · Versiones anteriores: " + ", ".join(
-            f'<a href="{url}{v}/">{fecha_corta(v)}</a>' for v in anteriores)
+            f'<a href="{url}{f}/">{fecha_corta(f)}</a>' for f, _ in otras)
     return f'<p class="version">{texto}</p>'
 
 
-def linea_archivo(nombre, fecha):
-    return (f'<p class="version">Versión publicada el {fecha_larga(fecha)}. '
+def linea_archivo(nombre, fecha, rige):
+    # Una versión archivada no cambia nunca más, así que no puede decir "hasta
+    # el X" (legales). Dice cuándo se publicó y, si difiere, desde cuándo rige
+    # para los ya contratados — para los nuevos rige desde la firma.
+    texto = f"Versión publicada el {fecha_larga(fecha)}"
+    if rige != fecha:
+        texto += f"; para los Negocios que ya contrataron, rige desde el {fecha_larga(rige)}"
+    return (f'<p class="version">{texto}. '
             f'<a href="{base_url(nombre)}">Ver la versión vigente</a></p>')
 
 
-def armar(nombre, publicar, fecha, version="", estado=None):
+def armar(nombre, publicar, fecha, version="", estado=None, rige=None):
     doc = DOCUMENTOS[nombre]
     texto, commit = leer_fuente(doc["fuente"])
     publico = extraer(texto, nombre)
@@ -218,7 +281,7 @@ def armar(nombre, publicar, fecha, version="", estado=None):
         extensions=["tables", "sane_lists", "toc"],
         extension_configs={"toc": {"slugify": ancla}},
     )
-    cuerpo = cuerpo.replace("<table>", '<div class="tabla"><table>').replace("</table>", "</table></div>")
+    cuerpo = re.sub(r"<table>.*?</table>", apilable, cuerpo, flags=re.DOTALL)
 
     huella = hashlib.sha256(publico.encode()).hexdigest()[:16]
     estado = estado or ("publicado" if publicar else "borrador")
@@ -229,7 +292,8 @@ def armar(nombre, publicar, fecha, version="", estado=None):
         f"  fuente: ~/productos_digitales/CRM/{doc['fuente']} ({REFERENCIA})\n"
         f"  commit: {commit}\n"
         f"  texto:  sha256 {huella}\n"
-        f"  estado: {estado}" + (f" · fecha {fecha}" if fecha else "") + "\n"
+        f"  estado: {estado}" + (f" · fecha {fecha}" if fecha else "")
+        + (f" · rige {rige}" if rige else "") + "\n"
         "-->"
     )
     pagina = (PLANTILLA.read_text()
@@ -248,7 +312,7 @@ def sin_commit(html):
     return re.sub(r"^  commit: .*$", "", html, flags=re.MULTILINE)
 
 
-def publicar_documento(nombre, fecha):
+def publicar_documento(nombre, fecha, rige, con_aviso_abierto=False):
     """
     UNA DIRECCIÓN POR VERSIÓN (pedido de legales, 21/9). Las Condiciones
     particulares atan cada firma a "la versión del dd/mm/aaaa" de los términos.
@@ -261,25 +325,70 @@ def publicar_documento(nombre, fecha):
     Una versión ya publicada no se pisa: si la carpeta con esa fecha existe y el
     contenido difiere, el script se niega. Publicar un cambio es publicar con
     otra fecha.
+
+    AVISOS ABIERTOS (cláusula 14 y reglas de legales, 21/9). Un cambio
+    sustancial rige para los ya contratados a los 30 días de notificado; eso se
+    publica con --rige-desde. Cada versión es el texto COMPLETO, no un parche:
+    una versión nueva arrastra lo que tenga en aviso la anterior. De ahí:
+      1. con un aviso abierto no se publica otra versión, salvo con
+         --con-aviso-abierto;
+      2. y aun así, la nueva no puede regir antes que la que sigue en aviso —
+         si no, le aplicaría el cambio en aviso a los ya contratados antes de
+         tiempo, que es incumplir la 14.
+    La regla de los 30 días NO está acá: el script no sabe qué cambio es
+    sustancial. rige-desde es libre, pero nunca anterior a la publicación.
     """
     destino = RAIZ / DOCUMENTOS[nombre]["destino"]
     archivo = destino.parent / fecha / "index.html"
-    publicadas = versiones_publicadas(nombre)
-    if publicadas and fecha < publicadas[0]:
-        raise Rechazo(f"{nombre}: ya hay una versión más nueva ({publicadas[0]}); "
-                      f"no se publica una del {fecha} por encima")
+    otras = [(f, r) for f, r in versiones_publicadas(nombre) if f != fecha]
 
-    _, pagina_archivo, commit, avisos = armar(nombre, True, fecha,
-                                              linea_archivo(nombre, fecha), estado="archivo")
+    if rige < fecha:
+        raise Rechazo(f"{nombre}: --rige-desde {rige} es anterior a la publicación ({fecha})")
+    if otras and fecha < otras[0][0]:
+        raise Rechazo(f"{nombre}: ya hay una versión más nueva ({otras[0][0]}); "
+                      f"no se publica una del {fecha} por encima")
+    if not otras and rige != fecha:
+        raise Rechazo(f"{nombre}: es la primera versión — no hay Negocios contratados a quienes "
+                      "darles aviso. Rige desde la publicación: sacá --rige-desde.")
+    abiertos = [(f, r) for f, r in otras if r > HOY]
+    if abiertos and not con_aviso_abierto:
+        f, r = abiertos[0]
+        raise Rechazo(f"{nombre}: la versión del {f} está en aviso hasta el {r}. Mientras tanto no "
+                      "se publica otra: la nueva arrastraría ese cambio. Si hace falta igual, "
+                      "--con-aviso-abierto.")
+    tope = max((r for _, r in otras), default=fecha)
+    if rige < tope:
+        raise Rechazo(f"{nombre}: --rige-desde {rige} es anterior al {tope}, cuando empieza a regir "
+                      "la versión en aviso. La nueva la contiene, así que no puede regir antes.")
+
+    _, pagina_archivo, commit, avisos = armar(nombre, True, fecha, linea_archivo(nombre, fecha, rige),
+                                              estado="archivo", rige=rige)
     if archivo.exists() and archivo.read_text() != pagina_archivo:
         raise Rechazo(f"{nombre}: la versión del {fecha} ya está publicada y su texto es otro. "
                       "Una versión publicada no se pisa: publicá el cambio con otra fecha.")
-    _, pagina_vigente, _, _ = armar(nombre, True, fecha, linea_vigente(nombre, fecha))
-
     archivo.parent.mkdir(parents=True, exist_ok=True)
     archivo.write_text(pagina_archivo)
-    destino.write_text(pagina_vigente)
+    destino.write_text(vigente_desde_archivo(nombre))
     return commit, avisos, archivo
+
+
+def vigente_desde_archivo(nombre):
+    """
+    La página vigente se deriva SIEMPRE de la última versión archivada, nunca de
+    la fuente. Si se rearmara desde la fuente —por ejemplo, para actualizar la
+    línea cuando vence un aviso— y legales hubiera cambiado el texto mientras
+    tanto, la vigente mostraría texto nuevo sin versión con fecha: exactamente
+    lo que las direcciones por versión existen para impedir. Así, el texto de la
+    vigente es por construcción el de una versión publicada; solo cambia la línea.
+    """
+    fecha, rige = versiones_publicadas(nombre)[0]
+    archivo = (RAIZ / DOCUMENTOS[nombre]["destino"]).parent / fecha / "index.html"
+    html = archivo.read_text()
+    html, n = re.subn(r'<p class="version">.*?</p>', lambda _: linea_vigente(nombre, fecha, rige),
+                      html, count=1, flags=re.DOTALL)
+    if n != 1:
+        raise Rechazo(f"{nombre}: la versión del {fecha} no tiene la línea de versión")
+    return html.replace("  estado: archivo", "  estado: publicado", 1)
 
 
 def main():
@@ -290,20 +399,30 @@ def main():
     p.add_argument("--otra-fecha", action="store_true",
                    help="permite una --fecha distinta de hoy (solo si sabés por qué)")
     p.add_argument("--verificar", action="store_true", help="compara lo escrito con la fuente, sin escribir")
+    p.add_argument("--rige-desde", help="AAAA-MM-DD: desde cuándo rige para los ya contratados "
+                   "(por defecto, la fecha de publicación)")
+    p.add_argument("--con-aviso-abierto", action="store_true",
+                   help="permite publicar mientras otra versión está en aviso")
+    p.add_argument("--refrescar", action="store_true",
+                   help="rearma la vigente desde su versión archivada (p. ej. cuando vence un aviso)")
     p.add_argument("--solo", choices=DOCUMENTOS, help="un solo documento")
     p.add_argument("--sin-fetch", action="store_true", help="no traer origin/main antes de leer")
+    p.add_argument("--hoy", help=argparse.SUPPRESS)   # solo para probar: fija el día de hoy
     a = p.parse_args()
 
-    if a.fecha and not re.match(r"^\d{4}-\d{2}-\d{2}$", a.fecha):
-        sys.exit("--fecha va como AAAA-MM-DD")
+    global HOY
+    if a.hoy:
+        HOY = a.hoy
+    for opcion in (a.fecha, a.rige_desde, a.hoy):
+        if opcion and not re.match(r"^\d{4}-\d{2}-\d{2}$", opcion):
+            sys.exit("las fechas van como AAAA-MM-DD")
     if a.publicar:
         if not a.fecha:
             sys.exit("--publicar necesita --fecha AAAA-MM-DD")
         # "Última actualización" tiene que ser la fecha real de publicación, no la
         # del armado (legales, 21/9). Se publica el mismo día que se arma.
-        hoy = date.today().isoformat()
-        if a.fecha != hoy and not a.otra_fecha:
-            sys.exit(f"--fecha {a.fecha} no es hoy ({hoy}). La fecha tiene que ser la del día en que "
+        if a.fecha != HOY and not a.otra_fecha:
+            sys.exit(f"--fecha {a.fecha} no es hoy ({HOY}). La fecha tiene que ser la del día en que "
                      "esto llega a producción: armá y publicá el mismo día. "
                      "Si hay una razón para otra fecha, agregá --otra-fecha.")
     if not a.sin_fetch:
@@ -317,11 +436,28 @@ def main():
         destino = RAIZ / DOCUMENTOS[nombre]["destino"]
         try:
             if a.publicar:
-                commit, avisos, archivo = publicar_documento(nombre, a.fecha)
+                rige = a.rige_desde or a.fecha
+                commit, avisos, archivo = publicar_documento(nombre, a.fecha, rige, a.con_aviso_abierto)
                 for aviso in avisos:
                     print(f"  ⚠ {nombre} — marca, avisar a legales: {aviso}", file=sys.stderr)
+                extra = f", rige desde {rige} para los ya contratados" if rige != a.fecha else ""
                 print(f"✓ {nombre}: {DOCUMENTOS[nombre]['destino']} y "
-                      f"{archivo.relative_to(RAIZ)}  (publicable, fuente {commit})")
+                      f"{archivo.relative_to(RAIZ)}  (publicable, fuente {commit}{extra})")
+                continue
+
+            publicadas = versiones_publicadas(nombre)
+
+            if a.refrescar:
+                if not publicadas:
+                    print(f"✗ {nombre}: no hay ninguna versión publicada que refrescar")
+                    fallo = True
+                    continue
+                nueva = vigente_desde_archivo(nombre)
+                if destino.exists() and destino.read_text() == nueva:
+                    print(f"✓ {nombre}: la vigente ya está al día")
+                else:
+                    destino.write_text(nueva)
+                    print(f"✓ {nombre}: vigente rearmada desde la versión del {publicadas[0][0]}")
                 continue
 
             if a.verificar:
@@ -330,17 +466,31 @@ def main():
                     fallo = True
                     continue
                 actual = destino.read_text()
-                m = re.search(r"fecha (\d{4}-\d{2}-\d{2})", actual)
-                if "estado: publicado" in actual and m:
-                    _, pagina, commit, _ = armar(nombre, True, m.group(1),
-                                                 linea_vigente(nombre, m.group(1)))
-                else:
+                if not publicadas:
                     _, pagina, commit, _ = armar(nombre, False, None)
-                if sin_commit(actual) == sin_commit(pagina):
-                    print(f"✓ {nombre}: al día con {REFERENCIA} ({commit})")
+                    if sin_commit(actual) == sin_commit(pagina):
+                        print(f"✓ {nombre}: borrador al día con {REFERENCIA} ({commit})")
+                    else:
+                        print(f"✗ {nombre}: el borrador NO coincide con {REFERENCIA} ({commit}) "
+                              "— volver a construir")
+                        fallo = True
+                    continue
+                # Publicado: son dos preguntas distintas y se contestan por separado.
+                fecha, rige = publicadas[0]
+                if actual == vigente_desde_archivo(nombre):
+                    print(f"✓ {nombre}: la vigente muestra la versión del {fecha} con la línea correcta para hoy")
                 else:
-                    print(f"✗ {nombre}: NO coincide con {REFERENCIA} ({commit}) — volver a construir")
+                    print(f"✗ {nombre}: la vigente no coincide con la versión del {fecha} "
+                          "(¿venció un aviso?) — correr --refrescar")
                     fallo = True
+                archivo = (destino.parent / fecha / "index.html").read_text()
+                _, desde_fuente, commit, _ = armar(nombre, True, fecha, linea_archivo(nombre, fecha, rige),
+                                                   estado="archivo", rige=rige)
+                if sin_commit(archivo) == sin_commit(desde_fuente):
+                    print(f"✓ {nombre}: la versión del {fecha} coincide con {REFERENCIA} ({commit})")
+                else:
+                    print(f"• {nombre}: la fuente cambió desde la versión del {fecha} ({REFERENCIA} {commit}) "
+                          "— hay texto nuevo para publicar como versión nueva")
                 continue
 
             ruta, pagina, commit, avisos = armar(nombre, False, None)
