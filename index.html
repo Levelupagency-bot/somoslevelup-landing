@@ -895,8 +895,12 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   /* De fijo a absoluto: pegado al viewport, el canvas se quedaba abajo mientras el
      contenido subía, y el hueco entre ambos crecía a medida que scrolleabas. Ahora
      vive dentro del hero y se va con él. */
-  .via{position:absolute;left:0;z-index:0;width:100%;height:40svh;top:auto;bottom:0;opacity:.6;
+  .via{position:absolute;left:0;z-index:0;width:100%;height:40svh;top:auto;bottom:0;
     -webkit-mask-image:linear-gradient(0deg,#000 45%,transparent);mask-image:linear-gradient(0deg,#000 45%,transparent)}
+  /* Se atenúan las LÍNEAS, no las leyendas. El .6 estaba en todo .via y arrastraba
+     las cinco palabras (Entra, Responde…) a ~4,1:1, debajo del 4,5:1 que pide el
+     texto chico, en todo celular y tablet. Medido el 06/10 con capturas a 390 y 768. */
+  .via canvas{opacity:.6}
   /* 26% y no 8%: abajo del todo quedaban justo debajo del botón de WhatsApp, que en
      el celular está fijo en el rincón. A 8% la leyenda "Cierre" quedaba tapada siempre. */
   /* Las cinco leyendas suman 359px en una pantalla de 390: no entran en un renglón.
@@ -984,6 +988,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 </div>
 
 <!-- 01 · HERO -->
+<main id="contenido">
 <header class="hero" id="inicio">
   <div class="via" aria-hidden="true">
     <canvas id="via"></canvas>
@@ -1367,14 +1372,14 @@ input.bad,textarea.bad{border-color:#ff5b4d}
       <div id="formView">
         <form id="form" data-form-id="sesion" novalidate>
           <div class="frow">
-            <div class="fg"><label for="nombre">Nombre</label><input type="text" id="nombre" autocomplete="name" placeholder="Tu nombre" required><span class="err" id="e-nombre">Falta el nombre</span></div>
-            <div class="fg"><label for="email">Email</label><input type="email" id="email" autocomplete="email" placeholder="vos@tunegocio.com" required><span class="err" id="e-email">Revisá el email</span></div>
+            <div class="fg"><label for="nombre">Nombre</label><input type="text" id="nombre" autocomplete="name" placeholder="Tu nombre" required><span class="err" role="alert" id="e-nombre">Falta el nombre</span></div>
+            <div class="fg"><label for="email">Email</label><input type="email" id="email" autocomplete="email" placeholder="vos@tunegocio.com" required><span class="err" role="alert" id="e-email">Revisá el email</span></div>
           </div>
           <div class="frow">
-            <div class="fg"><label for="whatsapp">WhatsApp</label><input type="tel" id="whatsapp" autocomplete="tel" placeholder="+54 9 ..." required><span class="err" id="e-whatsapp">Falta el WhatsApp</span></div>
-            <div class="fg"><label for="rubro">Rubro</label><input type="text" id="rubro" placeholder="Concesionaria, maquinaria…" required><span class="err" id="e-rubro">Falta el rubro</span></div>
+            <div class="fg"><label for="whatsapp">WhatsApp</label><input type="tel" id="whatsapp" autocomplete="tel" placeholder="+54 9 ..." required><span class="err" role="alert" id="e-whatsapp">Falta el WhatsApp</span></div>
+            <div class="fg"><label for="rubro">Rubro</label><input type="text" id="rubro" placeholder="Concesionaria, maquinaria…" required><span class="err" role="alert" id="e-rubro">Falta el rubro</span></div>
           </div>
-          <div class="fg"><label for="problema">¿Qué es lo que más te preocupa hoy?</label><textarea id="problema" placeholder="Contalo con tus palabras." required></textarea><span class="err" id="e-problema">Contanos aunque sea una línea</span></div>
+          <div class="fg"><label for="problema">¿Qué es lo que más te preocupa hoy?</label><textarea id="problema" placeholder="Contalo con tus palabras." required></textarea><span class="err" role="alert" id="e-problema">Contanos aunque sea una línea</span></div>
           <!-- Consentimiento para escribir primero por WhatsApp. Va DESMARCADA de fábrica:
                una casilla premarcada no es consentimiento y Meta la trata como inválida.
                No bloquea el envío. El enlace va fuera del <label> a propósito: adentro,
@@ -1412,6 +1417,8 @@ input.bad,textarea.bad{border-color:#ff5b4d}
     <a class="g-cta" href="https://instagram.com/levelup.aima" target="_blank" rel="noopener">Vernos trabajar →</a>
   </div>
 </section>
+
+</main>
 
 <footer class="foot">
   <div class="fg-top">
@@ -1883,6 +1890,9 @@ input.bad,textarea.bad{border-color:#ff5b4d}
       el.classList.toggle('bad',mal);
       if(err)err.classList.toggle('on',mal);
       el.setAttribute('aria-invalid',mal?'true':'false');
+      /* El mensaje se asocia SOLO mientras hay error: aria-describedby lee el texto
+         aunque esté oculto, y un campo bien completo diría igual "Falta el nombre". */
+      if(err){ if(mal) el.setAttribute('aria-describedby',err.id); else el.removeAttribute('aria-describedby'); }
       if(mal){ok=false;if(!primero)primero=el;}
     });
     if(!ok){ if(primero)primero.focus(); return; }
