@@ -25,6 +25,8 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <meta name="theme-color" content="#121110">
 <link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" href="/media/hero-poster-m.jpg" media="(max-width:1000px)">
+<link rel="preload" as="image" href="/media/hero-poster.jpg" media="(min-width:1001px)">
 <style>
 /* Archivo alojada en el propio sitio, no en Google Fonts: cargarla de Google le
    entregaba la IP de cada visitante, y la política de privacidad dice que ningún
@@ -146,11 +148,36 @@ a{color:inherit;text-decoration:none}
 .hero{position:relative;z-index:10;min-height:100svh;display:flex;flex-direction:column;justify-content:center;
   padding:0 var(--pad)}
 .hero-in{position:relative;z-index:2;max-width:min(54vw,720px)}
+
+/* EL VIDEO DEL HERO. La portada es un fondo CSS: se pinta con el primer cuadro del
+   video antes de que el video cargue, y el video entra encima sin saltos. Hay dos
+   archivos —horizontal y vertical— y se elige por ancho, con el mismo corte (1000px)
+   que cambia el diseño del hero. Sin JavaScript, con "reducir movimiento", con ahorro
+   de datos o con conexión lenta, queda solo la imagen. */
+.hero{background:var(--void) url(/media/hero-poster.jpg) 62% center/cover no-repeat}
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% center;
+  z-index:0;opacity:0;transition:opacity .6s ease}
+.hero-video.on{opacity:1}
+/* el degradado une el video con el texto; la banda de arriba protege el menú, que
+   el haz de luz cruza al final del recorrido */
+.hero-shade{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(18,17,16,.82) 0,rgba(18,17,16,0) 130px),
+    linear-gradient(90deg,rgba(18,17,16,.92) 0%,rgba(18,17,16,.74) 30%,rgba(18,17,16,.26) 50%,rgba(18,17,16,0) 70%)}
+.vid-toggle{position:absolute;left:var(--pad);bottom:clamp(18px,3vh,30px);z-index:3;width:44px;height:44px;
+  border-radius:50%;border:1px solid var(--line);background:rgba(18,17,16,.6);color:var(--ink);
+  display:none;place-items:center;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.vid-toggle.on{display:grid}
+.vid-toggle svg{width:14px;height:14px}
+.vid-toggle .i-play{display:none}
+.vid-toggle[aria-pressed="true"] .i-play{display:block}
+.vid-toggle[aria-pressed="true"] .i-pause{display:none}
+a.btn{display:inline-block;text-decoration:none;text-align:center}
 .eyebrow{display:inline-flex;align-items:center;gap:11px;font-size:10.5px;letter-spacing:.22em;
   text-transform:uppercase;color:var(--hot);margin-bottom:clamp(16px,2.2vw,24px);font-weight:600}
 .eyebrow::before{content:'';width:24px;height:1px;background:var(--hot)}
-h1{font-weight:900;font-size:clamp(36px,5.4vw,80px);line-height:.9;letter-spacing:-.05em}
-h1 .ln{display:block}
+h1{font-weight:900;font-size:clamp(36px,4.5vw,68px);line-height:.92;letter-spacing:-.05em}
+h1 .ln{display:block;text-wrap:balance}
 h1 em{font-style:normal;color:var(--hot)}
 .wd{display:inline-block;white-space:nowrap}
 .ch{display:inline-block;will-change:transform,opacity}
@@ -171,7 +198,7 @@ h1 em{font-style:normal;color:var(--hot)}
 /* centrado, no alineado a la izquierda: la leyenda mide 10px menos que el boton y
    pegada al margen izquierdo se veia corrida. La columna mide lo que mide el boton,
    asi que centrar dentro de la columna la deja centrada bajo el boton. */
-.acol{display:flex;flex-direction:column;align-items:center;gap:9px;min-width:0}
+.acol{display:flex;flex-direction:column;align-items:flex-start;gap:9px;min-width:0}
 
 /* El relleno es una propiedad registrada para que el hover pueda INTERPOLAR el color:
    sin @property un custom property es texto y salta de golpe. El var() lleva reserva
@@ -194,7 +221,8 @@ h1 em{font-style:normal;color:var(--hot)}
 }
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:600}
 .btn.ghost:hover{border-color:var(--hot);background:transparent}
-.hint{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim)}
+.hint{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);
+  text-shadow:0 0 10px rgba(18,17,16,.95),0 0 3px rgba(18,17,16,.9)}
 
 /* ── la franja de AIMA ──
    Toda la banda es el enlace: en el celular el blanco de toque es la pantalla entera
@@ -914,6 +942,9 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   .hero{min-height:100svh;justify-content:center;padding-top:clamp(70px,11vh,100px);
     padding-bottom:38svh}
   .hero-in{max-width:none}
+  .hero{background-image:url(/media/hero-poster-m.jpg);background-position:center bottom}
+  .hero-video{object-position:center bottom}
+  .hero-shade{background:linear-gradient(180deg,rgba(18,17,16,.85) 0,rgba(18,17,16,.55) 35%,rgba(18,17,16,.5) 55%,rgba(18,17,16,.12) 72%,rgba(18,17,16,0) 90%)}
   .mod{grid-template-columns:44px 1fr}
   .mod p{grid-column:2}
   .ses,.who,.ex{grid-template-columns:1fr}
@@ -921,7 +952,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   .fg-top{grid-template-columns:1fr 1fr}
 }
 @media(max-width:720px){
-  h1{font-size:clamp(32px,10vw,54px)}
+  h1{font-size:clamp(26px,8.3vw,54px)}
   .nav-r a{display:none}
   .hamb{display:flex}
   .mark{white-space:nowrap}
@@ -990,28 +1021,27 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 <!-- 01 · HERO -->
 <main id="contenido">
 <header class="hero" id="inicio">
-  <div class="via" aria-hidden="true">
-    <canvas id="via"></canvas>
-    <div class="caps" id="caps"></div>
-  </div>
+  <!-- El video lo carga el script del final: sin él (o sin permiso para moverse) se ve solo la portada. -->
+  <video class="hero-video" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"
+    data-desk="/media/hero.mp4" data-mob="/media/hero-m.mp4"></video>
+  <div class="hero-shade" aria-hidden="true"></div>
   <div class="hero-in">
-    <span class="eyebrow">Ingeniería comercial · Alto ticket</span>
-    <h1 id="h1"><span class="ln">Ordenamos tu</span><span class="ln"><em>proceso comercial.</em></span></h1>
-    <p class="deny"><b>No tus ventas.</b> Esas las cierra tu equipo. Cada consulta entra con
-      <span class="swap" id="swap"><i>responsable</i></span>.</p>
-    <!-- Un solo camino en el hero. La puerta de AIMA se fue a su propia franja,
-         justo abajo: aca adentro entraba todo en una pantalla y amontonaba. -->
-    <!-- Dos niveles de compromiso: el que ya decidio pide la sesion, el curioso prueba.
-         Pedirle 45 minutos al que recien llega es mucho, y el que no esta listo se iba
-         sin dejar rastro. La leyenda cuelga del boton al que corresponde. -->
+    <span class="eyebrow">Primero el negocio. Después la IA.</span>
+    <h1 id="h1"><span class="ln">Construimos con IA</span><span class="ln"><em>lo que tu negocio necesita.</em></span></h1>
+    <p class="deny">Entendemos cómo vende y cómo trabaja tu negocio, y recién ahí construimos lo que le falta. <b>Funcionando, no en una presentación.</b></p>
+    <!-- Un solo camino, como la bio de Instagram: la Evaluación, por WhatsApp. La sesión
+         de 45 minutos y "Probalo" siguen más abajo, en la sección del Sistema. -->
     <div class="act">
       <div class="acol">
-        <button class="btn" data-go="sesion">Pedir la sesión</button>
-        <span class="hint">45 min · sin cargo</span>
+        <a class="btn" href="https://wa.me/5493482583784?text=Quiero%20mi%20Evaluaci%C3%B3n" target="_blank" rel="noopener">Pedí tu Evaluación</a>
+        <span class="hint">Por WhatsApp · nos contás qué te frena</span>
       </div>
-      <button class="btn suave" data-go="probalo">Probalo ahora</button>
     </div>
   </div>
+  <button class="vid-toggle" type="button" aria-label="Pausar video de fondo" aria-pressed="false">
+    <svg class="i-pause" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true"><rect x="2" y="1" width="3.5" height="12" rx="1"/><rect x="8.5" y="1" width="3.5" height="12" rx="1"/></svg>
+    <svg class="i-play" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true"><path d="M3 1.2v11.6a.6.6 0 0 0 .9.5l9-5.8a.6.6 0 0 0 0-1L3.9.7A.6.6 0 0 0 3 1.2z"/></svg>
+  </button>
 </header>
 
 <!-- Puerta a AIMA. Franja propia y fondo propio —ni el del hero ni el de la seccion
@@ -1955,6 +1985,41 @@ input.bad,textarea.bad{border-color:#ff5b4d}
       fallo.setAttribute('tabindex','-1'); fallo.focus();
     });
   });
+})();
+</script>
+<script>
+/* VIDEO DEL HERO. Elige el archivo horizontal o el vertical según el ancho (y lo
+   cambia si se achica la ventana), se frena fuera de pantalla y deja un botón de
+   pausa: un video que se mueve solo más de 5 segundos tiene que poder detenerse
+   (WCAG 2.2.2). Si la persona pidió menos movimiento, tiene ahorro de datos o una
+   conexión lenta, no se descarga nada y queda la portada. */
+(function(){
+  var v=document.querySelector('.hero-video'), btn=document.querySelector('.vid-toggle');
+  if(!v) return;
+  var c=navigator.connection||{}, mq=window.matchMedia('(max-width:1000px)');
+  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  if(c.saveData || /(^|-)2g$/.test(c.effectiveType||'') || c.effectiveType==='3g') return;
+  var actual='', detenido=false;
+  function jugar(){ var p=v.play(); if(p&&p.catch) p.catch(function(){}); }
+  function cargar(){
+    var f=mq.matches ? v.getAttribute('data-mob') : v.getAttribute('data-desk');
+    if(f===actual) return; actual=f;
+    v.classList.remove('on'); v.src=f; v.load(); if(!detenido) jugar();
+  }
+  v.addEventListener('playing',function(){ v.classList.add('on'); if(btn) btn.classList.add('on'); });
+  if(mq.addEventListener) mq.addEventListener('change',cargar);
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(detenido) return; if(e.isIntersecting) jugar(); else v.pause(); });
+    },{threshold:.05}).observe(v.parentNode);
+  }
+  if(btn) btn.addEventListener('click',function(){
+    detenido=!detenido;
+    btn.setAttribute('aria-pressed',detenido?'true':'false');
+    btn.setAttribute('aria-label',detenido?'Reanudar video de fondo':'Pausar video de fondo');
+    if(detenido) v.pause(); else jugar();
+  });
+  cargar();
 })();
 </script>
 </body>
