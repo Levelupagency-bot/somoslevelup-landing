@@ -24,10 +24,19 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <meta name="theme-color" content="#121110">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800;900&display=swap" rel="stylesheet">
+<link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+/* Archivo alojada en el propio sitio, no en Google Fonts: cargarla de Google le
+   entregaba la IP de cada visitante, y la política de privacidad dice que ningún
+   componente externo informa la visita a un tercero. Es una fuente variable: un
+   archivo cubre los pesos 400 a 900. Sin el subconjunto vietnamita, que no se usa. */
+@font-face{font-family:'Archivo';font-style:normal;font-weight:400 900;font-display:swap;
+  src:url(/fonts/archivo-latin-ext.woff2) format('woff2');
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:400 900;font-display:swap;
+  src:url(/fonts/archivo-latin.woff2) format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
   --void:#121110;--panel:#191817;
@@ -457,7 +466,11 @@ html:not(.js-rv) .stg>*{opacity:1;transform:none}
 .tarj{flex:1;background:#fffdfa;border:1px solid rgba(22,21,19,.11);border-radius:14px;
   padding:clamp(13px,1.4vw,17px)}
 .tarj-k{font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;
-  color:rgba(22,21,19,.62);padding:2px 2px 13px}
+  color:rgba(22,21,19,.62);padding:2px 2px 13px;
+  display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px}
+/* las cifras y los nombres de estas pantallas son de muestra: sin el rótulo, el
+   41% de "Por qué se pierden" se lee como una estadística real que no tenemos */
+.tarj-k .muestra{font-size:10.5px;letter-spacing:.02em;text-transform:none;font-weight:600}
 .pie-t{margin-top:14px}
 .pie-t b{display:block;font-size:clamp(14.5px,1.15vw,16.5px);color:var(--ink);
   font-weight:800;letter-spacing:-.02em}
@@ -1065,7 +1078,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   <div class="plata stg">
     <div class="pieza">
       <div class="tarj">
-        <div class="tarj-k">Tu mes</div>
+        <div class="tarj-k">Tu mes<small class="muestra">Datos de ejemplo</small></div>
         <div class="stat"><i>Consultas</i><b>147</b><em>este mes</em></div>
         <div class="stat ojo"><i>Sin tocar</i><b>9</b><em>para atender</em></div>
         <div class="stat"><i>Visitas agendadas</i><b>38</b><em>confirmadas</em></div>
@@ -1075,7 +1088,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 
     <div class="pieza">
       <div class="tarj">
-        <div class="tarj-k">Cada consulta, con dueño</div>
+        <div class="tarj-k">Cada consulta, con dueño<small class="muestra">Datos de ejemplo</small></div>
         <dl class="ficha">
           <dt>Consulta</dt><dd>Camioneta 0km · llegó por Instagram</dd>
           <dt>Responsable</dt><dd>Sofía</dd>
@@ -1087,7 +1100,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 
     <div class="pieza">
       <div class="tarj">
-        <div class="tarj-k">Actividad</div>
+        <div class="tarj-k">Actividad<small class="muestra">Datos de ejemplo</small></div>
         <ul class="linea">
           <li class="sist"><span>22:15</span><p>Atendió la consulta</p></li>
           <li class="sist"><span>22:18</span><p>Calificó: <b>listo para visita</b></p></li>
@@ -1101,7 +1114,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 
     <div class="pieza">
       <div class="tarj">
-        <div class="tarj-k">Por qué se pierden</div>
+        <div class="tarj-k">Por qué se pierden<small class="muestra">Datos de ejemplo</small></div>
         <ul class="barras">
           <li><span>Precio</span><i>41%</i><u style="--v:41%"></u></li>
           <li><span>Compró en otro lado</span><i>26%</i><u style="--v:26%"></u></li>
@@ -1251,9 +1264,8 @@ input.bad,textarea.bad{border-color:#ff5b4d}
       <p>— ¿Por qué lo cargan así?</p>
       <p><em>— Porque el sistema no me deja.</em></p>
     </blockquote>
-    <p class="lead lead-aima">Esa frase se dice todos los días, en miles de negocios: gente trabajando
-      como el programa quiere, no como el negocio necesita. Usando el 10% de lo que pagan
-      — sin la única función que de verdad les falta.</p>
+    <p class="lead lead-aima">Esa frase se dice todos los días: gente trabajando como el programa
+      quiere, no como el negocio necesita, sin la única función que de verdad les falta.</p>
     <p class="lead lead-aima"><b>Un sistema a medida es lo contrario.</b> Cada pantalla existe porque tu
       negocio la necesita, y no hay nada más. Se arma por piezas, en semanas: la primera sola
       ya trabaja, las siguientes se suman cuando hacen falta. Clínica, taller, campo, comercio
@@ -1398,16 +1410,6 @@ input.bad,textarea.bad{border-color:#ff5b4d}
     <p class="lead">En nuestro Instagram mostramos lo que construimos cada semana:
       los sistemas, las decisiones — y lo que sale mal, también.</p>
     <a class="g-cta" href="https://instagram.com/levelup.aima" target="_blank" rel="noopener">Vernos trabajar →</a>
-  </div>
-</section>
-
-<!-- CERO FUGAS: sale del pie y pasa a banda propia, justo antes del footer.
-     Sigue siendo la salida chica y lejos de la oferta principal, pero se ve. -->
-<section class="banda-cero">
-  <div class="cero rv">
-    <p><span class="cf-eti">Todavía no es momento del sistema</span>
-      <b>CERO FUGAS<sup>™</sup></b> es el punto de partida: el método para encontrar por dónde se te escapan las consultas, para hacerlo vos.</p>
-    <a href="https://hellolevelupagency.hotmart.host/cero-fugas-que-ninguna-consulta-se-te-escape-f9d74eb4-6d69-4af6-9989-c2b947294724" target="_blank" rel="noopener">Ver CERO FUGAS™ ↗</a>
   </div>
 </section>
 
