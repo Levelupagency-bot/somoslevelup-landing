@@ -7,13 +7,13 @@
      user-scalable—. Alejar por debajo del 100% no le sirve a nadie y deja el header
      fijo estirado al viewport visual mientras el contenido queda en el de maquetado. -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1">
-<title>Level Up™ | AIMA — Ordenamos tu proceso comercial</title>
-<meta name="description" content="Ingeniería comercial para negocios de alto ticket. Cada consulta entra con responsable, tiempo de respuesta y próximo paso.">
-<meta property="og:title" content="Level Up™ | AIMA — Ordenamos tu proceso comercial">
-<meta property="og:description" content="No tus ventas. Esas las cierra tu equipo.">
+<title>Level Up™ | AIMA — Construimos con IA lo que tu negocio necesita</title>
+<meta name="description" content="Construimos con IA lo que tu negocio necesita: sistemas, agentes y automatizaciones que quedan funcionando. Pedí tu Evaluación por WhatsApp.">
+<meta property="og:title" content="Level Up™ | AIMA — Construimos con IA lo que tu negocio necesita">
+<meta property="og:description" content="Entendemos cómo vende y trabaja tu negocio, y construimos con IA lo que le falta. Funcionando, no en una presentación.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://somoslevelup.com/">
-<!-- og.jpg está en la raíz del repo: 2400x1260 (el doble, para pantallas retina). -->
+<!-- og.jpg: 1200x630, ~110 KB. WhatsApp no muestra la vista previa si pasa de 300 KB. -->
 <meta property="og:image" content="https://somoslevelup.com/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <!-- Ícono de solapa: monograma LU sobre naranja. El logotipo completo metido en un
@@ -611,6 +611,16 @@ html:not(.js-rv) .stg>*{opacity:1;transform:none}
   .item:hover h3{color:var(--hot)}
 }
 .item h3{transition:color .3s ease}
+/* tarjeta que es un enlace entero (Qué construimos) */
+a.item{display:block;color:inherit;text-decoration:none}
+#construimos .items{margin-top:clamp(30px,3.6vw,52px)}
+.item .ir{display:inline-flex;align-items:center;gap:8px;margin-top:16px;font-size:12.5px;font-weight:800;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--hot)}
+.item .ir::after{content:'→';transition:transform .25s cubic-bezier(.16,1,.3,1)}
+.item .ir.ext::after{content:'↗'}
+@media(hover:hover){a.item:hover .ir::after{transform:translate(3px,-1px)}}
+a.item:focus-visible{outline:2px solid var(--hot);outline-offset:4px}
+.lead a{color:var(--hot);font-weight:800;text-decoration:underline;text-underline-offset:3px}
 
 .g-cta{display:inline-flex;align-items:center;min-height:48px;margin-top:clamp(30px,3.6vw,46px);
   padding:0 24px;border:1px solid var(--hot);color:var(--hot);font-weight:800;font-size:12.5px;
@@ -996,10 +1006,10 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 <nav class="nav" id="nav">
   <span class="mark">LEVEL UP<sup>™</sup> <span class="bar-m">|</span> AIMA</span>
   <div class="nav-r">
-    <a href="#prueba">La prueba</a>
-    <a href="#sistema">El sistema</a>
+    <a href="#construimos" class="destacado">Qué construimos</a>
+    <a href="#metodo">Cómo trabajamos</a>
+    <a href="#el-sistema">El Sistema</a>
     <a href="#quien">Para quién</a>
-    <a href="#soluciones" class="destacado">Qué construimos</a>
     <a href="#nosotros">Quiénes somos</a>
     <button class="hamb" id="hamb" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
       <span></span><span></span><span></span>
@@ -1010,12 +1020,12 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 <!-- Menú de celular: "Servicios" va PRIMERO, no en el orden de la página — es lo que
      nadie ve porque está al final, y el 90% del tráfico entra desde el teléfono. -->
 <div class="menu" id="menu" hidden>
-  <a href="#soluciones" data-go="soluciones" class="destacado">Qué construimos</a>
-  <a href="#prueba" data-go="prueba">La prueba</a>
-  <a href="#sistema" data-go="sistema">El sistema</a>
+  <a href="#construimos" data-go="construimos" class="destacado">Qué construimos</a>
+  <a href="#metodo" data-go="metodo">Cómo trabajamos</a>
+  <a href="#el-sistema" data-go="el-sistema">El Sistema</a>
   <a href="#quien" data-go="quien">Para quién</a>
   <a href="#nosotros" data-go="nosotros">Quiénes somos</a>
-  <a href="#sesion" data-go="sesion" class="menu-cta">Pedir la sesión</a>
+  <a href="#sesion" data-go="sesion" class="menu-cta">Pedí tu Evaluación</a>
 </div>
 
 <!-- 01 · HERO -->
@@ -1044,23 +1054,63 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   </button>
 </header>
 
-<!-- Puerta a AIMA. Franja propia y fondo propio —ni el del hero ni el de la seccion
-     siguiente— para que se lea como OTRA cosa sin tener que explicarlo. "AIMA" hace
-     de separador porque es nombre de marca y ya viene del logo del header. -->
-<a class="puerta" href="#soluciones" data-go="soluciones">
-  <span class="puerta-in">
-    <span class="puerta-k"><b>AIMA</b> · Soluciones</span>
-    <span class="puerta-c">
-      <span class="puerta-t">Sistemas, automatizaciones y agentes</span>
-      <i class="flecha" aria-hidden="true"></i>
-    </span>
-  </span>
-</a>
+<!-- 02 · QUÉ CONSTRUIMOS -->
+<section class="sec" id="construimos">
+  <div class="rv">
+    <div class="tag"><span class="bar"></span><i>02</i> Qué construimos</div>
+    <h2>Construimos con IA, <em>de tres maneras.</em></h2>
+    <p class="lead">Un sistema para negocios donde cada venta vale, una plataforma para salones y organizadoras de eventos, y algo hecho desde cero para lo que tu negocio necesita.</p>
+  </div>
+  <div class="items stg">
+    <a class="item" href="#el-sistema" data-go="el-sistema">
+      <h3>El Sistema</h3>
+      <p>Alia, la plataforma donde queda cada consulta con su responsable, más lo que hacemos nosotros: la puesta en marcha, la captación y una reunión mensual.</p>
+      <span class="ir">Ver cómo funciona</span>
+    </a>
+    <a class="item" href="https://eventria.com.ar" target="_blank" rel="noopener">
+      <h3>Eventria</h3>
+      <p>Para salones de eventos y organizadoras de fiestas: el salón y la familia coordinan el 15, el casamiento o el cumpleaños paso a paso, con cada detalle ordenado y a la vista.</p>
+      <span class="ir ext">Conocer Eventria</span>
+    </a>
+    <a class="item" href="#soluciones" data-go="soluciones">
+      <h3>Hecho para tu negocio</h3>
+      <p>Un sistema, un agente o una automatización pensados desde cero para lo que hoy hacés a mano. Se arma por piezas, en semanas.</p>
+      <span class="ir">Contanos qué necesitás</span>
+    </a>
+  </div>
+</section>
+
+<!-- 03 · CÓMO TRABAJAMOS -->
+<section class="sec alt" id="metodo">
+  <div class="rv">
+    <div class="tag"><span class="bar"></span><i>03</i> Cómo trabajamos</div>
+    <h2>Primero el negocio. <em>Después la IA.</em></h2>
+    <p class="lead">La IA escribe el código. Nosotros decidimos qué construir y revisamos que funcione.</p>
+  </div>
+  <div class="mods">
+    <div class="mod rv"><span class="n">01</span><h3>Entendemos tu negocio</h3>
+      <p>Cómo vendés, cómo trabaja tu equipo, dónde se anota cada cosa y dónde se pierde. Antes de construir nada, miramos tu operación real.</p></div>
+    <div class="mod rv"><span class="n">02</span><h3>Construimos solo lo que hace falta</h3>
+      <p>Cada pantalla existe porque tu negocio la necesita, y no hay nada más. Se arma por piezas, en semanas: la primera sola ya trabaja, las siguientes se suman cuando hacen falta.</p></div>
+    <div class="mod rv"><span class="n">03</span><h3>Queda funcionando</h3>
+      <p>Lo ponemos en marcha con vos y lo verificamos juntos. Funcionando, no en una presentación.</p></div>
+  </div>
+</section>
+
+<!-- EL SISTEMA — abre el tramo que sigue, hasta "Para quién" -->
+<section class="sec" id="el-sistema">
+  <div class="rv">
+    <div class="tag"><span class="bar"></span> El Sistema</div>
+    <h2>Alia, más lo que <em>hacemos nosotros.</em></h2>
+    <p class="lead">Alia es la plataforma donde vive todo lo que entra a tu negocio: cada consulta con su responsable, su último contacto y su próximo paso.</p>
+    <p class="lead">El Sistema es Alia más lo que ponemos nosotros: la ponemos en marcha, armamos las campañas en Instagram y Facebook y nos juntamos una vez por mes a mirar los números.</p>
+  </div>
+</section>
 
 <!-- 02 · LA PRUEBA — la pone el visitante, no nosotros -->
 <section class="sec alt" id="prueba">
   <div class="rv">
-    <div class="tag"><span class="bar"></span><i>02</i> La prueba</div>
+    <div class="tag"><span class="bar"></span><i>04</i> La prueba</div>
     <h2>Tres preguntas sobre <em>tu propio negocio.</em></h2>
     <p class="lead">Contestalas ahora, de memoria. Sin abrir nada ni preguntarle a nadie.</p>
   </div>
@@ -1086,7 +1136,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
      quedaba huérfano al fondo y el titular se leía más grande que el resto. -->
 <section class="sec luz" id="cambia">
   <div class="rv">
-    <div class="tag"><span class="bar"></span><i>03</i> Lo que cambia</div>
+    <div class="tag"><span class="bar"></span><i>05</i> Lo que cambia</div>
     <h2>Nadie contesta un sábado a la <em>una y media.</em></h2>
     <p class="lead">Ni un feriado. Ni mientras el vendedor está mostrando una unidad. Le pasa igual a los equipos que atienden bien: <b>lo que falla es dónde queda anotado.</b></p>
   </div>
@@ -1106,8 +1156,8 @@ input.bad,textarea.bad{border-color:#ff5b4d}
        repetido, no la información. -->
   <div class="rv acto2" id="plataforma">
     <h3 class="h-acto">Esto es lo que ves <em>cuando entrás.</em></h3>
-    <p class="lead">No es una promesa: es la pantalla. Un sistema de gestión de clientes
-      construido por nosotros, donde vive todo lo que entra a tu negocio.</p>
+    <p class="lead">No es una promesa: es la pantalla. Alia, el sistema de gestión de clientes
+      que construimos nosotros, donde vive todo lo que entra a tu negocio.</p>
   </div>
 
   <div class="plata stg">
@@ -1170,13 +1220,13 @@ input.bad,textarea.bad{border-color:#ff5b4d}
      ofrece es ver cómo atiende NUESTRO propio negocio, no simular el suyo. -->
 <section class="sec alt" id="probalo">
   <div class="rv">
-    <div class="tag"><span class="bar"></span><i>04</i> La demostración</div>
+    <div class="tag"><span class="bar"></span><i>06</i> La demostración</div>
     <h2>No nos creas. <em>Probalo.</em></h2>
     <p class="lead">Escribinos ahora. A la hora que sea — un sábado a la tarde, un feriado,
       mientras estás atendiendo a otro cliente.</p>
     <p class="lead">Te va a contestar el mismo sistema que instalamos,
       andando en nuestro propio negocio: te responde al instante, te hace las preguntas
-      correctas y, si querés, te agenda la sesión ahí mismo.</p>
+      correctas y, si querés, te agenda una llamada de 45 minutos ahí mismo.</p>
     <p class="lead"><b>Así se siente del otro lado.</b> Con tu información y tu forma de hablar,
       haría lo mismo en el tuyo.</p>
     <a class="g-cta" href="https://wa.me/5493482583784?text=Hola%2C%20vengo%20de%20la%20web%20y%20quiero%20probar%20el%20sistema."
@@ -1187,7 +1237,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 <!-- 05 · EL SISTEMA -->
 <section class="sec" id="sistema">
   <div class="rv">
-    <div class="tag"><span class="bar"></span><i>05</i> El sistema</div>
+    <div class="tag"><span class="bar"></span><i>07</i> Qué incluye</div>
     <h2 class="h-sistema">Un sistema. <em>Se entrega entero.</em></h2>
     <p class="lead">Todo lo que sigue viene adentro. Se instala una vez y queda funcionando.</p>
   </div>
@@ -1240,7 +1290,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
      acá ve la puerta de AIMA justo después. -->
 <section class="sec luz" id="quien">
   <div class="rv">
-    <div class="tag"><span class="bar"></span><i>06</i> Para quién es el Sistema</div>
+    <div class="tag"><span class="bar"></span><i>08</i> Para quién es el Sistema</div>
     <h2>No trabajamos <em>con todos.</em></h2>
     <p class="lead">Preferimos decirlo ahora y no descubrirlo a los dos meses.</p>
   </div>
@@ -1285,7 +1335,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
      El agente NO se llama LIA acá: LIA viene adentro del Sistema. -->
 <section class="sec" id="soluciones">
   <div class="rv">
-    <div class="tag"><span class="bar"></span><i>07</i> AIMA · Soluciones</div>
+    <div class="tag"><span class="bar"></span><i>09</i> Hecho para tu negocio</div>
     <!-- Abre por el PROBLEMA, nunca por "IA" ni por "agentes". El contraste con el
          software genérico ES el argumento: no lleva explicación encima. -->
     <h2 class="h-aima">Construimos el sistema que tu negocio necesita. <em>No el que te tocó.</em></h2>
@@ -1378,11 +1428,12 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 <!-- 08 · LA SESIÓN -->
 <section class="sec alt" id="sesion">
   <div class="rv">
-    <div class="tag"><span class="bar"></span><i>08</i> El primer paso</div>
-    <h2>Una sesión de <em>45 minutos.</em></h2>
+    <div class="tag"><span class="bar"></span><i>10</i> La Evaluación</div>
+    <h2>Tu Evaluación: <em>45 minutos.</em></h2>
     <!-- CUPO: este número vive SOLO acá. Pendiente de recalcular con captación adentro
          (si baja a una por mes, se cambia esta línea y listo). -->
     <p class="lead">Sin cargo. Miramos tus propios números juntos. <b>Los cupos son limitados de verdad</b>: se hacen dos implementaciones por mes.</p>
+    <p class="lead">¿Preferís escribir? <a href="https://wa.me/5493482583784?text=Quiero%20mi%20Evaluaci%C3%B3n" target="_blank" rel="noopener">Pedila por WhatsApp</a>.</p>
   </div>
 
   <div class="ses">
@@ -1390,12 +1441,12 @@ input.bad,textarea.bad{border-color:#ff5b4d}
       <!-- Las tres preguntas se mudaron arriba, al módulo 02. Acá va cómo funciona
            la sesión, para no repetir la misma lista dos veces en la página. -->
       <div class="three">
-        <p>Traés tus números como los tengas: planilla, cuaderno, capturas de WhatsApp.</p>
-        <p>Miramos juntos qué se puede reconstruir de los últimos treinta días, y qué no.</p>
-        <p>Salís con el diagnóstico escrito, contrates o no.</p>
+        <p>Nos contás cómo trabaja tu negocio hoy, con lo que tengas: planilla, cuaderno, capturas de WhatsApp.</p>
+        <p>Vemos juntos qué se puede resolver, y qué no.</p>
+        <p>Salís con una respuesta escrita: qué haríamos y cómo, contrates o no.</p>
       </div>
-      <p class="ask">Las tres preguntas de arriba, pero con los datos adelante.</p>
-      <p class="hon">Si de la sesión sale que tu problema no es el seguimiento, te lo decimos y no te vendemos nada. Pasa, y está bien que pase.</p>
+      <p class="ask">Primero entendemos tu negocio. Después vemos qué construir.</p>
+      <p class="hon">Si de la Evaluación sale que lo que necesitás no es algo que hagamos, te lo decimos y no te vendemos nada. Pasa, y está bien que pase.</p>
     </div>
 
     <div class="rv">
@@ -1419,7 +1470,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
             <span id="consent-txt">Acepto recibir respuestas por WhatsApp sobre mi consulta</span>
           </label>
           <p class="aviso-priv">Al enviar aceptás nuestra <a href="https://levelup-legal.vercel.app/privacidad-web" target="_blank" rel="noopener">política de privacidad</a>. Usamos tus datos solo para contactarte; no los compartimos con terceros.</p>
-          <button type="submit" class="send" id="send">Pedir la sesión</button>
+          <button type="submit" class="send" id="send">Pedí tu Evaluación</button>
           <p class="fine">Te respondemos por WhatsApp antes de 24 horas. Sin venta disfrazada.</p>
           <div class="fallo" id="fallo">No pudimos enviar el formulario — puede ser la conexión.
             Probá de nuevo, o escribinos por <a href="https://www.instagram.com/levelup.aima/" target="_blank" rel="noopener">Instagram</a> y lo resolvemos ahí.</div>
@@ -1454,19 +1505,19 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   <div class="fg-top">
     <div>
       <span class="mark">LEVEL UP<sup>™</sup> | AIMA</span>
-      <p class="desc">Ingeniería comercial. Construimos infraestructura para negocios donde cada venta vale.</p>
+      <p class="desc">IA para negocios. Construimos con IA lo que tu negocio necesita.</p>
     </div>
     <div>
       <h4>La página</h4>
-      <a class="l" href="#prueba">La prueba</a>
-      <a class="l" href="#cambia">Lo que cambia</a>
-      <a class="l" href="#sistema">El sistema</a>
+      <a class="l" href="#construimos">Qué construimos</a>
+      <a class="l" href="#metodo">Cómo trabajamos</a>
+      <a class="l" href="#el-sistema">El Sistema</a>
       <a class="l" href="#quien">Para quién</a>
-      <a class="l" href="#soluciones">Soluciones con IA</a>
+      <a class="l" href="#soluciones">Hecho para tu negocio</a>
     </div>
     <div>
       <h4>Contacto</h4>
-      <a class="l" href="#sesion" data-go="sesion">Pedir la sesión</a>
+      <a class="l" href="#sesion" data-go="sesion">Pedí tu Evaluación</a>
       <a class="l" href="https://www.instagram.com/levelup.aima/" target="_blank" rel="noopener">Instagram ↗</a>
       <p class="desc" style="margin-top:6px">Reconquista, Santa Fe</p>
     </div>
@@ -1474,7 +1525,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   <div class="fg-bot">
     <span>© 2026 Level Up™ | AIMA</span>
     <a href="https://levelup-legal.vercel.app/privacidad-web" target="_blank" rel="noopener" class="legal-l">Política de privacidad ↗</a>
-    <span>Ingeniería comercial</span>
+    <span>IA para negocios</span>
   </div>
   <!-- Razón social textual: NO se abrevia ni se reformula. Tiene que coincidir con la
        constancia de ARCA — es lo que conecta la marca con la persona ante Meta. -->
@@ -1865,7 +1916,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
         Ejemplo Reconquista: '5493482123456'
      Si queda vacío o mal escrito, el botón no se muestra. */
   var NUMERO_WA='5493482583784';
-  var TEXTO_WA='Hola, vi la web y quiero pedir la sesión de 45 minutos.';
+  var TEXTO_WA='Quiero mi Evaluación';
 
   (function(){
     var wa=document.getElementById('wa');
