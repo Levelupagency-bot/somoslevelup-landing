@@ -1070,29 +1070,6 @@ h2 em{color:rgba(242,240,236,.46)}
 .js-rv .stg.in>*:nth-child(4){transition-delay:.41s}
 .js-rv .stg.in>*:nth-child(n+5){transition-delay:.5s}
 
-/* ── 02 · tres tarjetas con aire y una luz que sigue al cursor ── */
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,1.8vw,24px);margin-top:clamp(44px,5vw,72px)}
-.card{position:relative;display:flex;flex-direction:column;min-height:clamp(260px,24vw,320px);
-  padding:clamp(28px,2.6vw,40px);border-radius:22px;color:inherit;text-decoration:none;overflow:hidden;isolation:isolate;
-  background:var(--surf);border:1px solid var(--line-2);
-  transition:border-color .5s var(--ley),transform .6s var(--ley),background .5s var(--ley)}
-.card::before{content:'';position:absolute;inset:0;z-index:-1;opacity:0;transition:opacity .5s var(--ley);
-  background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),rgba(242,106,31,.10),transparent 60%)}
-.card .num{margin-bottom:auto}
-.card h3{margin-top:clamp(36px,4vw,60px);font-size:clamp(21px,1.8vw,26px);font-weight:700;letter-spacing:-.025em;line-height:1.15}
-.card p{margin-top:12px;color:var(--mid);font-size:clamp(15px,1.05vw,16px);line-height:1.65}
-.card .ir{display:inline-flex;align-items:center;gap:8px;margin-top:22px;font-size:14px;font-weight:600;color:var(--ink-3);
-  transition:color .4s var(--ley)}
-.card .ir::after{content:'→';transition:transform .5s var(--ley)}
-.card .ir.ext::after{content:'↗'}
-@media(hover:hover) and (pointer:fine){
-  .card:hover{border-color:rgba(242,240,236,.16);background:var(--surf-2);transform:translateY(-3px)}
-  .card:hover::before{opacity:1}
-  .card:hover .ir{color:var(--ink)}
-  .card:hover .ir::after{transform:translateX(4px)}
-}
-.card:focus-visible{outline:2px solid var(--hot);outline-offset:4px}
-
 /* ── 03 · tres pasos en fila, unidos por una línea que se dibuja al entrar ── */
 .pasos{position:relative;list-style:none;display:grid;grid-template-columns:repeat(3,1fr);
   gap:clamp(28px,4vw,64px);margin-top:clamp(52px,6vw,88px);padding-top:clamp(30px,3vw,40px)}
@@ -1230,9 +1207,7 @@ label{font-weight:600}
 .foot a.l{font-weight:500;color:var(--ink-2)}
 
 @media(max-width:900px){
-  .cards,.pasos,.tres{grid-template-columns:1fr}
-  .card{min-height:0}
-  .card h3{margin-top:28px}
+  .pasos,.tres{grid-template-columns:1fr}
   .pasos{gap:40px;padding-top:0;padding-left:28px;border-left:0}
   .pasos::before{top:6px;bottom:6px;left:3px;right:auto;width:1px;height:auto;transform-origin:50% 0;transform:scaleY(0)}
   .pasos.in::before,html:not(.js-rv) .pasos::before{transform:none}
@@ -1247,8 +1222,7 @@ label{font-weight:600}
 @media(prefers-reduced-motion:reduce){
   .js-rv .rv,.js-rv .stg>*{filter:none!important}
   .pasos::before{transform:none!important;transition:none}
-  .card,.card::before,.g-cta::after,.card .ir::after,.mas,.mas::before,.mas::after{transition:none!important}
-  .card:hover{transform:none}
+  .g-cta::after,.mas,.mas::before,.mas::after{transition:none!important}
   .plie::details-content{transition:none}
   .plie[open] .plie-in{animation:none}
 }
@@ -1260,65 +1234,6 @@ label{font-weight:600}
 h2 em{color:var(--peach)}
 .k{color:var(--ink-3)}
 .k::before{background:var(--hot)}
-
-/* ── tarjetas: imagen de luz, profundidad, se inclinan hacia el cursor y la imagen se acerca ── */
-.cards{perspective:1200px}
-.card{--c:242,106,31;padding:0;min-height:0;transform-style:preserve-3d;
-  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty,0px));
-  background:linear-gradient(180deg,rgba(242,240,236,.045),rgba(242,240,236,.015));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 24px 50px -30px rgba(0,0,0,.8);
-  transition:transform .7s var(--ley),box-shadow .7s var(--ley),border-color .6s var(--ley)}
-.cards .card:nth-child(2){--c:245,165,36}
-.cards .card:nth-child(3){--c:224,88,63}
-.card::before{z-index:1;background:radial-gradient(380px circle at var(--mx,50%) var(--my,0%),rgba(var(--c),.16),transparent 60%)}
-.card-img{position:relative;aspect-ratio:16/10;overflow:hidden;border-radius:21px 21px 0 0}
-.card-img img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.03);
-  transition:transform 1.4s var(--ley),filter .8s var(--ley);filter:saturate(.92) brightness(.92)}
-.card-img::after{content:'';position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(26,25,24,0) 45%,rgba(30,29,27,.9) 100%)}
-.card .num{position:absolute;top:18px;left:18px;z-index:2;padding:6px 11px;border-radius:999px;
-  color:var(--ink);background:rgba(26,25,24,.5);border:1px solid rgba(255,255,255,.14);
-  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);margin:0}
-.card h3,.card p,.card .ir{position:relative;z-index:2;margin-left:clamp(24px,2.4vw,34px);margin-right:clamp(24px,2.4vw,34px)}
-.card h3{margin-top:4px}
-.card .ir{margin-bottom:clamp(26px,2.6vw,34px);margin-top:auto;padding-top:22px;color:rgb(var(--c))}
-.card p{margin-bottom:0}
-@media(hover:hover) and (pointer:fine){
-  .card:hover{--ty:-8px;border-color:rgba(var(--c),.4);transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty));
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 40px 70px -30px rgba(0,0,0,.95)}
-  .card:hover .card-img img{transform:scale(1.12);filter:saturate(1.08) brightness(1.02)}
-  .card:hover .ir{color:rgb(var(--c))}
-}
-@media(hover:none){.card .card-img img{filter:saturate(1) brightness(.98)}}
-
-/* ── la cinta: corte de ritmo, se mueve despacio ── */
-.cinta{position:relative;overflow:hidden;padding:clamp(26px,3vw,40px) 0;
-  border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
-  mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
-.cinta-in{display:flex;align-items:center;width:max-content;animation:cinta 46s linear infinite}
-.cinta span{font-size:clamp(40px,6vw,92px);font-weight:700;letter-spacing:-.035em;line-height:1;white-space:nowrap;
-  color:transparent;-webkit-text-stroke:1.2px rgba(242,240,236,.42)}
-.cinta span.hot{color:var(--hot);-webkit-text-stroke:0}
-.cinta i{width:12px;height:12px;margin:0 clamp(26px,3vw,48px);border-radius:50%;flex-shrink:0;
-  background:var(--amber)}
-@keyframes cinta{to{transform:translateX(-50%)}}
-
-/* ── el corte: del enredo al orden, a medida que bajás ── */
-.corte{position:relative;z-index:10;display:grid;place-items:center;overflow:hidden;
-  min-height:clamp(460px,78vh,760px);padding:clamp(80px,10vw,140px) var(--pad);text-align:center}
-.corte-img{position:absolute;inset:0;z-index:0;-webkit-mask-image:linear-gradient(180deg,transparent,#000 22%,#000 62%,transparent 96%);mask-image:linear-gradient(180deg,transparent,#000 22%,#000 62%,transparent 96%)}
-.corte-img img{position:absolute;inset:-8% 0;width:100%;height:116%;object-fit:cover;
-  transform:translateY(var(--py,0px));will-change:transform,opacity}
-.corte-img .orden{opacity:var(--p,0)}
-.corte-img .enredo{opacity:calc(1 - var(--p,0) * .85)}
-.corte::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:linear-gradient(180deg,var(--void) 0%,rgba(26,25,24,.35) 22%,rgba(26,25,24,.35) 78%,var(--void) 100%),
-             radial-gradient(60% 50% at 50% 50%,rgba(26,25,24,.7),rgba(26,25,24,.15) 75%)}
-.corte-tx{position:relative;z-index:2;max-width:900px}
-.corte-f{font-size:clamp(44px,7.4vw,112px);font-weight:700;letter-spacing:-.045em;line-height:.98}
-.corte-f em{font-style:normal;color:var(--hot)}
-.corte-s{margin:clamp(20px,2.4vw,30px) auto 0;max-width:44ch;font-size:clamp(16px,1.3vw,20px);line-height:1.6;color:var(--ink-2)}
 
 /* ── los pasos, cada uno con su luz ── */
 .pasos li:nth-child(1)::before{background:var(--hot);border-color:var(--hot)}
@@ -1353,7 +1268,6 @@ h2 em{color:var(--peach)}
 .tres>div:nth-child(3) h3{border-top:2px solid var(--cobre)}
 .dialogo em{color:var(--ink)}
 .calc{background:linear-gradient(160deg,rgba(245,165,36,.08),rgba(242,240,236,.02) 50%);border-color:rgba(245,165,36,.2)}
-#corte+#el-sistema::before{display:none}
 
 /* ── La Evaluación: luz detrás del formulario ── */
 #sesion .ses>div:last-child{position:relative;
@@ -1362,10 +1276,93 @@ h2 em{color:var(--peach)}
   box-shadow:0 40px 90px -40px rgba(0,0,0,.8)}
 
 @media(prefers-reduced-motion:reduce){
-  .cinta-in{animation:none}
-  .card{transform:none!important}
-  .card-img img{transition:none}
-  .corte-img img{transform:none}
+}
+
+/* ══════════ RITMO ══════════
+   Cada bloque con su propia composición: filas tipográficas, números grandes,
+   un plano naranja entero, un bloque centrado. Más contraste de escala. */
+h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
+
+/* ── Qué construimos: filas grandes que se llenan de color ── */
+.filas{list-style:none;margin-top:clamp(48px,6vw,90px);border-top:1px solid var(--line)}
+.filas li{border-bottom:1px solid var(--line)}
+.fila{position:relative;display:grid;grid-template-columns:56px minmax(0,1.1fr) minmax(0,1fr) 56px;
+  align-items:center;gap:clamp(16px,2.5vw,40px);padding:clamp(26px,3.2vw,46px) clamp(8px,1.4vw,22px);
+  color:inherit;text-decoration:none;overflow:hidden;isolation:isolate}
+.fila::before{content:'';position:absolute;inset:0;z-index:-1;background:var(--c);
+  transform:scaleY(0);transform-origin:50% 100%;transition:transform .65s var(--ley)}
+.fila .num{color:var(--c);transition:color .4s var(--ley)}
+.fila .t{font-size:clamp(30px,4.6vw,72px);font-weight:700;letter-spacing:-.045em;line-height:1;
+  transition:transform .65s var(--ley),color .4s var(--ley)}
+.fila .d{color:var(--mid);font-size:clamp(15px,1.1vw,17px);line-height:1.6;max-width:40ch;
+  transition:color .4s var(--ley)}
+.fila .fl{justify-self:end;display:grid;place-items:center;width:52px;height:52px;border-radius:50%;
+  border:1px solid var(--line);font-size:20px;color:var(--ink);
+  transition:transform .65s var(--ley),background .4s var(--ley),border-color .4s var(--ley),color .4s var(--ley)}
+@media(hover:hover) and (pointer:fine){
+  .fila:hover::before{transform:scaleY(1)}
+  .fila:hover .t{transform:translateX(14px);color:#170e08}
+  .fila:hover .num,.fila:hover .d{color:rgba(23,14,8,.82)}
+  .fila:hover .fl{background:#170e08;border-color:#170e08;color:var(--ink);transform:rotate(-45deg)}
+}
+.fila:focus-visible{outline:2px solid var(--c);outline-offset:-2px}
+@media(max-width:820px){
+  .fila{grid-template-columns:1fr auto;gap:10px 16px;padding:28px 0}
+  .fila .num{grid-column:1/-1}
+  .fila .t{grid-column:1}
+  .fila .fl{grid-column:2;grid-row:2;width:44px;height:44px}
+  .fila .d{grid-column:1/-1}
+}
+
+/* ── Cómo trabajamos: números enormes que se llenan al entrar ── */
+.pasos .num{font-size:clamp(72px,9vw,140px);font-weight:700;letter-spacing:-.06em;line-height:.9;
+  color:transparent;-webkit-text-stroke:1.5px currentColor;transition:color 1s var(--ley) .3s}
+.pasos li:nth-child(1) .num{-webkit-text-stroke-color:var(--hot)}
+.pasos li:nth-child(2) .num{-webkit-text-stroke-color:var(--amber)}
+.pasos li:nth-child(3) .num{-webkit-text-stroke-color:var(--cobre)}
+.pasos.in li:nth-child(1) .num,html:not(.js-rv) .pasos li:nth-child(1) .num{color:var(--hot)}
+.pasos.in li:nth-child(2) .num,html:not(.js-rv) .pasos li:nth-child(2) .num{color:var(--amber);transition-delay:.6s}
+.pasos.in li:nth-child(3) .num,html:not(.js-rv) .pasos li:nth-child(3) .num{color:var(--cobre);transition-delay:.9s}
+.pasos h3{margin-top:22px}
+
+/* ── el plano naranja: del enredo al orden ── */
+.naranja{position:relative;z-index:10;display:grid;place-items:center;overflow:hidden;text-align:center;
+  min-height:clamp(520px,88vh,860px);padding:clamp(90px,11vw,150px) var(--pad);
+  background:var(--hot);color:#170e08;
+  clip-path:circle(var(--abre,150%) at 50% 100%)}
+.motas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.naranja-tx{position:relative;z-index:2;max-width:980px}
+.naranja-f{font-size:clamp(52px,9.5vw,150px);font-weight:700;letter-spacing:-.055em;line-height:.92}
+.naranja-s{margin:clamp(24px,2.8vw,36px) auto 0;max-width:42ch;font-size:clamp(17px,1.4vw,21px);
+  line-height:1.55;color:rgba(23,14,8,.86);font-weight:500}
+.sec+.naranja,.naranja+.sec{border-top:0}
+.naranja+.sec::before{display:none}
+
+/* ── El Sistema: centrado, la pantalla protagonista ── */
+#el-sistema>.rv:first-child{text-align:center}
+#el-sistema>.rv:first-child h2,#el-sistema>.rv:first-child .lead{margin-left:auto;margin-right:auto}
+#el-sistema>.rv:first-child .k{justify-content:center}
+.vitrina .linea li{opacity:1;transform:none;transition:opacity .6s var(--ley),transform .6s var(--ley)}
+.js-rv .vitrina:not(.in) .linea li{opacity:0;transform:translateX(-10px)}
+.vitrina.in .linea li:nth-child(1){transition-delay:.5s}
+.vitrina.in .linea li:nth-child(2){transition-delay:.9s}
+.vitrina.in .linea li:nth-child(3){transition-delay:1.3s}
+.vitrina.in .linea li:nth-child(4){transition-delay:1.7s}
+.vitrina.in .linea li:nth-child(5){transition-delay:2.1s}
+.stat b{font-variant-numeric:tabular-nums}
+
+/* ── Hecho para tu negocio: la frase al centro, enorme ── */
+#soluciones>.rv:first-child{text-align:center}
+#soluciones>.rv:first-child h2{margin-left:auto;margin-right:auto}
+#soluciones>.rv:first-child .k{justify-content:center}
+.dialogo{text-align:center;margin-top:clamp(56px,6vw,96px);margin-bottom:clamp(12px,2vw,20px)}
+.dialogo p{font-size:clamp(28px,4vw,58px);letter-spacing:-.04em;line-height:1.12}
+
+@media(prefers-reduced-motion:reduce){
+  .fila::before,.fila .t,.fila .fl{transition:none}
+  .pasos .num{transition:none}
+  .naranja{clip-path:none}
+  .vitrina .linea li{transition:none;opacity:1!important;transform:none!important}
 }
 </style>
 </head>
@@ -1433,34 +1430,22 @@ h2 em{color:var(--peach)}
     <span class="k">Qué construimos</span>
     <h2>Cada negocio necesita algo distinto. <em>Esto es parte de lo que ya construimos.</em></h2>
   </div>
-  <div class="cards stg">
-    <a class="card" href="#el-sistema" data-go="el-sistema">
-      <div class="card-img"><img src="/media/card-sistema.jpg" alt="" loading="lazy" width="800" height="600"></div>
-      <span class="num">01</span>
-      <h3>El Sistema</h3>
-      <p>Alia, donde queda cada consulta con su responsable, más la puesta en marcha, la captación y una reunión por mes.</p>
-      <span class="ir">Ver cómo funciona</span>
-    </a>
-    <a class="card" href="https://eventria.com.ar" target="_blank" rel="noopener">
-      <div class="card-img"><img src="/media/card-eventria.jpg" alt="" loading="lazy" width="800" height="600"></div>
-      <span class="num">02</span>
-      <h3>Eventria</h3>
-      <p>Para salones y organizadoras: cada 15, casamiento o cumpleaños coordinado con la familia, paso a paso.</p>
-      <span class="ir ext">Conocer Eventria</span>
-    </a>
-    <a class="card" href="#soluciones" data-go="soluciones">
-      <div class="card-img"><img src="/media/card-medida.jpg" alt="" loading="lazy" width="800" height="600"></div>
-      <span class="num">03</span>
-      <h3>Hecho para tu negocio</h3>
-      <p>Un sistema, un agente o una automatización, pensados desde cero para lo que hoy hacés a mano.</p>
-      <span class="ir">Contanos qué necesitás</span>
-    </a>
-  </div>
+  <ul class="filas stg">
+    <li><a class="fila" href="#el-sistema" data-go="el-sistema" style="--c:var(--hot)">
+      <span class="num">01</span><span class="t">El Sistema</span>
+      <span class="d">Alia, donde queda cada consulta con su responsable, más la puesta en marcha, la captación y una reunión por mes.</span>
+      <span class="fl" aria-hidden="true">→</span></a></li>
+    <li><a class="fila" href="https://eventria.com.ar" target="_blank" rel="noopener" style="--c:var(--amber)">
+      <span class="num">02</span><span class="t">Eventria</span>
+      <span class="d">Para salones y organizadoras: cada 15, casamiento o cumpleaños coordinado con la familia, paso a paso.</span>
+      <span class="fl" aria-hidden="true">↗</span></a></li>
+    <li><a class="fila" href="#soluciones" data-go="soluciones" style="--c:var(--cobre)">
+      <span class="num">03</span><span class="t">Hecho para tu negocio</span>
+      <span class="d">Un sistema, un agente o una automatización, pensados desde cero para lo que hoy hacés a mano.</span>
+      <span class="fl" aria-hidden="true">→</span></a></li>
+  </ul>
 </section>
 
-
-<!-- cinta -->
-<div class="cinta" aria-hidden="true"><div class="cinta-in"><span>Orden</span><i></i><span class="hot">Trazabilidad</span><i></i><span>Sistema</span><i></i><span>Infraestructura</span><i></i><span>Funcionando</span><i></i><span>Orden</span><i></i><span class="hot">Trazabilidad</span><i></i><span>Sistema</span><i></i><span>Infraestructura</span><i></i><span>Funcionando</span><i></i></div></div>
 
 <!-- 03 · CÓMO TRABAJAMOS -->
 <section class="sec" id="metodo">
@@ -1479,14 +1464,11 @@ h2 em{color:var(--peach)}
 </section>
 
 <!-- CORTE -->
-<section class="corte" id="corte" aria-label="Del enredo al orden">
-  <div class="corte-img" aria-hidden="true">
-    <img class="enredo" src="/media/corte-enredo.jpg" alt="" loading="lazy" width="1600" height="700">
-    <img class="orden" src="/media/corte-orden.jpg" alt="" loading="lazy" width="1600" height="700">
-  </div>
-  <div class="corte-tx rv">
-    <p class="corte-f">Del enredo <em>al orden.</em></p>
-    <p class="corte-s">Eso construimos: que cada cosa de tu negocio tenga su lugar, su responsable y su próximo paso.</p>
+<section class="naranja" id="corte" aria-label="Del enredo al orden">
+  <canvas class="motas" aria-hidden="true"></canvas>
+  <div class="naranja-tx">
+    <p class="naranja-f">Del enredo<br>al orden.</p>
+    <p class="naranja-s">Eso construimos: que cada cosa de tu negocio tenga su lugar, su responsable y su próximo paso.</p>
   </div>
 </section>
 
@@ -2291,22 +2273,78 @@ h2 em{color:var(--peach)}
     if(location.hash) abrir(location.hash.slice(1));
   })();
 
-  /* el corte: a medida que se baja, el enredo se ordena y la imagen se desliza apenas */
+  /* EL PLANO NARANJA: se abre en círculo al llegar, y las motas pasan de un enredo
+     que gira a filas ordenadas a medida que se baja. Canvas 2D, se pausa fuera de pantalla. */
   (function(){
-    var c=document.getElementById('corte'); if(!c) return;
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){c.style.setProperty('--p','1');return;}
-    var pend=false;
-    function pinta(){
-      pend=false;
-      var r=c.getBoundingClientRect(), vh=window.innerHeight;
-      if(r.bottom<0||r.top>vh) return;
-      var t=Math.min(1,Math.max(0,(vh-r.top)/(vh+r.height)));
-      var p=Math.min(1,Math.max(0,(t-.3)/.35)); p=p*p*(3-2*p);
-      c.style.setProperty('--p',p.toFixed(3));
-      c.style.setProperty('--py',((t-.5)*-70).toFixed(1)+'px');
+    var sec=document.getElementById('corte'); if(!sec) return;
+    var cv=sec.querySelector('.motas'), ctx=cv.getContext('2d');
+    var quieto=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var W,H,dpr,P=[],prog=quieto?1:0,visible=false,raf=0,t0=performance.now();
+    function arma(){
+      dpr=Math.min(2,window.devicePixelRatio||1);
+      W=sec.clientWidth;H=sec.clientHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+      var n=W<720?120:240, filas=W<720?8:10, porFila=Math.ceil(n/filas);
+      var mx=W*.08, my=H*.14, gx=(W-2*mx)/(porFila-1), gy=(H-2*my)/(filas-1);
+      P=[];
+      for(var i=0;i<n;i++){
+        var f=i%filas, c=Math.floor(i/filas);
+        P.push({ox:mx+c*gx, oy:my+f*gy,
+          a:1+Math.random()*2.2, b:1+Math.random()*2.2, fa:Math.random()*6.28, fb:Math.random()*6.28,
+          rx:W*(.18+Math.random()*.3), ry:H*(.16+Math.random()*.26), v:.15+Math.random()*.25,
+          r:1.4+Math.random()*1.8});
+      }
     }
-    window.addEventListener('scroll',function(){if(!pend){pend=true;requestAnimationFrame(pinta);}},{passive:true});
-    window.addEventListener('resize',pinta); pinta();
+    function dibuja(now){
+      var t=(now-t0)/1000; ctx.clearRect(0,0,W,H);
+      var p=prog*prog*(3-2*prog);
+      for(var i=0;i<P.length;i++){
+        var q=P[i], k=t*q.v;
+        var ex=W/2+q.rx*Math.sin(q.a*k+q.fa), ey=H/2+q.ry*Math.sin(q.b*k+q.fb);
+        var x=ex+(q.ox-ex)*p, y=ey+(q.oy-ey)*p;
+        var dy=Math.abs(y-H/2)/(H*.26), dx=Math.abs(x-W/2)/(W*.36), lejos=Math.min(1,Math.max(dx,dy));
+        ctx.globalAlpha=(.22+.2*p)*(.25+.75*lejos);
+        ctx.fillStyle='#170e08';
+        ctx.beginPath();ctx.arc(x,y,q.r,0,6.283);ctx.fill();
+      }
+      if(p>.6){ // las filas se unen con una línea fina cuando ya están en su lugar
+        ctx.globalAlpha=(p-.6)*.45; ctx.strokeStyle='#170e08'; ctx.lineWidth=1;
+        var filas=W<720?8:10;
+        for(var f=0;f<filas;f++){var y=P[f].oy;ctx.beginPath();ctx.moveTo(W*.08,y);ctx.lineTo(W*.92,y);ctx.stroke();}
+      }
+      ctx.globalAlpha=1;
+      if(visible&&!quieto) raf=requestAnimationFrame(dibuja);
+    }
+    function scroll(){
+      var r=sec.getBoundingClientRect(), vh=window.innerHeight;
+      var entra=Math.min(1,Math.max(0,(vh-r.top)/(vh*.75)));
+      sec.style.setProperty('--abre',quieto?'150%':(6+entra*144).toFixed(1)+'%');
+      if(!quieto) prog=Math.min(1,Math.max(0,(vh*.55-r.top)/(r.height*.7)));
+    }
+    arma(); scroll();
+    if(quieto){ dibuja(performance.now()); }
+    else{
+      new IntersectionObserver(function(es){
+        visible=es[0].isIntersecting; cancelAnimationFrame(raf); if(visible) raf=requestAnimationFrame(dibuja);
+      }).observe(sec);
+      window.addEventListener('scroll',scroll,{passive:true});
+    }
+    window.addEventListener('resize',function(){arma();scroll();if(quieto)dibuja(performance.now());});
+  })();
+
+  /* los números de "Tu mes" cuentan desde cero cuando la pantalla aparece */
+  (function(){
+    var v=document.querySelector('.vitrina'); if(!v||!('IntersectionObserver' in window)) return;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var bs=[].slice.call(v.querySelectorAll('.stat b'));
+    var io=new IntersectionObserver(function(es){
+      if(!es[0].isIntersecting) return; io.disconnect();
+      bs.forEach(function(b){
+        var fin=+b.textContent, t0=performance.now();
+        (function paso(now){var k=Math.min(1,(now-t0)/1400); k=1-Math.pow(1-k,3);
+          b.textContent=Math.round(fin*k); if(k<1) requestAnimationFrame(paso);})(t0);
+      });
+    },{threshold:.4});
+    io.observe(v);
   })();
 </script>
 <script>
