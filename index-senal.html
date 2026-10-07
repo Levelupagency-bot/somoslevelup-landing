@@ -1252,6 +1252,121 @@ label{font-weight:600}
   .plie::details-content{transition:none}
   .plie[open] .plie-in{animation:none}
 }
+
+/* ══════════ COLOR Y VIDA ══════════
+   Paleta cálida que sale del video del hero: naranja de marca, ámbar y cobre.
+   Cada bloque tiene su propia luz, y hay dos cortes de ritmo: la cinta y el enredo→orden. */
+:root{--amber:#f5a524;--cobre:#e0583f;--peach:#f2ac86}
+h2 em{color:var(--peach)}
+.k{color:var(--ink-3)}
+.k::before{background:var(--hot);box-shadow:0 0 0 4px rgba(242,106,31,.16),0 0 14px rgba(242,106,31,.7)}
+
+/* ── tarjetas: imagen de luz, profundidad, se inclinan hacia el cursor y la imagen se acerca ── */
+.cards{perspective:1200px}
+.card{--c:242,106,31;padding:0;min-height:0;transform-style:preserve-3d;
+  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty,0px));
+  background:linear-gradient(180deg,rgba(242,240,236,.045),rgba(242,240,236,.015));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 24px 50px -30px rgba(0,0,0,.8);
+  transition:transform .7s var(--ley),box-shadow .7s var(--ley),border-color .6s var(--ley)}
+.cards .card:nth-child(2){--c:245,165,36}
+.cards .card:nth-child(3){--c:224,88,63}
+.card::before{z-index:1;background:radial-gradient(380px circle at var(--mx,50%) var(--my,0%),rgba(var(--c),.16),transparent 60%)}
+.card-img{position:relative;aspect-ratio:16/10;overflow:hidden;border-radius:21px 21px 0 0}
+.card-img img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.03);
+  transition:transform 1.4s var(--ley),filter .8s var(--ley);filter:saturate(.92) brightness(.92)}
+.card-img::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(26,25,24,0) 45%,rgba(30,29,27,.9) 100%)}
+.card .num{position:absolute;top:18px;left:18px;z-index:2;padding:6px 11px;border-radius:999px;
+  color:var(--ink);background:rgba(26,25,24,.5);border:1px solid rgba(255,255,255,.14);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);margin:0}
+.card h3,.card p,.card .ir{position:relative;z-index:2;margin-left:clamp(24px,2.4vw,34px);margin-right:clamp(24px,2.4vw,34px)}
+.card h3{margin-top:4px}
+.card .ir{margin-bottom:clamp(26px,2.6vw,34px);margin-top:auto;padding-top:22px;color:rgb(var(--c))}
+.card p{margin-bottom:0}
+@media(hover:hover) and (pointer:fine){
+  .card:hover{--ty:-8px;border-color:rgba(var(--c),.4);transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 50px 90px -40px rgba(var(--c),.55),0 30px 60px -30px rgba(0,0,0,.9)}
+  .card:hover .card-img img{transform:scale(1.12);filter:saturate(1.08) brightness(1.02)}
+  .card:hover .ir{color:rgb(var(--c))}
+}
+@media(hover:none){.card .card-img img{filter:saturate(1) brightness(.98)}}
+
+/* ── la cinta: corte de ritmo, se mueve despacio ── */
+.cinta{position:relative;overflow:hidden;padding:clamp(26px,3vw,40px) 0;
+  border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.cinta-in{display:flex;align-items:center;width:max-content;animation:cinta 46s linear infinite}
+.cinta span{font-size:clamp(40px,6vw,92px);font-weight:700;letter-spacing:-.035em;line-height:1;white-space:nowrap;
+  color:transparent;-webkit-text-stroke:1.2px rgba(242,240,236,.42)}
+.cinta span.hot{color:var(--hot);-webkit-text-stroke:0}
+.cinta i{width:12px;height:12px;margin:0 clamp(26px,3vw,48px);border-radius:50%;flex-shrink:0;
+  background:var(--amber);box-shadow:0 0 18px rgba(245,165,36,.8)}
+@keyframes cinta{to{transform:translateX(-50%)}}
+
+/* ── el corte: del enredo al orden, a medida que bajás ── */
+.corte{position:relative;z-index:10;display:grid;place-items:center;overflow:hidden;
+  min-height:clamp(460px,78vh,760px);padding:clamp(80px,10vw,140px) var(--pad);text-align:center}
+.corte-img{position:absolute;inset:0;z-index:0;-webkit-mask-image:linear-gradient(180deg,transparent,#000 22%,#000 62%,transparent 96%);mask-image:linear-gradient(180deg,transparent,#000 22%,#000 62%,transparent 96%)}
+.corte-img img{position:absolute;inset:-8% 0;width:100%;height:116%;object-fit:cover;
+  transform:translateY(var(--py,0px));will-change:transform,opacity}
+.corte-img .orden{opacity:var(--p,0)}
+.corte-img .enredo{opacity:calc(1 - var(--p,0) * .85)}
+.corte::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,var(--void) 0%,rgba(26,25,24,.35) 22%,rgba(26,25,24,.35) 78%,var(--void) 100%),
+             radial-gradient(60% 50% at 50% 50%,rgba(26,25,24,.7),rgba(26,25,24,.15) 75%)}
+.corte-tx{position:relative;z-index:2;max-width:900px}
+.corte-f{font-size:clamp(44px,7.4vw,112px);font-weight:700;letter-spacing:-.045em;line-height:.98}
+.corte-f em{font-style:normal;color:var(--hot)}
+.corte-s{margin:clamp(20px,2.4vw,30px) auto 0;max-width:44ch;font-size:clamp(16px,1.3vw,20px);line-height:1.6;color:var(--ink-2)}
+
+/* ── los pasos, cada uno con su luz ── */
+.pasos li:nth-child(1)::before{background:var(--hot);border-color:var(--hot);box-shadow:0 0 14px rgba(242,106,31,.8)}
+.pasos li:nth-child(2)::before{background:var(--amber);border-color:var(--amber);box-shadow:0 0 14px rgba(245,165,36,.8)}
+.pasos li:nth-child(3)::before{background:var(--cobre);border-color:var(--cobre);box-shadow:0 0 14px rgba(224,88,63,.8)}
+.pasos li:nth-child(1) .num{color:var(--hot)}
+.pasos li:nth-child(2) .num{color:var(--amber)}
+.pasos li:nth-child(3) .num{color:var(--cobre)}
+.pasos::before{background:linear-gradient(90deg,var(--hot),var(--amber),var(--cobre));opacity:.55}
+@media(max-width:900px){.pasos::before{background:linear-gradient(180deg,var(--hot),var(--amber),var(--cobre))}}
+
+/* ── El Sistema: el bloque se enciende con su propia luz ── */
+#el-sistema{background:
+  radial-gradient(45% 30% at 88% 42%,rgba(242,106,31,.13),transparent 70%),
+  radial-gradient(45% 30% at 6% 80%,rgba(224,88,63,.11),transparent 70%)}
+.vitrina::before{background:radial-gradient(55% 60% at 55% 45%,rgba(242,106,31,.18),transparent 70%)}
+.probalo{background:linear-gradient(110deg,rgba(242,106,31,.14),rgba(245,165,36,.05) 55%,rgba(242,240,236,.02));
+  border-color:rgba(242,106,31,.25)}
+.probalo .g-cta{background:var(--hot);border-color:var(--hot);color:#160d07;font-weight:700}
+.probalo .g-cta:hover{background:#ff7d36;border-color:#ff7d36;color:#160d07}
+.plie[open] summary{color:var(--ink)}
+.plie[open] .mas{border-color:var(--hot);color:var(--hot)}
+
+/* ── Hecho para tu negocio: un panel cálido, despegado del fondo ── */
+#soluciones{margin:0 clamp(10px,1.6vw,26px);border-radius:clamp(26px,3.2vw,48px);
+  border:1px solid rgba(242,240,236,.07);
+  background:radial-gradient(70% 45% at 100% 0%,rgba(245,165,36,.12),transparent 62%),
+             radial-gradient(60% 50% at 0% 100%,rgba(224,88,63,.12),transparent 62%),#201c19}
+#soluciones::before{display:none}
+.tres>div:nth-child(1) h3{border-top:2px solid var(--hot)}
+.tres>div:nth-child(2) h3{border-top:2px solid var(--amber)}
+.tres>div:nth-child(3) h3{border-top:2px solid var(--cobre)}
+.dialogo em{color:var(--ink)}
+.calc{background:linear-gradient(160deg,rgba(245,165,36,.08),rgba(242,240,236,.02) 50%);border-color:rgba(245,165,36,.2)}
+#corte+#el-sistema::before{display:none}
+
+/* ── La Evaluación: luz detrás del formulario ── */
+#sesion .ses>div:last-child{position:relative;
+  background:linear-gradient(170deg,rgba(242,106,31,.10),rgba(242,240,236,.025) 45%);
+  border-color:rgba(242,106,31,.22);
+  box-shadow:0 50px 120px -50px rgba(242,106,31,.45)}
+
+@media(prefers-reduced-motion:reduce){
+  .cinta-in{animation:none}
+  .card{transform:none!important}
+  .card-img img{transition:none}
+  .corte-img img{transform:none}
+}
 </style>
 </head>
 <body>
@@ -1316,22 +1431,25 @@ label{font-weight:600}
 <section class="sec" id="construimos">
   <div class="rv">
     <span class="k">Qué construimos</span>
-    <h2>Construimos con IA, <em>de tres maneras.</em></h2>
+    <h2>Cada negocio necesita algo distinto. <em>Esto es parte de lo que ya construimos.</em></h2>
   </div>
   <div class="cards stg">
     <a class="card" href="#el-sistema" data-go="el-sistema">
+      <div class="card-img"><img src="/media/card-sistema.jpg" alt="" loading="lazy" width="800" height="600"></div>
       <span class="num">01</span>
       <h3>El Sistema</h3>
       <p>Alia, donde queda cada consulta con su responsable, más la puesta en marcha, la captación y una reunión por mes.</p>
       <span class="ir">Ver cómo funciona</span>
     </a>
     <a class="card" href="https://eventria.com.ar" target="_blank" rel="noopener">
+      <div class="card-img"><img src="/media/card-eventria.jpg" alt="" loading="lazy" width="800" height="600"></div>
       <span class="num">02</span>
       <h3>Eventria</h3>
       <p>Para salones y organizadoras: cada 15, casamiento o cumpleaños coordinado con la familia, paso a paso.</p>
       <span class="ir ext">Conocer Eventria</span>
     </a>
     <a class="card" href="#soluciones" data-go="soluciones">
+      <div class="card-img"><img src="/media/card-medida.jpg" alt="" loading="lazy" width="800" height="600"></div>
       <span class="num">03</span>
       <h3>Hecho para tu negocio</h3>
       <p>Un sistema, un agente o una automatización, pensados desde cero para lo que hoy hacés a mano.</p>
@@ -1339,6 +1457,10 @@ label{font-weight:600}
     </a>
   </div>
 </section>
+
+
+<!-- cinta -->
+<div class="cinta" aria-hidden="true"><div class="cinta-in"><span>Orden</span><i></i><span class="hot">Trazabilidad</span><i></i><span>Sistema</span><i></i><span>Infraestructura</span><i></i><span>Funcionando</span><i></i><span>Orden</span><i></i><span class="hot">Trazabilidad</span><i></i><span>Sistema</span><i></i><span>Infraestructura</span><i></i><span>Funcionando</span><i></i></div></div>
 
 <!-- 03 · CÓMO TRABAJAMOS -->
 <section class="sec" id="metodo">
@@ -1354,6 +1476,18 @@ label{font-weight:600}
     <li><span class="num">03</span><h3>Queda funcionando</h3>
       <p>Lo ponemos en marcha con vos y lo verificamos juntos.</p></li>
   </ol>
+</section>
+
+<!-- CORTE -->
+<section class="corte" id="corte" aria-label="Del enredo al orden">
+  <div class="corte-img" aria-hidden="true">
+    <img class="enredo" src="/media/corte-enredo.jpg" alt="" loading="lazy" width="1600" height="700">
+    <img class="orden" src="/media/corte-orden.jpg" alt="" loading="lazy" width="1600" height="700">
+  </div>
+  <div class="corte-tx rv">
+    <p class="corte-f">Del enredo <em>al orden.</em></p>
+    <p class="corte-s">Eso construimos: que cada cosa de tu negocio tenga su lugar, su responsable y su próximo paso.</p>
+  </div>
 </section>
 
 <!-- 04 · EL SISTEMA -->
@@ -2133,11 +2267,17 @@ label{font-weight:600}
   (function(){
     if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
       document.querySelectorAll('.card').forEach(function(c){
+        var quieto=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         c.addEventListener('pointermove',function(e){
-          var r=c.getBoundingClientRect();
+          var r=c.getBoundingClientRect(), x=(e.clientX-r.left)/r.width, y=(e.clientY-r.top)/r.height;
           c.style.setProperty('--mx',(e.clientX-r.left)+'px');
           c.style.setProperty('--my',(e.clientY-r.top)+'px');
+          if(!quieto){
+            c.style.setProperty('--rx',((.5-y)*6).toFixed(2)+'deg');
+            c.style.setProperty('--ry',((x-.5)*8).toFixed(2)+'deg');
+          }
         });
+        c.addEventListener('pointerleave',function(){c.style.setProperty('--rx','0deg');c.style.setProperty('--ry','0deg');});
       });
     }
     function abrir(id){
@@ -2149,6 +2289,24 @@ label{font-weight:600}
     },true);
     window.addEventListener('hashchange',function(){abrir(location.hash.slice(1));});
     if(location.hash) abrir(location.hash.slice(1));
+  })();
+
+  /* el corte: a medida que se baja, el enredo se ordena y la imagen se desliza apenas */
+  (function(){
+    var c=document.getElementById('corte'); if(!c) return;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){c.style.setProperty('--p','1');return;}
+    var pend=false;
+    function pinta(){
+      pend=false;
+      var r=c.getBoundingClientRect(), vh=window.innerHeight;
+      if(r.bottom<0||r.top>vh) return;
+      var t=Math.min(1,Math.max(0,(vh-r.top)/(vh+r.height)));
+      var p=Math.min(1,Math.max(0,(t-.3)/.35)); p=p*p*(3-2*p);
+      c.style.setProperty('--p',p.toFixed(3));
+      c.style.setProperty('--py',((t-.5)*-70).toFixed(1)+'px');
+    }
+    window.addEventListener('scroll',function(){if(!pend){pend=true;requestAnimationFrame(pinta);}},{passive:true});
+    window.addEventListener('resize',pinta); pinta();
   })();
 </script>
 <script>
