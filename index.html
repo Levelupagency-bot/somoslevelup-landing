@@ -992,6 +992,266 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   .srow::after,.mod::before,.item::before,.pieza .pin{transition:none!important}
   .wa{transition:opacity .2s,background .2s,color .2s,border-color .2s!important}
 }
+
+/* ══════════ AIRE ══════════
+   Capa final: manda sobre todo lo anterior. Un solo fondo grafito parejo, mucho
+   espacio entre bloques, títulos más livianos y el naranja reservado para el botón
+   principal y un único detalle por pantalla. */
+:root{
+  --void:#1a1918;--panel:#1f1e1c;
+  --surf:rgba(242,240,236,.028);--surf-2:rgba(242,240,236,.05);
+  --g1:rgba(126,56,16,.14);--g2:rgba(10,9,8,.35);
+  --wrap:1160px;
+  --gap-sec:clamp(112px,14vw,196px);
+  interpolate-size:allow-keywords;
+}
+body{background:var(--void)}
+.grain{opacity:.035}
+.prog{background:rgba(242,240,236,.42);height:1px}
+
+/* menú: en minúscula, livianos; el único lleno es el de la Evaluación */
+.nav{padding-top:18px;padding-bottom:18px}
+.nav.stuck{background:rgba(26,25,24,.78);border-color:var(--line-2)}
+.nav-r a{font-size:14px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--ink-3)}
+.nav-r a:hover,.nav-r a.destacado{color:var(--ink)}
+.nav-r a.destacado{font-weight:500}
+.nav-r a.destacado::after{display:none}
+.nav-r a.nav-cta{padding:0 18px;min-height:40px;border-radius:999px;border:1px solid var(--line);color:var(--ink);
+  transition:border-color .3s var(--ley),background .3s var(--ley)}
+.nav-r a.nav-cta:hover{border-color:rgba(242,240,236,.4);background:var(--surf-2)}
+@media(max-width:720px){.nav-r a.nav-cta{display:none}}
+.menu{background:rgba(26,25,24,.97)}
+.menu a{font-weight:700;letter-spacing:-.025em}
+.menu a.destacado{color:var(--ink)}
+
+/* el hero se funde con lo que sigue en vez de cortar */
+.hero::after{content:'';position:absolute;left:0;right:0;bottom:0;height:160px;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(26,25,24,0),var(--void))}
+.hero-shade{background:
+    linear-gradient(180deg,rgba(26,25,24,.8) 0,rgba(26,25,24,0) 130px),
+    linear-gradient(90deg,rgba(26,25,24,.92) 0%,rgba(26,25,24,.72) 30%,rgba(26,25,24,.24) 50%,rgba(26,25,24,0) 70%)}
+@media(max-width:1000px){
+  .hero-shade{background:linear-gradient(180deg,rgba(26,25,24,.85) 0,rgba(26,25,24,.55) 35%,rgba(26,25,24,.5) 55%,rgba(26,25,24,.12) 72%,rgba(26,25,24,0) 90%)}
+}
+
+/* ── secciones: un solo fondo, mucho aire, contenido centrado en un ancho cómodo ── */
+.sec,.sec.alt,.quienes{background:transparent;border-top:0;
+  padding:var(--gap-sec) max(var(--pad),calc((100% - var(--wrap))/2))}
+/* el corte entre bloques es una línea de luz que se desvanece en las puntas */
+.sec::before{left:max(var(--pad),calc((100% - var(--wrap))/2));right:max(var(--pad),calc((100% - var(--wrap))/2));
+  width:auto;height:1px;top:0;background:linear-gradient(90deg,transparent,rgba(242,240,236,.12) 30%,rgba(242,240,236,.12) 70%,transparent)}
+#construimos::before{display:none}
+.shell{position:relative}
+
+/* rótulo de sección: chico y tranquilo, sin chapa naranja */
+.k{display:inline-flex;align-items:center;gap:12px;margin-bottom:clamp(22px,2.4vw,30px);
+  font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--faint)}
+.k::before{content:'';width:6px;height:6px;border-radius:50%;background:rgba(242,240,236,.32)}
+
+h2{font-weight:700;font-size:clamp(30px,3.7vw,54px);line-height:1.06;letter-spacing:-.032em;max-width:24ch;
+  margin-bottom:clamp(20px,2vw,28px);text-wrap:balance}
+/* dos tonos en vez de naranja: la segunda mitad del título baja de tinta */
+h2 em{color:rgba(242,240,236,.46)}
+.h-aima{max-width:22ch}
+.lead{font-size:clamp(16px,1.2vw,19px);line-height:1.7;max-width:52ch;color:var(--mid)}
+.lead b{font-weight:600}
+.lead a{color:var(--ink);font-weight:600;text-decoration-color:rgba(242,240,236,.35)}
+.num{display:block;font-size:12px;font-weight:600;letter-spacing:.12em;color:var(--faint);font-variant-numeric:tabular-nums}
+
+/* ── entradas: suben, se aclaran y se enfocan, sin apuro ── */
+.rv{transition:opacity 1s var(--ley),transform 1.1s var(--ley),filter 1s var(--ley)}
+.js-rv .rv:not(.in){filter:blur(6px)}
+.js-rv .stg>*{transform:translateY(26px);filter:blur(6px);
+  transition:opacity .9s var(--ley),transform 1s var(--ley),filter .9s var(--ley)}
+.js-rv .stg.in>*{filter:none}
+.js-rv .stg.in>*:nth-child(1){transition-delay:.05s}
+.js-rv .stg.in>*:nth-child(2){transition-delay:.17s}
+.js-rv .stg.in>*:nth-child(3){transition-delay:.29s}
+.js-rv .stg.in>*:nth-child(4){transition-delay:.41s}
+.js-rv .stg.in>*:nth-child(n+5){transition-delay:.5s}
+
+/* ── 02 · tres tarjetas con aire y una luz que sigue al cursor ── */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,1.8vw,24px);margin-top:clamp(44px,5vw,72px)}
+.card{position:relative;display:flex;flex-direction:column;min-height:clamp(260px,24vw,320px);
+  padding:clamp(28px,2.6vw,40px);border-radius:22px;color:inherit;text-decoration:none;overflow:hidden;isolation:isolate;
+  background:var(--surf);border:1px solid var(--line-2);
+  transition:border-color .5s var(--ley),transform .6s var(--ley),background .5s var(--ley)}
+.card::before{content:'';position:absolute;inset:0;z-index:-1;opacity:0;transition:opacity .5s var(--ley);
+  background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),rgba(242,106,31,.10),transparent 60%)}
+.card .num{margin-bottom:auto}
+.card h3{margin-top:clamp(36px,4vw,60px);font-size:clamp(21px,1.8vw,26px);font-weight:700;letter-spacing:-.025em;line-height:1.15}
+.card p{margin-top:12px;color:var(--mid);font-size:clamp(15px,1.05vw,16px);line-height:1.65}
+.card .ir{display:inline-flex;align-items:center;gap:8px;margin-top:22px;font-size:14px;font-weight:600;color:var(--ink-3);
+  transition:color .4s var(--ley)}
+.card .ir::after{content:'→';transition:transform .5s var(--ley)}
+.card .ir.ext::after{content:'↗'}
+@media(hover:hover) and (pointer:fine){
+  .card:hover{border-color:rgba(242,240,236,.16);background:var(--surf-2);transform:translateY(-3px)}
+  .card:hover::before{opacity:1}
+  .card:hover .ir{color:var(--ink)}
+  .card:hover .ir::after{transform:translateX(4px)}
+}
+.card:focus-visible{outline:2px solid var(--hot);outline-offset:4px}
+
+/* ── 03 · tres pasos en fila, unidos por una línea que se dibuja al entrar ── */
+.pasos{position:relative;list-style:none;display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(28px,4vw,64px);margin-top:clamp(52px,6vw,88px);padding-top:clamp(30px,3vw,40px)}
+.pasos::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--line);
+  transform-origin:0 50%;transform:scaleX(0);transition:transform 1.6s var(--ley) .1s}
+.pasos.in::before,html:not(.js-rv) .pasos::before{transform:none}
+.pasos li{position:relative}
+.pasos li::before{content:'';position:absolute;top:calc(-1 * clamp(30px,3vw,40px) - 3px);left:0;width:7px;height:7px;border-radius:50%;
+  background:var(--void);border:1px solid rgba(242,240,236,.4)}
+.pasos li:first-child::before{background:var(--hot);border-color:var(--hot)}
+.pasos h3{margin-top:14px;font-size:clamp(19px,1.6vw,23px);font-weight:700;letter-spacing:-.022em;line-height:1.2}
+.pasos p{margin-top:10px;color:var(--mid);font-size:clamp(15px,1.05vw,16.5px);line-height:1.65;max-width:30ch}
+
+/* ── 04 · el Sistema: la pantalla en una vitrina con un resplandor detrás ── */
+.vitrina{position:relative;display:grid;grid-template-columns:1fr 1.25fr;gap:clamp(16px,1.8vw,24px);
+  margin-top:clamp(52px,6vw,88px);align-items:start}
+.vitrina::before{content:'';position:absolute;inset:-12% -6%;z-index:-1;pointer-events:none;
+  background:radial-gradient(50% 55% at 55% 45%,rgba(242,106,31,.09),transparent 70%)}
+.tarj{background:rgba(32,31,29,.72);border:1px solid var(--line-2);border-radius:20px;
+  padding:clamp(18px,1.8vw,24px);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  box-shadow:0 30px 80px -40px rgba(0,0,0,.6)}
+.tarj-k{color:var(--faint);padding:2px 2px 16px}
+.tarj-k .muestra{color:var(--faint)}
+.stat{background:var(--surf);border:1px solid var(--line-2);border-radius:14px;padding:14px 16px}
+.stat i{color:var(--faint)}
+.stat b{font-weight:700}
+.stat.ojo{background:rgba(242,106,31,.06);border-color:rgba(242,106,31,.28)}
+.linea li{grid-template-columns:72px 1fr;border-bottom-color:var(--line-2);padding:12px 0}
+.linea span{color:var(--faint);font-size:12.5px}
+.linea li.sist::before{left:77px;background:rgba(242,240,236,.5)}
+.linea li b{font-weight:600}
+
+.probalo{display:flex;align-items:center;justify-content:space-between;gap:clamp(20px,3vw,48px);flex-wrap:wrap;
+  margin-top:clamp(52px,6vw,80px);padding:clamp(24px,2.6vw,34px) clamp(24px,2.8vw,40px);
+  border-radius:22px;background:var(--surf);border:1px solid var(--line-2)}
+.probalo p{max-width:58ch;font-size:clamp(16px,1.2vw,18.5px);line-height:1.6;color:var(--mid)}
+.probalo p b{color:var(--ink);font-weight:700}
+.probalo .g-cta{margin-top:0}
+
+/* desplegables: el texto fijo está entero, pero plegado */
+.pliegues{margin-top:clamp(52px,6vw,80px);border-top:1px solid var(--line-2)}
+.plie{border-bottom:1px solid var(--line-2)}
+.plie summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:20px;
+  min-height:76px;padding:22px 4px;font-size:clamp(19px,1.7vw,24px);font-weight:600;letter-spacing:-.02em;
+  color:var(--ink-2);transition:color .4s var(--ley)}
+.plie summary::-webkit-details-marker{display:none}
+.plie summary:focus-visible{outline:2px solid var(--hot);outline-offset:4px;border-radius:6px}
+.mas{position:relative;width:34px;height:34px;flex-shrink:0;border-radius:50%;border:1px solid var(--line);
+  transition:transform .6s var(--ley),border-color .4s var(--ley),background .4s var(--ley)}
+.mas::before,.mas::after{content:'';position:absolute;left:50%;top:50%;width:12px;height:1.5px;margin:-.75px 0 0 -6px;
+  background:currentColor;transition:transform .6s var(--ley)}
+.mas::after{transform:rotate(90deg)}
+.plie[open] .mas{transform:rotate(180deg);border-color:rgba(242,240,236,.3)}
+.plie[open] .mas::after{transform:rotate(0)}
+@media(hover:hover) and (pointer:fine){
+  .plie summary:hover{color:var(--ink)}
+  .plie summary:hover .mas{background:var(--surf-2);border-color:rgba(242,240,236,.3)}
+}
+/* abre deslizando donde el navegador lo permite; donde no, abre directo */
+.plie::details-content{block-size:0;overflow:hidden;
+  transition:block-size .7s var(--ley),content-visibility .7s allow-discrete}
+.plie[open]::details-content{block-size:auto}
+.plie-in{padding:4px 4px clamp(34px,4vw,52px)}
+.plie[open] .plie-in{animation:abre .8s var(--ley) both}
+@keyframes abre{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.plie-in>.lead:first-child{margin-bottom:8px}
+
+/* lo de adentro, más calmo */
+.plie .mods{margin-top:clamp(18px,2vw,26px)}
+.mod{border-top-color:var(--line-2)}
+.mod::before{display:none}
+.mod .n{color:var(--faint);font-weight:600}
+.mod h3{font-weight:700}
+@media(hover:hover){.mod:hover{background:transparent}.mod:hover h3{color:inherit}}
+.opt{color:var(--ink-3);border-color:var(--line)}
+.nots div::before{color:var(--faint)}
+.col-tit{font-weight:700;font-size:13px}
+.cuenta::before{display:none}
+.cuenta{border-top-color:var(--line-2)}
+.cuenta .c2{font-weight:700}
+.cuenta .c2 b{color:var(--ink)}
+
+/* ── 05 · hecho para tu negocio ── */
+.dialogo{margin:clamp(44px,5vw,72px) 0 0;padding:0;border:0}
+.dialogo p{font-size:clamp(24px,2.8vw,40px);font-weight:600;letter-spacing:-.03em;line-height:1.25;color:var(--faint)}
+.dialogo em{color:var(--ink);font-weight:600}
+.tres{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(28px,4vw,64px);margin-top:clamp(52px,6vw,88px)}
+.tres h3{font-size:clamp(19px,1.6vw,23px);font-weight:700;letter-spacing:-.022em;padding-top:20px;border-top:1px solid var(--line)}
+.tres p{margin-top:10px;color:var(--mid);font-size:clamp(15px,1.05vw,16.5px);line-height:1.65;max-width:32ch}
+.calc{margin-top:clamp(52px,6vw,88px);padding:clamp(28px,3.4vw,52px);border-radius:24px;
+  background:var(--surf);border:1px solid var(--line-2)}
+.calc h3{font-weight:700}
+.calc-r .calc-eg{font-size:11px;letter-spacing:.16em;font-weight:700;color:var(--faint)}
+.calc-r{border-top-color:var(--line-2)}
+.calc-r b{font-weight:700}
+.chip{transition:color .35s var(--ley),border-color .35s var(--ley),background .35s var(--ley)}
+.tambien{margin-top:clamp(36px,4vw,56px);max-width:62ch;font-size:clamp(15px,1.1vw,17px);line-height:1.7;color:var(--dim)}
+.tambien b{color:var(--ink-2);font-weight:600}
+.tambien sup{font-size:.6em}
+.cierre{margin-top:clamp(52px,6vw,80px)}
+.cierre .g-cta{margin-top:22px}
+
+/* enlace secundario: píldora fina; el lleno es solo del botón principal */
+.g-cta{gap:10px;min-height:48px;padding:0 24px;border-radius:999px;border:1px solid var(--line);color:var(--ink);
+  font-size:15px;font-weight:600;letter-spacing:-.005em;text-transform:none;
+  transition:border-color .4s var(--ley),background .4s var(--ley)}
+.g-cta::after{content:'→';transition:transform .5s var(--ley)}
+.g-cta:hover{background:var(--surf-2);color:var(--ink);border-color:rgba(242,240,236,.4)}
+@media(hover:hover) and (pointer:fine){.g-cta:hover::after{transform:translateX(4px)}}
+.calc .g-cta{border-color:rgba(242,106,31,.5)}
+
+/* ── 06 · la Evaluación: el formulario en una tarjeta ── */
+.ses{margin-top:clamp(44px,5vw,72px);gap:clamp(36px,6vw,96px)}
+.ses>div:last-child{padding:clamp(24px,3vw,44px);border-radius:24px;background:var(--surf);border:1px solid var(--line-2)}
+.three p::before{color:var(--faint);font-weight:600}
+.three p{border-bottom-color:var(--line-2);padding:16px 0}
+.hon{font-size:14px;margin-top:22px}
+input,textarea{border-radius:12px;background:rgba(242,240,236,.03);border-color:var(--line-2);
+  transition:border-color .35s var(--ley),background .35s var(--ley)}
+input:focus,textarea:focus{border-color:rgba(242,106,31,.6);background:rgba(242,240,236,.045)}
+label{font-weight:600}
+.done{border-radius:20px;border-color:var(--line)}
+.done h3{color:var(--ink);font-weight:700}
+
+/* ── quiénes somos: una franja ── */
+.quienes{padding-top:clamp(84px,9vw,128px);padding-bottom:clamp(84px,9vw,128px)}
+.q-row{display:flex;align-items:flex-end;justify-content:space-between;gap:clamp(24px,4vw,60px);flex-wrap:wrap}
+.q-row h2{font-size:clamp(26px,2.6vw,36px);margin-bottom:12px}
+.q-row .g-cta{margin-top:0}
+
+/* pie */
+.foot{background:transparent;border-top:1px solid var(--line-2);
+  padding-left:max(var(--pad),calc((100% - var(--wrap))/2));padding-right:max(var(--pad),calc((100% - var(--wrap))/2))}
+.foot h4{border-bottom:0;padding-bottom:0;color:var(--faint);font-weight:600}
+.foot a.l{font-weight:500;color:var(--ink-2)}
+
+@media(max-width:900px){
+  .cards,.pasos,.tres{grid-template-columns:1fr}
+  .card{min-height:0}
+  .card h3{margin-top:28px}
+  .pasos{gap:40px;padding-top:0;padding-left:28px;border-left:0}
+  .pasos::before{top:6px;bottom:6px;left:3px;right:auto;width:1px;height:auto;transform-origin:50% 0;transform:scaleY(0)}
+  .pasos.in::before,html:not(.js-rv) .pasos::before{transform:none}
+  .pasos li::before{top:6px;left:-28px}
+  .vitrina{grid-template-columns:1fr}
+  .probalo .g-cta{width:100%;justify-content:center}
+}
+@media(max-width:720px){
+  :root{--gap-sec:clamp(84px,22vw,120px)}
+  .plie summary{min-height:68px}
+}
+@media(prefers-reduced-motion:reduce){
+  .js-rv .rv,.js-rv .stg>*{filter:none!important}
+  .pasos::before{transform:none!important;transition:none}
+  .card,.card::before,.g-cta::after,.card .ir::after,.mas,.mas::before,.mas::after{transition:none!important}
+  .card:hover{transform:none}
+  .plie::details-content{transition:none}
+  .plie[open] .plie-in{animation:none}
+}
 </style>
 </head>
 <body>
@@ -1006,24 +1266,22 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 <nav class="nav" id="nav">
   <span class="mark">LEVEL UP<sup>™</sup> <span class="bar-m">|</span> AIMA</span>
   <div class="nav-r">
-    <a href="#construimos" class="destacado">Qué construimos</a>
+    <a href="#construimos">Qué construimos</a>
     <a href="#metodo">Cómo trabajamos</a>
     <a href="#el-sistema">El Sistema</a>
-    <a href="#quien">Para quién</a>
-    <a href="#nosotros">Quiénes somos</a>
+    <a href="#soluciones">Para tu negocio</a>
+    <a href="#sesion" class="nav-cta">Pedí tu Evaluación</a>
     <button class="hamb" id="hamb" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
       <span></span><span></span><span></span>
     </button>
   </div>
 </nav>
 
-<!-- Menú de celular: "Servicios" va PRIMERO, no en el orden de la página — es lo que
-     nadie ve porque está al final, y el 90% del tráfico entra desde el teléfono. -->
 <div class="menu" id="menu" hidden>
-  <a href="#construimos" data-go="construimos" class="destacado">Qué construimos</a>
+  <a href="#construimos" data-go="construimos">Qué construimos</a>
   <a href="#metodo" data-go="metodo">Cómo trabajamos</a>
   <a href="#el-sistema" data-go="el-sistema">El Sistema</a>
-  <a href="#quien" data-go="quien">Para quién</a>
+  <a href="#soluciones" data-go="soluciones">Para tu negocio</a>
   <a href="#nosotros" data-go="nosotros">Quiénes somos</a>
   <a href="#sesion" data-go="sesion" class="menu-cta">Pedí tu Evaluación</a>
 </div>
@@ -1057,219 +1315,108 @@ input.bad,textarea.bad{border-color:#ff5b4d}
 <!-- 02 · QUÉ CONSTRUIMOS -->
 <section class="sec" id="construimos">
   <div class="rv">
-    <div class="tag"><span class="bar"></span><i>02</i> Qué construimos</div>
+    <span class="k">Qué construimos</span>
     <h2>Construimos con IA, <em>de tres maneras.</em></h2>
-    <p class="lead">Un sistema para negocios donde cada venta vale, una plataforma para salones y organizadoras de eventos, y algo hecho desde cero para lo que tu negocio necesita.</p>
   </div>
-  <div class="items stg">
-    <a class="item" href="#el-sistema" data-go="el-sistema">
+  <div class="cards stg">
+    <a class="card" href="#el-sistema" data-go="el-sistema">
+      <span class="num">01</span>
       <h3>El Sistema</h3>
-      <p>Alia, la plataforma donde queda cada consulta con su responsable, más lo que hacemos nosotros: la puesta en marcha, la captación y una reunión mensual.</p>
+      <p>Alia, donde queda cada consulta con su responsable, más la puesta en marcha, la captación y una reunión por mes.</p>
       <span class="ir">Ver cómo funciona</span>
     </a>
-    <a class="item" href="https://eventria.com.ar" target="_blank" rel="noopener">
+    <a class="card" href="https://eventria.com.ar" target="_blank" rel="noopener">
+      <span class="num">02</span>
       <h3>Eventria</h3>
-      <p>Para salones de eventos y organizadoras de fiestas: el salón y la familia coordinan el 15, el casamiento o el cumpleaños paso a paso, con cada detalle ordenado y a la vista.</p>
+      <p>Para salones y organizadoras: cada 15, casamiento o cumpleaños coordinado con la familia, paso a paso.</p>
       <span class="ir ext">Conocer Eventria</span>
     </a>
-    <a class="item" href="#soluciones" data-go="soluciones">
+    <a class="card" href="#soluciones" data-go="soluciones">
+      <span class="num">03</span>
       <h3>Hecho para tu negocio</h3>
-      <p>Un sistema, un agente o una automatización pensados desde cero para lo que hoy hacés a mano. Se arma por piezas, en semanas.</p>
+      <p>Un sistema, un agente o una automatización, pensados desde cero para lo que hoy hacés a mano.</p>
       <span class="ir">Contanos qué necesitás</span>
     </a>
   </div>
 </section>
 
 <!-- 03 · CÓMO TRABAJAMOS -->
-<section class="sec alt" id="metodo">
+<section class="sec" id="metodo">
   <div class="rv">
-    <div class="tag"><span class="bar"></span><i>03</i> Cómo trabajamos</div>
-    <h2>Primero el negocio. <em>Después la IA.</em></h2>
-    <p class="lead">La IA escribe el código. Nosotros decidimos qué construir y revisamos que funcione.</p>
+    <span class="k">Cómo trabajamos</span>
+    <h2>La IA escribe el código. <em>Nosotros decidimos qué construir.</em></h2>
   </div>
-  <div class="mods">
-    <div class="mod rv"><span class="n">01</span><h3>Entendemos tu negocio</h3>
-      <p>Cómo vendés, cómo trabaja tu equipo, dónde se anota cada cosa y dónde se pierde. Antes de construir nada, miramos tu operación real.</p></div>
-    <div class="mod rv"><span class="n">02</span><h3>Construimos solo lo que hace falta</h3>
-      <p>Cada pantalla existe porque tu negocio la necesita, y no hay nada más. Se arma por piezas, en semanas: la primera sola ya trabaja, las siguientes se suman cuando hacen falta.</p></div>
-    <div class="mod rv"><span class="n">03</span><h3>Queda funcionando</h3>
-      <p>Lo ponemos en marcha con vos y lo verificamos juntos. Funcionando, no en una presentación.</p></div>
-  </div>
+  <ol class="pasos stg">
+    <li><span class="num">01</span><h3>Entendemos tu negocio</h3>
+      <p>Cómo vendés, cómo trabaja tu equipo y dónde se pierde cada cosa.</p></li>
+    <li><span class="num">02</span><h3>Construimos solo lo que hace falta</h3>
+      <p>Por piezas, en semanas. La primera ya trabaja sola.</p></li>
+    <li><span class="num">03</span><h3>Queda funcionando</h3>
+      <p>Lo ponemos en marcha con vos y lo verificamos juntos.</p></li>
+  </ol>
 </section>
 
-<!-- EL SISTEMA — abre el tramo que sigue, hasta "Para quién" -->
+<!-- 04 · EL SISTEMA -->
 <section class="sec" id="el-sistema">
   <div class="rv">
-    <div class="tag"><span class="bar"></span> El Sistema</div>
+    <span class="k">El Sistema</span>
     <h2>Alia, más lo que <em>hacemos nosotros.</em></h2>
-    <p class="lead">Alia es la plataforma donde vive todo lo que entra a tu negocio: cada consulta con su responsable, su último contacto y su próximo paso.</p>
-    <p class="lead">El Sistema es Alia más lo que ponemos nosotros: la ponemos en marcha, armamos las campañas en Instagram y Facebook y nos juntamos una vez por mes a mirar los números.</p>
-  </div>
-</section>
-
-<!-- 02 · LA PRUEBA — la pone el visitante, no nosotros -->
-<section class="sec alt" id="prueba">
-  <div class="rv">
-    <div class="tag"><span class="bar"></span><i>04</i> La prueba</div>
-    <h2>Tres preguntas sobre <em>tu propio negocio.</em></h2>
-    <p class="lead">Contestalas ahora, de memoria. Sin abrir nada ni preguntarle a nadie.</p>
+    <p class="lead">Alia es la plataforma donde queda cada consulta con su responsable, su último contacto y su próximo paso. Nosotros la ponemos en marcha, armamos las campañas y nos juntamos una vez por mes a mirar los números.</p>
   </div>
 
-  <div class="test">
-    <ol class="qs stg">
-      <li>¿Cuántas consultas te entraron el mes pasado?</li>
-      <li>¿Cuántas quedaron sin respuesta?</li>
-      <li>¿Qué pasó con la última venta que se te cayó: qué se le dijo y cuándo?</li>
-    </ol>
-    <!-- Sin esta línea las preguntas dejan gusto a reproche, y el reproche cierra al
-         visitante. Absuelve sin sacar el filtro. -->
-    <p class="absuelve">Si respondiste que no a alguna, nadie en tu negocio hizo nada mal.
-      Es que ese dato no vive en ningún lado — <em>todavía.</em></p>
-    <div class="ver rv">
-      <p class="v1">Si no podés contestarlas, ese es el problema. <em>Y no es de tu equipo.</em></p>
-      <p class="v2">La venta más larga que vimos tardó <b>30 días de seguimiento</b>. El cliente nunca dijo que no. Lo que al día dos parece perdido, al día treinta seguía vivo — mientras alguien lo estuviera mirando.</p>
+  <div class="vitrina stg" id="plataforma">
+    <div class="tarj">
+      <div class="tarj-k">Tu mes<small class="muestra">Datos de ejemplo</small></div>
+      <div class="stat"><i>Consultas</i><b>147</b><em>este mes</em></div>
+      <div class="stat ojo"><i>Sin tocar</i><b>9</b><em>para atender</em></div>
+      <div class="stat"><i>Visitas agendadas</i><b>38</b><em>confirmadas</em></div>
     </div>
-  </div>
-</section>
-
-<!-- El título vive con su bajada: separados por una pantalla entera, "Ni un feriado"
-     quedaba huérfano al fondo y el titular se leía más grande que el resto. -->
-<section class="sec luz" id="cambia">
-  <div class="rv">
-    <div class="tag"><span class="bar"></span><i>05</i> Lo que cambia</div>
-    <h2>Nadie contesta un sábado a la <em>una y media.</em></h2>
-    <p class="lead">Ni un feriado. Ni mientras el vendedor está mostrando una unidad. Le pasa igual a los equipos que atienden bien: <b>lo que falla es dónde queda anotado.</b></p>
-  </div>
-
-  <div class="shift stg">
-    <div class="shead"><span>Hoy</span><span>Con el sistema</span></div>
-    <div class="srow"><p class="a">Sábado 13:30: el local recién cerró, la consulta llega y nadie la ve.</p><p class="b">Entra al sistema con hora, origen y responsable asignado. El lunes nadie tiene que acordarse: ya está en la lista de alguien.<em class="si-lia">Si activás <b>LIA</b>, además contesta en el momento, indaga y agenda.</em></p></div>
-    <div class="srow"><p class="a">“¿Qué pasó con el de la Hilux?” — nadie sabe.</p><p class="b">Cada consulta con responsable, último contacto y próximo paso, en tu celular.</p></div>
-    <div class="srow"><p class="a">El seguimiento depende de que alguien se acuerde.</p><p class="b">Las consultas sin responder quedan a la vista en una lista aparte, no perdidas entre las demás.</p></div>
-    <div class="srow"><p class="a">“¿La publicidad sirve?” — una sensación.</p><p class="b">Cada consulta con su origen y su costo. Números para decidir.</p></div>
-    <div class="srow"><p class="a">El negocio depende de que estés encima.</p><p class="b">El proceso corre solo. Vos decidís con información.</p></div>
-  </div>
-
-  <!-- Segundo movimiento de la MISMA sección: arriba se cuenta qué cambia, acá se ve.
-       Eran dos secciones contando lo mismo desde dos ángulos, cada una con su titular
-       y su bajada. Se unieron sin sacar contenido: lo que se fue es el andamiaje
-       repetido, no la información. -->
-  <div class="rv acto2" id="plataforma">
-    <h3 class="h-acto">Esto es lo que ves <em>cuando entrás.</em></h3>
-    <p class="lead">No es una promesa: es la pantalla. Alia, el sistema de gestión de clientes
-      que construimos nosotros, donde vive todo lo que entra a tu negocio.</p>
-  </div>
-
-  <div class="plata stg">
-    <div class="pieza">
-      <div class="tarj">
-        <div class="tarj-k">Tu mes<small class="muestra">Datos de ejemplo</small></div>
-        <div class="stat"><i>Consultas</i><b>147</b><em>este mes</em></div>
-        <div class="stat ojo"><i>Sin tocar</i><b>9</b><em>para atender</em></div>
-        <div class="stat"><i>Visitas agendadas</i><b>38</b><em>confirmadas</em></div>
-      </div>
-      <p class="pie-t"><b>Cuántas entraron.</b><span>Y cuántas nadie tocó todavía.</span></p>
-    </div>
-
-    <div class="pieza">
-      <div class="tarj">
-        <div class="tarj-k">Cada consulta, con dueño<small class="muestra">Datos de ejemplo</small></div>
-        <dl class="ficha">
-          <dt>Consulta</dt><dd>Camioneta 0km · llegó por Instagram</dd>
-          <dt>Responsable</dt><dd>Sofía</dd>
-          <dt>Próximo paso</dt><dd><span class="marca-f">Llamar · mar 21</span></dd>
-        </dl>
-      </div>
-      <p class="pie-t"><b>Nada queda en el celular de nadie.</b><span>Todo tiene un responsable y una fecha para volver a contactar.</span></p>
-    </div>
-
-    <div class="pieza">
-      <div class="tarj">
-        <div class="tarj-k">Actividad<small class="muestra">Datos de ejemplo</small></div>
-        <ul class="linea">
-          <li class="sist"><span>22:15</span><p>Atendió la consulta</p></li>
-          <li class="sist"><span>22:18</span><p>Calificó: <b>listo para visita</b></p></li>
-          <li class="sist"><span>22:21</span><p>Agendó visita <b>mar 21</b></p></li>
-          <li><span>09:40</span><p><b>Sofía</b> abrió la consulta</p></li>
-          <li><span>11:02</span><p><b>Sofía</b> la movió a Presupuesto</p></li>
-        </ul>
-      </div>
-      <p class="pie-t"><b>Quién hizo qué, y cuándo.</b><span>Incluido lo que hizo el sistema solo.</span></p>
-    </div>
-
-    <div class="pieza">
-      <div class="tarj">
-        <div class="tarj-k">Por qué se pierden<small class="muestra">Datos de ejemplo</small></div>
-        <ul class="barras">
-          <li><span>Precio</span><i>41%</i><u style="--v:41%"></u></li>
-          <li><span>Compró en otro lado</span><i>26%</i><u style="--v:26%"></u></li>
-          <li><span>No tenía la unidad</span><i>18%</i><u style="--v:18%"></u></li>
-          <li><span>Sin financiación</span><i>15%</i><u style="--v:15%"></u></li>
-        </ul>
-      </div>
-      <p class="pie-t"><b>Por qué se caen.</b><span>Escrito al cerrar cada una, no adivinado a fin de mes.</span></p>
+    <div class="tarj">
+      <div class="tarj-k">Actividad<small class="muestra">Datos de ejemplo</small></div>
+      <ul class="linea">
+        <li class="sist"><span>Sáb 13:30</span><p>Entró una consulta por Instagram</p></li>
+        <li class="sist"><span>Sáb 13:30</span><p>Quedó asignada a <b>Sofía</b></p></li>
+        <li><span>Lun 9:40</span><p><b>Sofía</b> abrió la consulta</p></li>
+        <li><span>Lun 11:02</span><p><b>Sofía</b> la movió a Presupuesto</p></li>
+        <li><span>Lun 11:05</span><p>Próximo paso: <b>llamar el mar 21</b></p></li>
+      </ul>
     </div>
   </div>
 
-  <p class="cierre-plata rv">LIA es una parte de esto — la que contesta cuando no hay nadie.
-    <b>El sistema es todo lo demás:</b> dónde queda cada consulta, quién la sigue, y qué ves vos.</p>
-</section>
-
-<!-- 04 · LA DEMOSTRACIÓN — el visitante lo comprueba solo, no se lo explicamos.
-     La promesa es verificable: el número atiende como Level Up, así que lo que se
-     ofrece es ver cómo atiende NUESTRO propio negocio, no simular el suyo. -->
-<section class="sec alt" id="probalo">
-  <div class="rv">
-    <div class="tag"><span class="bar"></span><i>06</i> La demostración</div>
-    <h2>No nos creas. <em>Probalo.</em></h2>
-    <p class="lead">Escribinos ahora. A la hora que sea — un sábado a la tarde, un feriado,
-      mientras estás atendiendo a otro cliente.</p>
-    <p class="lead">Te va a contestar el mismo sistema que instalamos,
-      andando en nuestro propio negocio: te responde al instante, te hace las preguntas
-      correctas y, si querés, te agenda una llamada de 45 minutos ahí mismo.</p>
-    <p class="lead"><b>Así se siente del otro lado.</b> Con tu información y tu forma de hablar,
-      haría lo mismo en el tuyo.</p>
+  <div class="probalo rv" id="probalo">
+    <p><b>No nos creas. Probalo.</b> Escribinos un sábado a la una y media: te contesta el mismo sistema que instalamos, andando en nuestro propio negocio.</p>
     <a class="g-cta" href="https://wa.me/5493482583784?text=Hola%2C%20vengo%20de%20la%20web%20y%20quiero%20probar%20el%20sistema."
-       target="_blank" rel="noopener">Probalo ahora →</a>
-  </div>
-</section>
-
-<!-- 05 · EL SISTEMA -->
-<section class="sec" id="sistema">
-  <div class="rv">
-    <div class="tag"><span class="bar"></span><i>07</i> Qué incluye</div>
-    <h2 class="h-sistema">Un sistema. <em>Se entrega entero.</em></h2>
-    <p class="lead">Todo lo que sigue viene adentro. Se instala una vez y queda funcionando.</p>
+       target="_blank" rel="noopener">Probalo por WhatsApp</a>
   </div>
 
-  <!-- Cuatro módulos y no seis: "lo que ves vos" es parte del orden, y "se conecta
-       sin que cambien nada" es parte de la puesta en marcha. Nada de contenido se
-       perdió — se juntó lo que era la misma idea contada dos veces. -->
+  <div class="pliegues rv">
+    <details class="plie" id="sistema">
+      <summary><span>Qué incluye</span><i class="mas" aria-hidden="true"></i></summary>
+      <div class="plie-in">
+        <p class="lead">Todo lo que sigue viene adentro. Se instala una vez y queda funcionando.</p>
   <div class="mods">
-    <div class="mod rv"><span class="n">01</span><h3>El orden — el núcleo</h3>
+    <div class="mod"><span class="n">01</span><h3>El orden — el núcleo</h3>
       <p>Toda consulta cae en un solo lugar y <b>se reparte por turno entre los vendedores</b>, sin que dos caigan en el mismo; cada uno ve su cartera y nada más. Las que quedan sin responder van a una lista aparte, no perdidas entre las demás. Lo ves en el tablero del celular, con reporte mensual y una revisión trimestral del negocio.
         <span class="meta">Origen · responsable · tiempo de respuesta · próximo paso</span></p></div>
 
-    <div class="mod rv"><span class="n">02</span><h3>LIA<span class="opt">OPCIONAL</span></h3>
+    <div class="mod"><span class="n">02</span><h3>LIA<span class="opt">OPCIONAL</span></h3>
       <p>Nuestro agente propio. Atiende las 24 horas, indaga como vendedor del rubro, califica, agenda y deriva con un resumen. Transcribe audios y entiende las fotos que manda el cliente. Si el cliente deja de responder, <b>retoma la conversación por su cuenta</b> —a las 5 y a las 22 horas, y al segundo día si llegó por un anuncio— con lo último que hablaron, no con un mensaje genérico. Se apaga cuando quieras. <b>Viene incluida y se activa solo si la querés.</b>
         <span class="meta">Atiende y califica · el cierre es del equipo</span></p></div>
 
-    <div class="mod rv"><span class="n">03</span><h3>La captación, incluida</h3>
+    <div class="mod"><span class="n">03</span><h3>La captación, incluida</h3>
       <p>Campañas en Instagram y Facebook con optimización continua, <b>5 piezas por mes</b> (3 creativos nuevos y 2 variaciones) y una reunión mensual. El reporte de captación va separado: consultas generadas y costo por consulta.
         <span class="meta">La inversión publicitaria la pagás vos, directo a Meta</span></p></div>
 
-    <div class="mod rv"><span class="n">04</span><h3>La puesta en marcha</h3>
+    <div class="mod"><span class="n">04</span><h3>La puesta en marcha</h3>
       <p><b>Tu número de siempre o uno nuevo</b>, como te convenga; si conservás el tuyo, tu equipo sigue contestando desde su celular igual que hoy. Dos licencias, capacitación de dos horas, datos aislados y accesos documentados. <b>Tope de 21 días hábiles</b>: si no está funcionando según el checklist que firmamos los dos, se devuelve el 100% de la implementación.
         <span class="meta">La verificación en Meta la gestionamos nosotros · sin permanencia, te vas avisando con 30 días y te llevás la base</span></p></div>
   </div>
-
-  <div class="rail" aria-hidden="true"></div>
-
-  <!-- Como en la versión publicada: dentro de la misma sección, en dos columnas
-       con la cruz naranja. Centrada y en tres se leía mal. -->
-  <div class="rv">
-    <span class="grupo-tit">Lo que no hacemos</span>
-    <h2>Escrito acá para que <em>no haya sorpresas.</em></h2>
+      </div>
+    </details>
+    <details class="plie" id="no-hacemos">
+      <summary><span>Lo que no hacemos</span><i class="mas" aria-hidden="true"></i></summary>
+      <div class="plie-in">
+        <p class="lead">Escrito acá para que no haya sorpresas.</p>
     <div class="nots">
       <div>Manejar tus redes o publicar contenido.</div>
       <div>Garantizar ventas o cantidad de consultas.</div>
@@ -1278,24 +1425,12 @@ input.bad,textarea.bad{border-color:#ff5b4d}
       <div>Integrar los grupos de WhatsApp (la plataforma no lo permite).</div>
       <div>Google Ads ni contenido orgánico.</div>
     </div>
-  </div>
-</section>
-
-<!-- 06 · PARA QUIÉN — la góndola del costado, NO la vidriera (regla 90/10).
-     El agente lleva su alcance escrito: es la frontera que protege la oferta del
-     Sistema. Acá no se nombra a LIA. CTA a WhatsApp, nunca a la sesión. -->
-<!-- PARA QUIÉN va pegada al Sistema, ANTES de Soluciones: el filtro es del
-     Sistema (concesionarias, alto ticket). Debajo de AIMA se leía como si las
-     soluciones tuvieran los mismos requisitos, y no los tienen. El que no encaja
-     acá ve la puerta de AIMA justo después. -->
-<section class="sec luz" id="quien">
-  <div class="rv">
-    <div class="tag"><span class="bar"></span><i>08</i> Para quién es el Sistema</div>
-    <h2>No trabajamos <em>con todos.</em></h2>
-    <p class="lead">Preferimos decirlo ahora y no descubrirlo a los dos meses.</p>
-  </div>
-  <!-- Lo que descarta a la izquierda y apagado; lo que suma a la derecha y con peso.
-       Cada renglón se resuelve solo al entrar en pantalla. -->
+      </div>
+    </details>
+    <details class="plie" id="quien">
+      <summary><span>Para quién es</span><i class="mas" aria-hidden="true"></i></summary>
+      <div class="plie-in">
+        <p class="lead">No trabajamos con todos. Preferimos decirlo ahora y no descubrirlo a los dos meses.</p>
   <div class="diag" id="diag">
     <div class="col-no">
       <span class="col-tit">No es para vos si…</span>
@@ -1318,57 +1453,34 @@ input.bad,textarea.bad{border-color:#ff5b4d}
         <span>Querés mejorar tu proceso y sabés que <b>te vas a tener que involucrar.</b></span></div>
     </div>
   </div>
-
-  <!-- La cuenta va enganchada acá, no como titular suelto: sola en pantalla se leía
-       como una promesa gigante en vez de como el cierre del filtro. -->
-  <div class="cuenta rv">
+  <div class="cuenta">
     <p class="c2">El sistema se paga si recupera <b>una sola operación cada tres meses.</b></p>
     <p class="c3">El margen de esa operación lo sabés vos, y la cuenta la hacés con tus números. Lo que ponemos nosotros es la trazabilidad para saber si apareció de verdad, en vez de discutirlo por sensación.</p>
   </div>
-  <!-- Sacada por ahora la política de "una sola empresa por ciudad": vemos cómo va sin eso.
-       El bloque .policy sigue en el CSS por si vuelve. -->
+      </div>
+    </details>
+  </div>
 </section>
 
-<!-- 07 · AIMA — fusionada con "También, por separado": una sola sección.
-     Es la que tiene que traer trabajo mientras se consiguen clientes del Sistema,
-     así que lleva el mayor carácter de la página. Sin precios, sin abonos.
-     El agente NO se llama LIA acá: LIA viene adentro del Sistema. -->
+<!-- 05 · HECHO PARA TU NEGOCIO -->
 <section class="sec" id="soluciones">
   <div class="rv">
-    <div class="tag"><span class="bar"></span><i>09</i> Hecho para tu negocio</div>
-    <!-- Abre por el PROBLEMA, nunca por "IA" ni por "agentes". El contraste con el
-         software genérico ES el argumento: no lleva explicación encima. -->
+    <span class="k">Hecho para tu negocio</span>
     <h2 class="h-aima">Construimos el sistema que tu negocio necesita. <em>No el que te tocó.</em></h2>
-    <p class="lead lead-aima">Tres cosas, y se cotizan por separado: <b>sistemas a medida</b> para lo que hoy
-      hacés a mano, <b>agentes</b> que atienden cuando no hay nadie, y <b>automatizaciones</b> para todo lo que se repite.</p>
   </div>
 
-  <div class="bloque-a rv">
-    <span class="grupo-tit">Sistemas a medida</span>
-    <blockquote class="dialogo">
-      <p>— ¿Por qué lo cargan así?</p>
-      <p><em>— Porque el sistema no me deja.</em></p>
-    </blockquote>
-    <p class="lead lead-aima">Esa frase se dice todos los días: gente trabajando como el programa
-      quiere, no como el negocio necesita, sin la única función que de verdad les falta.</p>
-    <p class="lead lead-aima"><b>Un sistema a medida es lo contrario.</b> Cada pantalla existe porque tu
-      negocio la necesita, y no hay nada más. Se arma por piezas, en semanas: la primera sola
-      ya trabaja, las siguientes se suman cuando hacen falta. Clínica, taller, campo, comercio
-      — da igual.</p>
+  <blockquote class="dialogo rv">
+    <p>— ¿Por qué lo cargan así?</p>
+    <p><em>— Porque el sistema no me deja.</em></p>
+  </blockquote>
+
+  <div class="tres stg">
+    <div><h3>Sistemas</h3><p>Cada pantalla existe porque tu negocio la necesita. Se arma por piezas, en semanas.</p></div>
+    <div><h3>Agentes</h3><p>Atienden, responden y agendan cuando no hay nadie.</p></div>
+    <div><h3>Automatizaciones</h3><p>Las tareas repetitivas que se hacen solas.</p></div>
   </div>
 
-  <div class="bloque-a rv">
-    <span class="grupo-tit">Agentes</span>
-    <p class="lead lead-aima">Atienden, responden y agendan cuando no hay nadie. Para cualquier rubro
-      donde una consulta sin respuesta es una oportunidad perdida.</p>
-  </div>
-
-  <div class="bloque-a rv">
-    <span class="grupo-tit">Automatizaciones</span>
-    <p class="lead lead-aima">Las tareas repetitivas que se hacen solas.</p>
-
-    <!-- LA CUENTA · el resultado es SIEMPRE tiempo, nunca plata: "13 días al año" es
-         aritmética, "ahorrás $X" sería una promesa. Sin formulario ni registro. -->
+  <div class="rv">
     <div class="calc" id="calc">
       <h3>¿Cuánto te cuesta lo que hacés a mano?</h3>
 
@@ -1403,49 +1515,30 @@ input.bad,textarea.bad{border-color:#ff5b4d}
     </div>
   </div>
 
-  <div class="grupo rv">
-    <span class="grupo-tit">Miramos y enseñamos</span>
-    <div class="items dos stg">
-      <div class="item">
-        <h3>Radiografía Comercial<sup>™</sup></h3>
-        <p>Evaluamos tu proceso comercial de punta a punta. Te queda el mapa de fugas y una sola prioridad.</p>
-      </div>
-      <div class="item">
-        <h3>Capacitación de equipos</h3>
-        <p>Protocolo de atención y seguimiento, entrenado sobre tu operación real.</p>
-      </div>
-    </div>
-  </div>
+  <p class="tambien rv">También hacemos <b>Radiografía Comercial<sup>™</sup></b> —tu proceso comercial de punta a punta— y <b>capacitación de equipos</b> sobre tu operación real.</p>
 
-  <!-- La línea de viabilidad es regla fija de la marca y se cayó con la reestructura:
-       vuelve acá, que es donde sostiene al CTA sin meterse en los tres bloques. -->
-  <p class="lead lead-aima rv" style="margin-top:clamp(30px,3.6vw,46px)"><b>Si no es viable o no te conviene, también te lo decimos.</b></p>
-  <div class="rv"><a class="g-cta" href="https://wa.me/5493482583784?text=Hola%2C%20vengo%20de%20la%20web.%20Esto%20es%20lo%20que%20mi%20sistema%20no%20me%20deja%20hacer%3A%20" target="_blank" rel="noopener">Contanos qué es lo que tu sistema (o tu Excel) no te deja hacer →</a></div>
+  <div class="cierre rv">
+    <p class="lead"><b>Si no es viable o no te conviene, también te lo decimos.</b></p>
+    <a class="g-cta" href="https://wa.me/5493482583784?text=Hola%2C%20vengo%20de%20la%20web.%20Esto%20es%20lo%20que%20mi%20sistema%20no%20me%20deja%20hacer%3A%20" target="_blank" rel="noopener">Contanos qué es lo que tu sistema (o tu Excel) no te deja hacer</a>
+  </div>
 </section>
 
-<!-- PARA QUIÉN — en claro, cierra la zona clara -->
-
-<!-- 08 · LA SESIÓN -->
-<section class="sec alt" id="sesion">
+<!-- 06 · LA EVALUACIÓN -->
+<section class="sec" id="sesion">
   <div class="rv">
-    <div class="tag"><span class="bar"></span><i>10</i> La Evaluación</div>
+    <span class="k">La Evaluación</span>
     <h2>Tu Evaluación: <em>45 minutos.</em></h2>
-    <!-- CUPO: este número vive SOLO acá. Pendiente de recalcular con captación adentro
-         (si baja a una por mes, se cambia esta línea y listo). -->
     <p class="lead">Sin cargo. Miramos tus propios números juntos. <b>Los cupos son limitados de verdad</b>: se hacen dos implementaciones por mes.</p>
     <p class="lead">¿Preferís escribir? <a href="https://wa.me/5493482583784?text=Quiero%20mi%20Evaluaci%C3%B3n" target="_blank" rel="noopener">Pedila por WhatsApp</a>.</p>
   </div>
 
   <div class="ses">
     <div class="rv">
-      <!-- Las tres preguntas se mudaron arriba, al módulo 02. Acá va cómo funciona
-           la sesión, para no repetir la misma lista dos veces en la página. -->
       <div class="three">
         <p>Nos contás cómo trabaja tu negocio hoy, con lo que tengas: planilla, cuaderno, capturas de WhatsApp.</p>
         <p>Vemos juntos qué se puede resolver, y qué no.</p>
         <p>Salís con una respuesta escrita: qué haríamos y cómo, contrates o no.</p>
       </div>
-      <p class="ask">Primero entendemos tu negocio. Después vemos qué construir.</p>
       <p class="hon">Si de la Evaluación sale que lo que necesitás no es algo que hagamos, te lo decimos y no te vendemos nada. Pasa, y está bien que pase.</p>
     </div>
 
@@ -1485,17 +1578,14 @@ input.bad,textarea.bad{border-color:#ff5b4d}
   </div>
 </section>
 
-<!-- QUIÉNES SOMOS — va DESPUÉS del formulario a propósito: antes sacaría al
-     visitante de la página justo antes de la oferta. Sin número de sección: no es
-     parte del argumento, es la salida. El botón promete contenido ("Vernos
-     trabajar"), no pide un follow, y abre en pestaña nueva para no perderlo. -->
+<!-- QUIÉNES SOMOS -->
 <section class="sec quienes" id="nosotros">
-  <div class="rv">
-    <h2 class="h-q">¿Quiénes somos?</h2>
-    <p class="lead">Eso no se cuenta en una página. <b>Se ve trabajando.</b></p>
-    <p class="lead">En nuestro Instagram mostramos lo que construimos cada semana:
-      los sistemas, las decisiones — y lo que sale mal, también.</p>
-    <a class="g-cta" href="https://instagram.com/levelup.aima" target="_blank" rel="noopener">Vernos trabajar →</a>
+  <div class="rv q-row">
+    <div>
+      <h2 class="h-q">¿Quiénes somos?</h2>
+      <p class="lead">Eso no se cuenta en una página. <b>Se ve trabajando.</b> En nuestro Instagram mostramos lo que construimos cada semana — y lo que sale mal, también.</p>
+    </div>
+    <a class="g-cta" href="https://instagram.com/levelup.aima" target="_blank" rel="noopener">Vernos trabajar</a>
   </div>
 </section>
 
@@ -1512,7 +1602,7 @@ input.bad,textarea.bad{border-color:#ff5b4d}
       <a class="l" href="#construimos">Qué construimos</a>
       <a class="l" href="#metodo">Cómo trabajamos</a>
       <a class="l" href="#el-sistema">El Sistema</a>
-      <a class="l" href="#quien">Para quién</a>
+      <a class="l" href="#quien">Para quién es</a>
       <a class="l" href="#soluciones">Hecho para tu negocio</a>
     </div>
     <div>
@@ -2037,6 +2127,29 @@ input.bad,textarea.bad{border-color:#ff5b4d}
     });
   });
 })();
+
+  /* ══ AIRE ══ la luz de las tarjetas sigue al cursor; y si alguien llega a un
+     desplegable (#quien, #sistema) por un enlace, se abre solo antes de bajar. */
+  (function(){
+    if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+      document.querySelectorAll('.card').forEach(function(c){
+        c.addEventListener('pointermove',function(e){
+          var r=c.getBoundingClientRect();
+          c.style.setProperty('--mx',(e.clientX-r.left)+'px');
+          c.style.setProperty('--my',(e.clientY-r.top)+'px');
+        });
+      });
+    }
+    function abrir(id){
+      var t=id&&document.getElementById(id); if(!t) return;
+      var d=t.tagName==='DETAILS'?t:t.closest('details'); if(d) d.open=true;
+    }
+    document.addEventListener('click',function(e){
+      var a=e.target.closest&&e.target.closest('a[href^="#"]'); if(a) abrir(a.getAttribute('href').slice(1));
+    },true);
+    window.addEventListener('hashchange',function(){abrir(location.hash.slice(1));});
+    if(location.hash) abrir(location.hash.slice(1));
+  })();
 </script>
 <script>
 /* VIDEO DEL HERO. Elige el archivo horizontal o el vertical según el ancho (y lo
