@@ -1364,6 +1364,71 @@ h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
   .naranja{clip-path:none}
   .vitrina .linea li{transition:none;opacity:1!important;transform:none!important}
 }
+
+/* ══════════ DETALLES ══════════ */
+/* títulos: cada palabra sube desde abajo de su propio renglón */
+.w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.14em;margin-bottom:-.14em}
+.wi{display:inline-block;transform:translateY(108%);transition:transform 1.05s var(--ley)}
+.in .wi,html:not(.js-rv) .wi{transform:none}
+.js-rv .rv:has(.w){filter:none}
+
+/* menú: una píldora marca dónde estás */
+.nav-r{position:relative}
+.nav-pill{position:absolute;top:50%;left:0;height:36px;width:0;margin-top:-18px;border-radius:999px;z-index:-1;
+  background:rgba(242,240,236,.07);border:1px solid rgba(242,240,236,.08);opacity:0;
+  transition:transform .6s var(--ley),width .6s var(--ley),opacity .4s var(--ley)}
+.nav-r a{position:relative;padding:0 12px}
+.nav-r a.on{color:var(--ink)}
+@media(max-width:720px){.nav-pill{display:none}}
+
+/* botones: se acercan apenas al cursor */
+.btn,.g-cta,.nav-r a.nav-cta,.fila .fl{will-change:transform}
+.mag{transition:transform .5s var(--ley)}
+
+/* ── el plano naranja ── */
+.naranja-tx::before{content:'';position:absolute;inset:-14% -10%;z-index:-1;pointer-events:none;
+  background:radial-gradient(closest-side,var(--hot) 55%,rgba(242,106,31,0))}
+.naranja-k{display:inline-flex;align-items:center;gap:10px;margin-bottom:clamp(22px,2.6vw,34px);
+  padding:9px 16px 9px 12px;border-radius:999px;background:#170e08;color:#f6e3d6;
+  font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase}
+.naranja-k::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--hot)}
+.naranja-f{color:#120904;font-weight:800;letter-spacing:-.06em}
+.subr{position:relative;display:inline-block}
+.subr svg{position:absolute;left:-2%;right:-2%;bottom:-.06em;width:104%;height:.26em;overflow:visible}
+.subr path{fill:none;stroke:#120904;stroke-width:7;stroke-linecap:round;
+  stroke-dasharray:640;stroke-dashoffset:640;transition:stroke-dashoffset 1.4s var(--ley) .3s}
+.naranja.ve .subr path,html:not(.js-rv) .subr path{stroke-dashoffset:0}
+.naranja-s{color:#170e08;font-weight:600}
+
+/* ── El Sistema como captura de producto: marco de app, inclinado, se endereza al bajar ── */
+.marco{position:relative;margin-top:clamp(52px,6vw,88px);padding:0 clamp(10px,1.2vw,16px) clamp(10px,1.2vw,16px);
+  border-radius:26px;background:linear-gradient(180deg,#262422,#1e1d1b);border:1px solid rgba(242,240,236,.1);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 60px 120px -50px rgba(0,0,0,.9),0 30px 60px -40px rgba(0,0,0,.7);
+  transform:perspective(1600px) rotateX(var(--tilt,0deg)) scale(var(--sc,1));transform-origin:50% 0}
+.marco::before{content:'';position:absolute;inset:-14% -8% -10%;z-index:-1;pointer-events:none;
+  background:radial-gradient(50% 50% at 50% 40%,rgba(242,106,31,.16),transparent 70%)}
+.marco-bar{display:flex;align-items:center;gap:7px;height:46px;padding:0 6px}
+.marco-bar i{width:10px;height:10px;border-radius:50%;background:rgba(242,240,236,.16)}
+.marco-bar i:first-child{background:var(--hot)}
+.marco-bar span{margin:0 auto;padding:5px 14px;border-radius:8px;background:rgba(242,240,236,.05);
+  font-size:12px;color:var(--faint);letter-spacing:.02em;transform:translateX(-24px)}
+.marco .vitrina{margin-top:0}
+.marco .vitrina::before{display:none}
+.marco .tarj{background:rgba(26,25,24,.9);box-shadow:none}
+
+/* ── pie: la marca, enorme ── */
+.foot{overflow:hidden}
+.foot-big{margin-top:clamp(40px,5vw,72px);font-size:min(17vw,250px);font-weight:800;letter-spacing:-.07em;
+  line-height:.78;white-space:nowrap;text-align:center;color:transparent;-webkit-text-stroke:1px rgba(242,240,236,.16);
+  -webkit-mask-image:linear-gradient(180deg,#000 30%,transparent 95%);mask-image:linear-gradient(180deg,#000 30%,transparent 95%);
+  user-select:none}
+
+@media(prefers-reduced-motion:reduce){
+  .wi{transform:none!important;transition:none}
+  .marco{transform:none!important}
+  .subr path{stroke-dashoffset:0;transition:none}
+  .nav-pill,.mag{transition:none}
+}
 </style>
 </head>
 <body>
@@ -1383,6 +1448,7 @@ h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
     <a href="#el-sistema">El Sistema</a>
     <a href="#soluciones">Para tu negocio</a>
     <a href="#sesion" class="nav-cta">Pedí tu Evaluación</a>
+    <span class="nav-pill" aria-hidden="true"></span>
     <button class="hamb" id="hamb" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
       <span></span><span></span><span></span>
     </button>
@@ -1467,7 +1533,8 @@ h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
 <section class="naranja" id="corte" aria-label="Del enredo al orden">
   <canvas class="motas" aria-hidden="true"></canvas>
   <div class="naranja-tx">
-    <p class="naranja-f">Del enredo<br>al orden.</p>
+    <span class="naranja-k">Lo que hace Level Up</span>
+    <p class="naranja-f">Del enredo<br><span class="subr">al orden.<svg viewBox="0 0 600 40" preserveAspectRatio="none" aria-hidden="true"><path d="M6 28 C 120 12, 260 8, 380 18 S 560 30, 594 14"/></svg></span></p>
     <p class="naranja-s">Eso construimos: que cada cosa de tu negocio tenga su lugar, su responsable y su próximo paso.</p>
   </div>
 </section>
@@ -1480,6 +1547,8 @@ h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
     <p class="lead">Alia es la plataforma donde queda cada consulta con su responsable, su último contacto y su próximo paso. Nosotros la ponemos en marcha, armamos las campañas y nos juntamos una vez por mes a mirar los números.</p>
   </div>
 
+  <div class="marco" id="marco">
+  <div class="marco-bar" aria-hidden="true"><i></i><i></i><i></i><span>Alia · tu negocio</span></div>
   <div class="vitrina stg" id="plataforma">
     <div class="tarj">
       <div class="tarj-k">Tu mes<small class="muestra">Datos de ejemplo</small></div>
@@ -1497,6 +1566,8 @@ h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
         <li><span>Lun 11:05</span><p>Próximo paso: <b>llamar el mar 21</b></p></li>
       </ul>
     </div>
+  </div>
+
   </div>
 
   <div class="probalo rv" id="probalo">
@@ -1736,6 +1807,7 @@ h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
   <!-- Razón social textual: NO se abrevia ni se reformula. Tiene que coincidir con la
        constancia de ARCA — es lo que conecta la marca con la persona ante Meta. -->
   <p class="razon">Level Up™ | AIMA es la marca comercial de Nicolás Óscar Escobar · Reconquista, Santa Fe, Argentina</p>
+  <div class="foot-big" aria-hidden="true">LEVEL UP</div>
 </footer>
 
 </div>
@@ -2296,20 +2368,28 @@ h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
     }
     function dibuja(now){
       var t=(now-t0)/1000; ctx.clearRect(0,0,W,H);
-      var p=prog*prog*(3-2*prog);
-      for(var i=0;i<P.length;i++){
-        var q=P[i], k=t*q.v;
-        var ex=W/2+q.rx*Math.sin(q.a*k+q.fa), ey=H/2+q.ry*Math.sin(q.b*k+q.fb);
-        var x=ex+(q.ox-ex)*p, y=ey+(q.oy-ey)*p;
-        var dy=Math.abs(y-H/2)/(H*.26), dx=Math.abs(x-W/2)/(W*.36), lejos=Math.min(1,Math.max(dx,dy));
-        ctx.globalAlpha=(.22+.2*p)*(.25+.75*lejos);
-        ctx.fillStyle='#170e08';
-        ctx.beginPath();ctx.arc(x,y,q.r,0,6.283);ctx.fill();
+      var p=prog*prog*(3-2*prog), filas=W<720?8:10, x0=W*.08, span=W*.84;
+      // carriles: líneas finas que se encienden cuando las motas llegan, con un claro detrás del texto
+      if(p>.25){
+        for(var f=0;f<filas;f++){
+          var y=P[f].oy, g=ctx.createLinearGradient(x0,0,x0+span,0), a=(p-.25)*.5;
+          g.addColorStop(0,'rgba(23,14,8,0)');g.addColorStop(.12,'rgba(23,14,8,'+a+')');
+          g.addColorStop(.3,'rgba(23,14,8,'+(a*.15)+')');g.addColorStop(.7,'rgba(23,14,8,'+(a*.15)+')');
+          g.addColorStop(.88,'rgba(23,14,8,'+a+')');g.addColorStop(1,'rgba(23,14,8,0)');
+          ctx.strokeStyle=g;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x0,y);ctx.lineTo(x0+span,y);ctx.stroke();
+        }
       }
-      if(p>.6){ // las filas se unen con una línea fina cuando ya están en su lugar
-        ctx.globalAlpha=(p-.6)*.45; ctx.strokeStyle='#170e08'; ctx.lineWidth=1;
-        var filas=W<720?8:10;
-        for(var f=0;f<filas;f++){var y=P[f].oy;ctx.beginPath();ctx.moveTo(W*.08,y);ctx.lineTo(W*.92,y);ctx.stroke();}
+      ctx.fillStyle='#170e08';
+      for(var i=0;i<P.length;i++){
+        var q=P[i], k=t*q.v, fila=i%filas, dir=fila%2?-1:1, vel=26+ (fila*7)%23;
+        var ex=W/2+q.rx*Math.sin(q.a*k+q.fa), ey=H/2+q.ry*Math.sin(q.b*k+q.fb);
+        // ya ordenadas no se quedan quietas: corren por su carril, cada fila a su ritmo
+        var ox=x0+(((q.ox-x0)+dir*t*vel)%span+span)%span;
+        var x=ex+(ox-ex)*p, y=ey+(q.oy-ey)*p;
+        var borde=Math.min(1,Math.min(ox-x0,x0+span-ox)/(W*.05));
+        var dy=Math.abs(y-H/2)/(H*.3), dx=Math.abs(x-W/2)/(W*.34), lejos=Math.min(1,Math.max(dx,dy));
+        ctx.globalAlpha=(.24+.24*p)*(.08+.92*lejos)*(p>.5?(.3+.7*borde):1);
+        ctx.beginPath();ctx.arc(x,y,q.r*(1+.25*p),0,6.283);ctx.fill();
       }
       ctx.globalAlpha=1;
       if(visible&&!quieto) raf=requestAnimationFrame(dibuja);
@@ -2319,6 +2399,7 @@ h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
       var entra=Math.min(1,Math.max(0,(vh-r.top)/(vh*.75)));
       sec.style.setProperty('--abre',quieto?'150%':(6+entra*144).toFixed(1)+'%');
       if(!quieto) prog=Math.min(1,Math.max(0,(vh*.55-r.top)/(r.height*.7)));
+      if(entra>.85) sec.classList.add('ve');
     }
     arma(); scroll();
     if(quieto){ dibuja(performance.now()); }
@@ -2329,6 +2410,70 @@ h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
       window.addEventListener('scroll',scroll,{passive:true});
     }
     window.addEventListener('resize',function(){arma();scroll();if(quieto)dibuja(performance.now());});
+  })();
+
+  /* DETALLES: títulos palabra por palabra, píldora del menú, captura que se endereza,
+     botones que se acercan al cursor */
+  (function(){
+    var quieto=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!quieto){
+      document.querySelectorAll('main h2').forEach(function(h){
+        var n=0;
+        (function parte(el){
+          [].slice.call(el.childNodes).forEach(function(nd){
+            if(nd.nodeType===3){
+              var frag=document.createDocumentFragment();
+              nd.textContent.split(/(\s+)/).forEach(function(w){
+                if(!w) return;
+                if(/^\s+$/.test(w)){frag.appendChild(document.createTextNode(w));return;}
+                var o=document.createElement('span');o.className='w';
+                var i=document.createElement('span');i.className='wi';i.textContent=w;
+                i.style.transitionDelay=(n++*0.045).toFixed(3)+'s';o.appendChild(i);frag.appendChild(o);
+              });
+              el.replaceChild(frag,nd);
+            } else if(nd.nodeType===1) parte(nd);
+          });
+        })(h);
+        h.setAttribute('aria-label',h.textContent.replace(/\s+/g,' ').trim());
+      });
+    }
+    // píldora del menú
+    var pill=document.querySelector('.nav-pill'), links=[].slice.call(document.querySelectorAll('.nav-r a[href^="#"]:not(.nav-cta)'));
+    function marca(a){
+      links.forEach(function(l){l.classList.toggle('on',l===a);});
+      if(!pill) return;
+      if(!a){pill.style.opacity='0';return;}
+      pill.style.width=a.offsetWidth+'px';pill.style.transform='translateX('+a.offsetLeft+'px)';pill.style.opacity='1';
+    }
+    if('IntersectionObserver' in window && links.length){
+      var mapa={}; links.forEach(function(l){mapa[l.getAttribute('href').slice(1)]=l;});
+      var vis={};
+      var io=new IntersectionObserver(function(es){
+        es.forEach(function(e){vis[e.target.id]=e.isIntersecting?e.intersectionRatio:0;});
+        var mejor=null,m=0; for(var k in vis){if(vis[k]>m){m=vis[k];mejor=k;}}
+        marca(mejor&&m>0?mapa[mejor]:null);
+      },{threshold:[0,.15,.3,.5],rootMargin:'-30% 0px -40% 0px'});
+      Object.keys(mapa).forEach(function(id){var el=document.getElementById(id); if(el) io.observe(el);});
+    }
+    // la captura de Alia: entra inclinada y se endereza a medida que sube
+    var mc=document.getElementById('marco');
+    if(mc&&!quieto){
+      var pend=false;
+      function inclina(){pend=false;var r=mc.getBoundingClientRect(),vh=window.innerHeight;
+        var k=Math.min(1,Math.max(0,(vh-r.top)/(vh*.8)));
+        mc.style.setProperty('--tilt',(18*(1-k)).toFixed(2)+'deg');mc.style.setProperty('--sc',(.92+.08*k).toFixed(3));}
+      window.addEventListener('scroll',function(){if(!pend){pend=true;requestAnimationFrame(inclina);}},{passive:true});
+      inclina();
+    }
+    // botones magnéticos
+    if(!quieto && window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+      document.querySelectorAll('.btn,.g-cta,.nav-r a.nav-cta,.send').forEach(function(b){
+        b.classList.add('mag');
+        b.addEventListener('pointermove',function(e){var r=b.getBoundingClientRect();
+          b.style.transform='translate('+((e.clientX-r.left-r.width/2)*.18).toFixed(1)+'px,'+((e.clientY-r.top-r.height/2)*.28).toFixed(1)+'px)';});
+        b.addEventListener('pointerleave',function(){b.style.transform='';});
+      });
+    }
   })();
 
   /* los números de "Tu mes" cuentan desde cero cuando la pantalla aparece */
