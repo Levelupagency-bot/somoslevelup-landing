@@ -1259,7 +1259,7 @@ label{font-weight:600}
 :root{--amber:#f5a524;--cobre:#e0583f;--peach:#f2ac86}
 h2 em{color:var(--peach)}
 .k{color:var(--ink-3)}
-.k::before{background:var(--hot);box-shadow:0 0 0 4px rgba(242,106,31,.16),0 0 14px rgba(242,106,31,.7)}
+.k::before{background:var(--hot)}
 
 /* ── tarjetas: imagen de luz, profundidad, se inclinan hacia el cursor y la imagen se acerca ── */
 .cards{perspective:1200px}
@@ -1285,7 +1285,7 @@ h2 em{color:var(--peach)}
 .card p{margin-bottom:0}
 @media(hover:hover) and (pointer:fine){
   .card:hover{--ty:-8px;border-color:rgba(var(--c),.4);transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty));
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 50px 90px -40px rgba(var(--c),.55),0 30px 60px -30px rgba(0,0,0,.9)}
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 40px 70px -30px rgba(0,0,0,.95)}
   .card:hover .card-img img{transform:scale(1.12);filter:saturate(1.08) brightness(1.02)}
   .card:hover .ir{color:rgb(var(--c))}
 }
@@ -1301,7 +1301,7 @@ h2 em{color:var(--peach)}
   color:transparent;-webkit-text-stroke:1.2px rgba(242,240,236,.42)}
 .cinta span.hot{color:var(--hot);-webkit-text-stroke:0}
 .cinta i{width:12px;height:12px;margin:0 clamp(26px,3vw,48px);border-radius:50%;flex-shrink:0;
-  background:var(--amber);box-shadow:0 0 18px rgba(245,165,36,.8)}
+  background:var(--amber)}
 @keyframes cinta{to{transform:translateX(-50%)}}
 
 /* ── el corte: del enredo al orden, a medida que bajás ── */
@@ -1321,9 +1321,9 @@ h2 em{color:var(--peach)}
 .corte-s{margin:clamp(20px,2.4vw,30px) auto 0;max-width:44ch;font-size:clamp(16px,1.3vw,20px);line-height:1.6;color:var(--ink-2)}
 
 /* ── los pasos, cada uno con su luz ── */
-.pasos li:nth-child(1)::before{background:var(--hot);border-color:var(--hot);box-shadow:0 0 14px rgba(242,106,31,.8)}
-.pasos li:nth-child(2)::before{background:var(--amber);border-color:var(--amber);box-shadow:0 0 14px rgba(245,165,36,.8)}
-.pasos li:nth-child(3)::before{background:var(--cobre);border-color:var(--cobre);box-shadow:0 0 14px rgba(224,88,63,.8)}
+.pasos li:nth-child(1)::before{background:var(--hot);border-color:var(--hot)}
+.pasos li:nth-child(2)::before{background:var(--amber);border-color:var(--amber)}
+.pasos li:nth-child(3)::before{background:var(--cobre);border-color:var(--cobre)}
 .pasos li:nth-child(1) .num{color:var(--hot)}
 .pasos li:nth-child(2) .num{color:var(--amber)}
 .pasos li:nth-child(3) .num{color:var(--cobre)}
@@ -1359,7 +1359,7 @@ h2 em{color:var(--peach)}
 #sesion .ses>div:last-child{position:relative;
   background:linear-gradient(170deg,rgba(242,106,31,.10),rgba(242,240,236,.025) 45%);
   border-color:rgba(242,106,31,.22);
-  box-shadow:0 50px 120px -50px rgba(242,106,31,.45)}
+  box-shadow:0 40px 90px -40px rgba(0,0,0,.8)}
 
 @media(prefers-reduced-motion:reduce){
   .cinta-in{animation:none}
