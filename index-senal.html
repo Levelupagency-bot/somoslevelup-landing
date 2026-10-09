@@ -612,6 +612,29 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
   .menu{inset:80px 0 auto 0}
 }
 @media(max-width:760px){.menu{inset:68px 0 auto 0}}
+
+/* ── ajustes 09/10 ── */
+/* tarjetas de proyecto: sin levantarse (con el scroll quedaba brusco); al pasar, sombra y borde, lentos */
+.proy.prof{transition:box-shadow 1s var(--suave),border-color .8s var(--suave)}
+@media(hover:hover) and (pointer:fine){
+  .proy.prof:hover{--lift:0px;border-color:#c7c0b2;box-shadow:0 50px 90px -50px rgba(36,37,34,.45)}
+  .proy:hover .shot{transform:none}
+}
+/* pasos con más vida: tono cálido, número grande de fondo y barra de avance */
+.pasos.pila li{overflow:hidden;background:linear-gradient(135deg,#fdfbf7 0%,#f7efe3 100%);grid-template-rows:auto auto 1fr}
+.pasos.pila li:nth-child(2){background:linear-gradient(135deg,#fdfbf7 0%,#f6eadb 100%)}
+.pasos.pila li:nth-child(3){background:linear-gradient(135deg,#fdfbf7 0%,#f5e5d2 100%)}
+.pasos.pila li:nth-child(4){background:linear-gradient(135deg,#fdfbf7 0%,#f4e0c9 100%)}
+.pasos.pila li::before{grid-row:1/4}
+.paso-k{grid-column:2;font-size:13px;font-weight:650;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink)}
+.pasos.pila h3{grid-column:2}
+.pasos.pila p{grid-column:2}
+.pasos.pila li::after{display:block;content:'';position:absolute;left:0;bottom:0;top:auto;right:auto;height:4px;
+  width:calc((var(--i) + 1) * 25%);background:var(--accent);transform:none;border-radius:0 4px 4px 0}
+@media(max-width:600px){.paso-k,.pasos.pila h3,.pasos.pila p{grid-column:auto}.pasos.pila li::before{grid-row:auto}}
+/* la nota de la IA: una banda a lo ancho, no un párrafo suelto */
+.nota-ia--banda{max-width:none;margin-top:clamp(12px,2vw,24px);padding:clamp(22px,2.6vw,34px) clamp(24px,3vw,44px);
+  border-radius:22px;background:var(--ink);color:var(--bg);font-size:clamp(18px,1.6vw,22px);line-height:1.5;font-weight:500}
 </style>
 </head>
 <body>
@@ -750,8 +773,8 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
     <div class="sis-grid">
       <div class="rv">
         <span class="k">El Sistema Level Up</span>
-        <h2>Para negocios donde cada venta vale.</h2>
-        <p class="lead">Trabajamos con negocios de alto ticket, donde cada consulta puede ser una venta grande y perder una se nota.</p>
+        <h2>Pensado para negocios de alto ticket.</h2>
+        <p class="lead">Concesionarias, maquinaria, energía solar, inmobiliarias: negocios donde cada consulta puede ser una venta grande y perder una se nota.</p>
         <ul class="rubros" aria-label="Rubros">
           <li>Concesionarias</li>
           <li>Maquinaria agrícola e industrial</li>
@@ -854,16 +877,15 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
     <div class="rv">
       <span class="k">También construimos</span>
       <h2>Lo que cada negocio necesita, aunque no esté en ningún catálogo.</h2>
-      <p class="lead">Eventria la construimos para una organizadora de eventos: necesitaba que la familia y el salón trabajaran sobre lo mismo.</p>
+      <p class="lead">Eventria nació de una necesidad concreta: que la familia y el salón organicen el mismo evento, cada uno desde su lado, sin perder nada en el camino.</p>
     </div>
     <!-- Eventria -->
     <article class="proy prof" id="eventria" style="margin-top:clamp(28px,3vw,40px)">
       <div class="proy-tx">
-        <span class="estado">Entregado · septiembre 2026</span>
         <h3>Eventria: el evento se organiza de los dos lados.</h3>
         <dl class="proy-dl">
           <dt>El problema</dt>
-          <dd>La familia y la organizadora necesitan trabajar sobre el mismo evento.</dd>
+          <dd>La familia y el salón necesitan trabajar sobre el mismo evento.</dd>
           <dt>Qué construimos</dt>
           <dd>Una app donde la familia organiza su evento por etapas, y el salón ve lo que va cargando y lo aprueba.</dd>
         </dl>
@@ -898,12 +920,12 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       <h2>Primero entendemos. Después construimos.</h2>
     </div>
     <ol class="pasos pila">
-      <li style="--i:0"><h3>Nos contás qué te frena</h3><p>Empezamos por cómo trabajás hoy y qué parte querés resolver.</p></li>
-      <li style="--i:1"><h3>Definimos qué conviene construir</h3><p>Revisamos el caso, lo que ya tenés y el alcance del trabajo.</p></li>
-      <li style="--i:2"><h3>Construimos y probamos</h3><p>Armamos la herramienta y comprobamos que funcione con el proceso definido.</p></li>
-      <li style="--i:3"><h3>Revisamos cómo quedó</h3><p>Vemos juntos el uso y los ajustes que correspondan al alcance acordado.</p></li>
+      <li style="--i:0"><span class="paso-k">Paso 1 de 4</span><h3>Nos contás qué te frena</h3><p>Empezamos por cómo trabajás hoy y qué parte querés resolver.</p></li>
+      <li style="--i:1"><span class="paso-k">Paso 2 de 4</span><h3>Definimos qué conviene construir</h3><p>Revisamos el caso, lo que ya tenés y el alcance del trabajo.</p></li>
+      <li style="--i:2"><span class="paso-k">Paso 3 de 4</span><h3>Construimos y probamos</h3><p>Armamos la herramienta y comprobamos que funcione con el proceso definido.</p></li>
+      <li style="--i:3"><span class="paso-k">Paso 4 de 4</span><h3>Revisamos cómo quedó</h3><p>Vemos juntos el uso y los ajustes que correspondan al alcance acordado.</p></li>
     </ol>
-    <p class="nota-ia rv">La IA amplía lo que podemos construir. Nosotros decidimos qué tiene sentido para tu negocio y revisamos que funcione.</p>
+    <p class="nota-ia nota-ia--banda rv">La IA amplía lo que podemos construir. Nosotros decidimos qué tiene sentido para tu negocio y revisamos que funcione.</p>
   </div>
 </section>
 
@@ -973,7 +995,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
     <div>
       <span class="k">Nosotros</span>
       <h2>Lo construimos nosotros y lo ponemos en marcha con vos.</h2>
-      <p class="lead">Trabajamos con cada negocio para entender qué necesita, decidir qué construir y revisar cómo funciona. Desde Reconquista, Santa Fe.</p>
+      <p class="lead">Trabajamos con cada negocio para entender qué necesita, decidir qué construir y revisar cómo funciona.</p>
     </div>
     <div>
       <p class="lead">En nuestro Instagram mostramos lo que construimos cada semana — y lo que sale mal, también.</p>
