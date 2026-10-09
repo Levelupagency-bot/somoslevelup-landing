@@ -420,7 +420,7 @@ input.bad,textarea.bad{border-color:var(--no)}
 :root{--suave:cubic-bezier(.16,1,.3,1);interpolate-size:allow-keywords}
 
 /* hero: el video más grande; la escena tiene mucho aire propio, se acerca apenas */
-.hero__grid{grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr)}
+@media(min-width:901px){.hero__grid{grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr)}}
 .hero__visual{max-width:none}
 .hero__video,.hero__fallback{transform:scale(1.12)}
 @media(max-width:900px){.hero__video,.hero__fallback{transform:scale(1.06)}}
@@ -554,6 +554,64 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 .sec--dark .pliegues{margin-top:clamp(36px,4vw,56px)}
 .sec--dark .mod .n,.sec--dark .opt{color:var(--muted)}
 @media(max-width:1000px){.sis-grid{grid-template-columns:1fr}}
+
+/* ══════════ PROFUNDIDAD ══════════ */
+/* hero: el video se estira hasta el borde de la pantalla y la escena se acerca */
+@media(min-width:901px){
+  .hero__grid{grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr)}
+  .hero__visual{margin-right:calc(-1 * max(var(--pad),(100vw - var(--wrap)) / 2))}
+  .hero__media{-webkit-mask-image:linear-gradient(90deg,transparent,#000 14%),linear-gradient(180deg,transparent,#000 10%,#000 90%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 14%),linear-gradient(180deg,transparent,#000 10%,#000 90%,transparent)}
+  .hero__video,.hero__fallback{transform:scale(1.16)}
+}
+.hero__copy{transform:translateY(var(--hy,0px));opacity:var(--ho,1);will-change:transform,opacity}
+
+/* tarjetas que suben desde el fondo a medida que entran, y se levantan al pasar */
+.prof{--dy:0px;--rx:0deg;--s:1;--lift:0px;
+  transform:perspective(1400px) translateY(calc(var(--dy) + var(--lift))) rotateX(var(--rx)) scale(var(--s));
+  transform-origin:50% 0;will-change:transform}
+@media(hover:hover) and (pointer:fine){.proy.prof:hover{--lift:-6px;transform:perspective(1400px) translateY(calc(var(--dy) + var(--lift))) rotateX(var(--rx)) scale(var(--s))}}
+.prof{transition:box-shadow .7s var(--suave),border-color .5s}
+.proy.prof{box-shadow:0 30px 70px -50px rgba(36,37,34,.35)}
+
+/* capturas que flotan, cada una a su ritmo */
+@keyframes flota{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.shots--ev figure .shot{animation:flota 6s ease-in-out infinite}
+.shots--ev figure:last-child .shot{animation-duration:7.5s;animation-delay:-2s}
+.ui{animation:flota 7s ease-in-out infinite}
+.shot,.ui{box-shadow:0 30px 50px -34px rgba(36,37,34,.45)}
+
+/* paneles: se agrandan apenas al entrar */
+.crece{transform:scale(var(--cs,1));transform-origin:50% 0;will-change:transform}
+
+/* cómo trabajamos: tarjetas que se apilan al bajar */
+.pasos.pila{display:block;counter-reset:p;margin-top:clamp(32px,4vw,48px)}
+.pasos.pila li{position:sticky;top:calc(104px + var(--i) * 22px);display:grid;grid-template-columns:minmax(90px,.25fr) 1fr;
+  gap:8px clamp(20px,3vw,48px);align-items:start;min-height:clamp(180px,22vw,240px);margin-bottom:clamp(18px,2vw,28px);
+  padding:clamp(24px,3vw,44px);border:1px solid var(--line);border-top:1px solid var(--line);border-radius:22px;background:var(--card);
+  box-shadow:0 -1px 0 rgba(255,255,255,.6) inset,0 24px 50px -36px rgba(36,37,34,.4);
+  transform:scale(var(--ps,1));transform-origin:50% 0}
+.pasos.pila li::after{display:none}
+.pasos.pila li::before{grid-row:1/3;font-size:clamp(44px,5.4vw,76px);font-weight:700;letter-spacing:-.05em;line-height:.9;color:var(--accent);margin:0}
+.pasos.pila h3{font-size:clamp(22px,2.2vw,32px)}
+.pasos.pila p{font-size:clamp(17px,1.4vw,20px);max-width:40ch}
+@media(max-width:600px){
+  .pasos.pila li{top:calc(80px + var(--i) * 14px);grid-template-columns:1fr}
+  .pasos.pila li::before{grid-row:auto}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .prof,.crece,.pasos.pila li{transform:none!important}
+  .hero__copy{transform:none;opacity:1}
+  .shots--ev figure .shot,.ui{animation:none}
+}
+
+@media(max-width:1060px){
+  .nav-r a:not(.button){display:none}
+  .hamb{display:flex}
+  .menu{inset:80px 0 auto 0}
+}
+@media(max-width:760px){.menu{inset:68px 0 auto 0}}
 </style>
 </head>
 <body>
@@ -643,7 +701,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 
 
     <!-- Alia -->
-    <article class="proy proy--inv rv" id="alia">
+    <article class="proy proy--inv prof" id="alia">
       <div class="proy-tx">
         <span class="estado estado--prod">Producto en uso</span>
         <h3>Alia: las consultas, con seguimiento y trazabilidad.</h3>
@@ -799,7 +857,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       <p class="lead">Eventria la construimos para una organizadora de eventos: necesitaba que la familia y el salón trabajaran sobre lo mismo.</p>
     </div>
     <!-- Eventria -->
-    <article class="proy rv" id="eventria" style="margin-top:clamp(28px,3vw,40px)">
+    <article class="proy prof" id="eventria" style="margin-top:clamp(28px,3vw,40px)">
       <div class="proy-tx">
         <span class="estado">Entregado · septiembre 2026</span>
         <h3>Eventria: el evento se organiza de los dos lados.</h3>
@@ -839,11 +897,11 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       <span class="k">Cómo trabajamos</span>
       <h2>Primero entendemos. Después construimos.</h2>
     </div>
-    <ol class="pasos stg">
-      <li><h3>Nos contás qué te frena</h3><p>Empezamos por cómo trabajás hoy y qué parte querés resolver.</p></li>
-      <li><h3>Definimos qué conviene construir</h3><p>Revisamos el caso, lo que ya tenés y el alcance del trabajo.</p></li>
-      <li><h3>Construimos y probamos</h3><p>Armamos la herramienta y comprobamos que funcione con el proceso definido.</p></li>
-      <li><h3>Revisamos cómo quedó</h3><p>Vemos juntos el uso y los ajustes que correspondan al alcance acordado.</p></li>
+    <ol class="pasos pila">
+      <li style="--i:0"><h3>Nos contás qué te frena</h3><p>Empezamos por cómo trabajás hoy y qué parte querés resolver.</p></li>
+      <li style="--i:1"><h3>Definimos qué conviene construir</h3><p>Revisamos el caso, lo que ya tenés y el alcance del trabajo.</p></li>
+      <li style="--i:2"><h3>Construimos y probamos</h3><p>Armamos la herramienta y comprobamos que funcione con el proceso definido.</p></li>
+      <li style="--i:3"><h3>Revisamos cómo quedó</h3><p>Vemos juntos el uso y los ajustes que correspondan al alcance acordado.</p></li>
     </ol>
     <p class="nota-ia rv">La IA amplía lo que podemos construir. Nosotros decidimos qué tiene sentido para tu negocio y revisamos que funcione.</p>
   </div>
@@ -967,7 +1025,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       <p class="viable">Si no es viable o no te conviene, también te lo decimos.</p>
     </div>
 
-    <div class="form-card rv">
+    <div class="form-card prof">
       <h3>¿Preferís dejarnos tus datos?</h3>
       <p class="small">Te escribimos nosotros.</p>
 <div id="formView">
@@ -1439,6 +1497,48 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       var k=(r.top+r.height/2-innerHeight/2)/innerHeight;
       f.style.setProperty('--py',(k*(i?-36:18)).toFixed(1)+'px');
     });
+  }
+  addEventListener('scroll',function(){if(!pend){pend=true;requestAnimationFrame(pinta);}},{passive:true});
+  addEventListener('resize',pinta); pinta();
+})();
+</script>
+<script>
+/* PROFUNDIDAD: un solo ciclo de scroll para todo. Tarjetas que suben inclinadas y se
+   asientan, paneles que crecen apenas, el texto del hero que se aleja al bajar y los
+   pasos que se apilan (el de abajo empuja y achica al anterior). */
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var prof=[].slice.call(document.querySelectorAll('.prof'));
+  var crece=[].slice.call(document.querySelectorAll('.sec--alt:not(#como-trabajamos)'));
+  crece.forEach(function(e){e.classList.add('crece');});
+  var pasos=[].slice.call(document.querySelectorAll('.pasos.pila li'));
+  var hero=document.querySelector('.hero__copy'), pend=false;
+  function ease(k){return 1-Math.pow(1-k,3);}
+  function pinta(){
+    pend=false; var vh=innerHeight;
+    prof.forEach(function(e){
+      var r=e.getBoundingClientRect(); if(r.top>vh*1.2||r.bottom<-200) return;
+      var k=ease(Math.min(1,Math.max(0,(vh-r.top)/(vh*.85))));
+      e.style.setProperty('--dy',((1-k)*80).toFixed(1)+'px');
+      e.style.setProperty('--rx',((1-k)*12).toFixed(2)+'deg');
+      e.style.setProperty('--s',(.93+.07*k).toFixed(4));
+      e.style.opacity=(.35+.65*k).toFixed(3);
+    });
+    crece.forEach(function(e){
+      var r=e.getBoundingClientRect(); if(r.top>vh||r.bottom<0) return;
+      var k=ease(Math.min(1,Math.max(0,(vh-r.top)/(vh*.7))));
+      e.style.setProperty('--cs',(.955+.045*k).toFixed(4));
+    });
+    if(hero){
+      var y=Math.max(0,scrollY);
+      if(y<vh*1.2){hero.style.setProperty('--hy',(y*.22).toFixed(1)+'px');hero.style.setProperty('--ho',Math.max(0,1-y/(vh*.9)).toFixed(3));}
+    }
+    for(var i=0;i<pasos.length-1;i++){
+      var a=pasos[i].getBoundingClientRect(), b=pasos[i+1].getBoundingClientRect();
+      var tapa=Math.min(1,Math.max(0,(a.bottom-b.top)/a.height));
+      pasos[i].style.setProperty('--ps',(1-.06*tapa*(pasos.length-1-i)/(pasos.length-1)).toFixed(4));
+      pasos[i].style.filter=tapa>0?'brightness('+(1-.05*tapa).toFixed(3)+')':'';
+    }
   }
   addEventListener('scroll',function(){if(!pend){pend=true;requestAnimationFrame(pinta);}},{passive:true});
   addEventListener('resize',pinta); pinta();
