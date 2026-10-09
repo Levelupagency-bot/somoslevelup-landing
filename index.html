@@ -822,6 +822,36 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
   .hero__playback{position:absolute;left:clamp(40px,8%,90px);bottom:24px;margin:0;z-index:3;
     background:rgba(241,237,226,.75);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 }
+
+/* Alia: los dolores, uno por renglón */
+.dolores{list-style:none;margin-top:18px;border-top:1px solid var(--line)}
+.dolores li{padding:14px 0;border-bottom:1px solid var(--line);font-size:16.5px;line-height:1.55;color:var(--ink-2)}
+.dolores b{display:block;color:var(--ink);font-weight:650;margin-bottom:2px}
+
+/* Alia: capturas chicas, sueltas sobre la mesa; al pasar, la que tocás se endereza y pasa adelante */
+.collage{position:relative;width:100%;aspect-ratio:1/1.02;max-width:560px;margin-inline:auto}
+.pieza{position:absolute;display:block;border-radius:12px;overflow:hidden;background:#fff;border:1px solid var(--line);
+  box-shadow:0 18px 40px -22px rgba(36,37,34,.45);transform:rotate(var(--r,0deg));cursor:zoom-in;
+  transition:transform .55s var(--suave),box-shadow .55s var(--suave)}
+.pieza img{display:block;width:100%;height:auto}
+.pz-charla{width:60%;left:0;top:4%;--r:-3deg;z-index:2}
+.pz-sin{width:46%;right:0;top:0;--r:3.5deg;z-index:1}
+.pz-contado{width:36%;right:3%;top:36%;--r:-2deg;z-index:3}
+.pz-resp{width:58%;left:4%;bottom:15%;--r:2deg;z-index:4}
+.pz-consulta{width:44%;left:16%;bottom:0;--r:-4deg;z-index:5}
+@media(hover:hover) and (pointer:fine){
+  .pieza:hover{transform:rotate(0deg) scale(1.06);z-index:10;box-shadow:0 28px 60px -26px rgba(36,37,34,.55)}
+}
+.pieza:focus-visible{z-index:10;transform:rotate(0) scale(1.04)}
+/* celular: una tira que se desliza de costado, una captura por vez */
+@media(max-width:600px){
+  .collage{aspect-ratio:auto;display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:12px 4px 18px;
+    margin-inline:-4px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .collage::-webkit-scrollbar{display:none}
+  .pieza{position:relative;inset:auto;flex:0 0 74%;width:auto;scroll-snap-align:center;align-self:center}
+  .pz-charla{--r:-1.5deg}.pz-sin{--r:1.5deg}.pz-contado{--r:-1deg;flex-basis:56%}.pz-resp{--r:1deg}.pz-consulta{--r:-1.5deg}
+}
+@media(prefers-reduced-motion:reduce){.pieza{transition:none}}
 </style>
 </head>
 <body>
@@ -960,19 +990,31 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       <div class="proy-tx">
         <span class="estado estado--prod">En uso en nuestro propio negocio</span>
         <h3>Alia: ninguna consulta queda sin respuesta.</h3>
-        <p class="proy-p">El cliente escribe un sábado a la tarde, o mientras tu equipo atiende a otro, y nadie lo ve. Para cuando alguien contesta, ya le compró a otro.</p>
-        <p class="proy-p">Con Alia, cada consulta queda con su responsable y todo lo que se habló. Si activás LIA, además se contesta al instante, se califica y pasa al vendedor con lo que contó el cliente.</p>
+        <ul class="dolores">
+          <li><b>La consulta del sábado que nadie vio.</b> Entra con hora y origen, y queda en la lista de alguien. Si activás LIA, se contesta en el momento.</li>
+          <li><b>“¿Qué pasó con el de la Hilux?” Nadie sabe.</b> Cada consulta tiene su responsable y la charla completa a la vista.</li>
+          <li><b>El seguimiento depende de que alguien se acuerde.</b> Las que nadie respondió quedan aparte, no perdidas entre las demás.</li>
+          <li><b>Lo que contó el cliente queda en el celular del vendedor.</b> Queda anotado en su ficha: qué busca, cómo paga y para cuándo.</li>
+        </ul>
         <div class="proy-cta">
           <a class="link link-arrow" href="#el-sistema">Se contrata como El Sistema</a>
         </div>
       </div>
-      <figure class="shots shot-uno">
-        <span class="demo-tag">Demo · datos de ejemplo</span>
-        <a class="zoom" href="/media/alia/charla.png" target="_blank" rel="noopener" aria-label="Ampliar la captura de la conversación">
-          <img class="shot" src="/media/alia/charla.png" width="900" height="780" loading="lazy"
-            alt="Alia: una consulta por WhatsApp que llega a las 9:20 y se responde a las 9:21; LIA pregunta, califica y la pasa a Diego, el vendedor."></a>
-        <figcaption>Llegó a las 9:20. A las 9:21 ya tenía respuesta, y a las 9:28 la tenía el vendedor.</figcaption>
-      </figure>
+      <div class="shots">
+        <span class="demo-tag">Demo · datos de ejemplo · tocá para ampliar</span>
+        <div class="collage">
+          <a class="pieza pz-charla" href="/media/alia/charla.png" target="_blank" rel="noopener" aria-label="Ampliar: la charla, respondida un minuto después de llegar">
+            <img src="/media/alia/charla.png" width="900" height="780" loading="lazy" alt="la charla, respondida un minuto después de llegar"></a>
+          <a class="pieza pz-sin" href="/media/alia/sin-responder.png" target="_blank" rel="noopener" aria-label="Ampliar: las conversaciones, con el filtro de las que siguen sin responder">
+            <img src="/media/alia/sin-responder.png" width="440" height="392" loading="lazy" alt="las conversaciones, con el filtro de las que siguen sin responder"></a>
+          <a class="pieza pz-contado" href="/media/alia/contado.png" target="_blank" rel="noopener" aria-label="Ampliar: lo que contó el cliente, anotado en su ficha">
+            <img src="/media/alia/contado.png" width="420" height="698" loading="lazy" alt="lo que contó el cliente, anotado en su ficha"></a>
+          <a class="pieza pz-resp" href="/media/alia/primera-respuesta.png" target="_blank" rel="noopener" aria-label="Ampliar: el tiempo promedio de primera respuesta">
+            <img src="/media/alia/primera-respuesta.png" width="520" height="98" loading="lazy" alt="el tiempo promedio de primera respuesta"></a>
+          <a class="pieza pz-consulta" href="/media/alia/consulta.png" target="_blank" rel="noopener" aria-label="Ampliar: una consulta con su responsable y hace cuánto se habló">
+            <img src="/media/alia/consulta.png" width="420" height="156" loading="lazy" alt="una consulta con su responsable y hace cuánto se habló"></a>
+        </div>
+      </div>
     </article>
 
   </div>
