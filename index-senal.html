@@ -635,6 +635,35 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 /* la nota de la IA: una banda a lo ancho, no un párrafo suelto */
 .nota-ia--banda{max-width:none;margin-top:clamp(12px,2vw,24px);padding:clamp(22px,2.6vw,34px) clamp(24px,3vw,44px);
   border-radius:22px;background:var(--ink);color:var(--bg);font-size:clamp(18px,1.6vw,22px);line-height:1.5;font-weight:500}
+
+/* ══ CABECERA DE VIDRIO ══ una barra flotante con bordes redondeados: deja ver la
+   página detrás, desenfocada, con el brillo de la arista arriba. */
+.nav{position:fixed;top:12px;left:max(12px,calc((100vw - 1340px) / 2));right:max(12px,calc((100vw - 1340px) / 2));
+  border-radius:20px;border:1px solid rgba(255,255,255,.7);
+  background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.32));
+  -webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 -1px 0 rgba(36,37,34,.04),0 12px 32px -18px rgba(36,37,34,.28);
+  transition:background .4s var(--suave),box-shadow .4s var(--suave),border-color .4s}
+.nav.stuck{border-color:rgba(255,255,255,.75);background:linear-gradient(180deg,rgba(255,255,255,.66),rgba(255,255,255,.42));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 18px 40px -20px rgba(36,37,34,.32)}
+.nav:not(.stuck){background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.32))}
+.nav .wrap.nav-in{width:auto;padding-inline:clamp(16px,2vw,24px) clamp(8px,1vw,10px);min-height:64px}
+.nav-r .button--sm{border-radius:12px}
+.hero{padding-top:calc(clamp(40px,6vw,88px) + 76px)}
+[id]{scroll-margin-top:96px}
+.menu{inset:86px 12px auto 12px!important;border-radius:20px;border:1px solid rgba(255,255,255,.7);
+  background:linear-gradient(180deg,rgba(255,255,255,.82),rgba(255,255,255,.66));
+  -webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);
+  box-shadow:0 24px 48px -24px rgba(36,37,34,.35);padding:8px 18px 18px}
+.menu a:last-of-type:not(.menu-cta){border-bottom:0}
+@media(max-width:760px){.nav .wrap.nav-in{min-height:58px}.hero{padding-top:calc(32px + 70px)}.menu{inset:78px 12px auto 12px!important}}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.nav,.menu{background:rgba(250,248,243,.97)}}
+
+/* video del hero, un poco más grande */
+@media(min-width:901px){
+  .hero__grid{grid-template-columns:minmax(0,.64fr) minmax(0,1.36fr)}
+  .hero__video,.hero__fallback{transform:scale(1.24)}
+}
 </style>
 </head>
 <body>
@@ -1013,17 +1042,23 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
     </div>
     <div class="pliegues faq rv">
       <details class="plie"><summary><span>¿Tengo que saber qué herramienta necesito?</span><i class="mas" aria-hidden="true"></i></summary>
-        <div class="plie-in"><p>No. Empezamos por lo que te frena y por cómo trabajás hoy.</p></div></details>
+        <div class="plie-in"><p>No. Empezamos por lo que te frena y por cómo trabajás hoy: quién atiende, dónde se anota cada cosa y en qué parte se traba el trabajo.</p><p>Con eso definimos qué conviene construir. A veces es un sistema completo, a veces un agente, a veces ordenar lo que ya tenés.</p></div></details>
       <details class="plie"><summary><span>¿Qué pasa cuando pido una Evaluación?</span><i class="mas" aria-hidden="true"></i></summary>
-        <div class="plie-in"><p>Nos contás tu caso por WhatsApp. Si es un caso para nosotros, te ofrecemos una llamada de 45 minutos con el equipo; si no, te respondemos por escrito si se puede hacer y cómo. El alcance y la inversión se definen a partir de ese caso.</p></div></details>
+        <div class="plie-in"><p>Nos escribís por WhatsApp y te responde primero nuestro propio sistema, el mismo que instalamos: te pregunta qué querés resolver.</p><p>Si es un caso para nosotros, te ofrecemos una llamada de 45 minutos con el equipo. Si no, te respondemos por escrito si se puede hacer y cómo. La Evaluación no tiene costo; el alcance y la inversión se definen a partir de tu caso.</p></div></details>
+      <details class="plie"><summary><span>¿Trabajan solo en Reconquista?</span><i class="mas" aria-hidden="true"></i></summary>
+        <div class="plie-in"><p>No. Trabajamos con negocios de todo el país, a distancia. La puesta en marcha la hacemos junto con tu equipo.</p></div></details>
       <details class="plie"><summary><span>¿Tengo que reemplazar lo que ya uso?</span><i class="mas" aria-hidden="true"></i></summary>
-        <div class="plie-in"><p>Primero revisamos las herramientas y la información que ya tenés. Según el proyecto, podemos trabajar con eso o definir qué hace falta cambiar.</p></div></details>
+        <div class="plie-in"><p>Primero revisamos las herramientas y la información que ya tenés. Según el proyecto, podemos trabajar con eso o definir qué hace falta cambiar.</p><p>Por ejemplo: en el Sistema podés seguir con tu número de WhatsApp de siempre.</p></div></details>
       <details class="plie"><summary><span>¿Construyen solo agentes de atención?</span><i class="mas" aria-hidden="true"></i></summary>
-        <div class="plie-in"><p>No. También construimos programas y sistemas para ordenar distintas partes del negocio.</p></div></details>
+        <div class="plie-in"><p>No. Alia es una plataforma para ordenar consultas y seguimiento; Eventria es una app para que la familia y el salón organicen un evento juntos. Construimos sistemas, herramientas y agentes según lo que necesite cada negocio.</p></div></details>
+      <details class="plie"><summary><span>¿La IA cierra las ventas por mí?</span><i class="mas" aria-hidden="true"></i></summary>
+        <div class="plie-in"><p>No. En el Sistema, LIA —nuestro agente— atiende, indaga, califica y agenda, y le pasa la conversación a tu equipo con un resumen. El cierre es de tu equipo.</p><p>LIA viene incluida y se activa solo si la querés. Sin ella, el Sistema funciona igual: el orden y el seguimiento no dependen del agente.</p></div></details>
       <details class="plie"><summary><span>¿Cuánto tarda y cuánto cuesta?</span><i class="mas" aria-hidden="true"></i></summary>
-        <div class="plie-in"><p>Depende de lo que necesitemos construir. Después de entender el caso, definimos el alcance, los tiempos y la inversión.</p></div></details>
+        <div class="plie-in"><p>Depende de lo que necesitemos construir. Después de entender el caso, definimos el alcance, los tiempos y la inversión.</p><p>En el Sistema, la puesta en marcha tiene un tope de 21 días hábiles: si no queda funcionando según lo que firmamos, se devuelve la implementación.</p></div></details>
+      <details class="plie"><summary><span>¿Hay permanencia? ¿Qué pasa con mis datos si me voy?</span><i class="mas" aria-hidden="true"></i></summary>
+        <div class="plie-in"><p>En el Sistema no hay permanencia: te vas avisando con 30 días. Tus datos quedan aislados de los de otros negocios y, si te vas, te llevás tu base.</p></div></details>
       <details class="plie"><summary><span>¿Qué información necesita la IA?</span><i class="mas" aria-hidden="true"></i></summary>
-        <div class="plie-in"><p>Definimos qué información hace falta para la tarea y cómo se va a utilizar. Eso forma parte del alcance del proyecto.</p></div></details>
+        <div class="plie-in"><p>Definimos qué información hace falta para la tarea y cómo se va a usar. Eso forma parte del alcance del proyecto, y lo hablamos antes de construir.</p></div></details>
     </div>
   </div>
 </section>
