@@ -25,7 +25,8 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <meta name="theme-color" content="#f5f2ea">
 <link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" as="image" href="/media/hero/level-up-hero-poster-final.jpg">
+<link rel="preload" as="image" href="/media/hero/level-up-hero-poster-final.jpg" media="(min-width:761px)">
+<link rel="preload" as="image" href="/media/hero/level-up-hero-m-poster-final.jpg" media="(max-width:760px)">
 <style>
 /* Archivo alojada en el propio sitio, no en Google Fonts: cargarla de Google le
    entregaba la IP de cada visitante, y la política de privacidad dice que ningún
@@ -684,6 +685,107 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
   .hero__grid{grid-template-columns:minmax(0,.64fr) minmax(0,1.36fr)}
   .hero__video,.hero__fallback{transform:scale(1.24)}
 }
+
+/* ══════════ SEGUNDA MEJORA (09/10) ══════════ */
+/* menú: los textos se iluminan apenas al pasar */
+.nav-r a:not(.button){position:relative;padding:0 12px;border-radius:12px;background-image:none!important;
+  transition:color .35s var(--suave),background-color .35s var(--suave),box-shadow .35s var(--suave)}
+.nav-r{gap:clamp(4px,1vw,12px)}
+@media(hover:hover) and (pointer:fine){
+  .nav-r a:not(.button):hover{color:var(--ink);background-color:rgba(255,255,255,.6);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 4px 14px -6px rgba(36,37,34,.18)}
+}
+.nav-r a:not(.button):focus-visible{background-color:rgba(255,255,255,.6)}
+
+/* escritorio: título en tres renglones; la escena se acerca para que el agente siga grande */
+@media(min-width:901px){
+  .hero__grid{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}
+  .hero h1{max-width:none;font-size:clamp(2.6rem,3.9vw,3.75rem);text-wrap:balance}
+  .hero__lead{max-width:42ch}
+  .hero__video,.hero__fallback{transform:scale(1.38)}
+}
+
+/* celular: el video vertical es el fondo de la portada; el texto baja sobre el crema */
+@media(max-width:760px){
+  .hero{position:relative;overflow:hidden;background:#edebdc;padding:0 0 40px}
+  .hero__grid{display:block;width:100%}
+  .hero__visual{position:absolute;top:60px;left:0;right:0;margin:0;max-width:none;z-index:0}
+  .hero__media{aspect-ratio:9/16;background:#edebdc;-webkit-mask-image:none;mask-image:none}
+  .hero__video,.hero__fallback{transform:none;object-fit:cover}
+  /* el agente ocupa la mitad de arriba del cuadro: el degradado arranca debajo de la mano */
+  .hero__media::after{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;box-shadow:none;
+    background:linear-gradient(180deg,rgba(237,235,220,0) 0%,rgba(237,235,220,0) 47%,#edebdc 60%)}
+  .hero__copy{position:relative;z-index:2;padding:0 20px;margin-top:calc(60px + 100vw * 16 / 9 * .47)}
+  .hero__playback{position:absolute;top:76px;right:12px;margin:0;z-index:3;min-height:40px;padding:6px 12px;font-size:13px;
+    background:rgba(237,235,220,.7);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+  .hero__visual{animation:none}
+}
+
+/* proyectos: capturas legibles */
+.ui-lista .ui-tabs{display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line-2);font-size:13px;color:var(--muted)}
+.ui-tabs span{padding:4px 10px;border-radius:999px}
+.ui-tabs span.on{background:var(--ink);color:var(--bg)}
+.ui-tabs b{color:var(--accent-ink)}
+.consultas{list-style:none}
+.consultas li{padding:14px 16px;border-bottom:1px solid var(--line-2)}
+.consultas li:last-child{border-bottom:0}
+.c-q{font-size:16px;font-weight:650;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.c-q small{font-size:12.5px;font-weight:500;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 8px}
+.c-tag{font-size:12px;font-weight:650;color:var(--accent-ink);background:#fdf0e6;border-radius:6px;padding:2px 8px}
+.consultas dl{display:grid;grid-template-columns:repeat(3,auto);gap:2px 18px;margin-top:8px;justify-content:start}
+.consultas dt{grid-row:1;font-size:12px;color:var(--muted)}
+.consultas dd{grid-row:2;font-size:14.5px;font-weight:600;color:var(--ink)}
+.consultas .c-pend{background:#fdf6ef}
+.c-next{color:var(--accent-ink)!important}
+.shots-nota{margin-top:12px;font-size:15px;color:var(--ink-2)}
+@media(max-width:520px){.consultas dl{grid-template-columns:1fr 1fr;row-gap:6px}.consultas dt,.consultas dd{grid-row:auto}.consultas dd{margin-bottom:4px}}
+
+.ev-demo{display:grid;gap:18px}
+.ev-paso figcaption{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:600;color:var(--ink);margin:0 0 10px}
+.ev-n{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--ink);color:var(--bg);font-size:13px;font-weight:700;flex-shrink:0}
+.zoom{display:block;cursor:zoom-in}
+.ev-swap{position:relative}
+.ev-swap .ev-b{position:absolute;inset:0;opacity:0;transition:opacity .5s var(--suave)}
+.ev-swap.ok .ev-b{opacity:1}
+.ev-swap .ev-a{transition:opacity .5s var(--suave)}
+.ev-swap.ok .ev-a{opacity:0}
+.ev-btn{margin-top:12px;min-height:44px;padding:8px 16px;border-radius:10px;border:1px solid var(--ink);background:transparent;
+  font:inherit;font-size:15px;font-weight:650;color:var(--ink);cursor:pointer;transition:background .3s,color .3s}
+.ev-btn:hover,.ev-btn[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.shots--ev figure{transform:none}
+/* ya no flotan: las capturas tienen que leerse */
+.shots .shot,.ui{animation:none!important}
+
+/* cómo trabajamos: una secuencia compacta y conectada */
+.pasos.linea4{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,2vw,28px);margin-top:clamp(28px,3vw,40px);counter-reset:p}
+.pasos.linea4 li{position:relative;padding:22px 0 0;border:0;background:none;box-shadow:none;border-radius:0;min-height:0;transform:none}
+.pasos.linea4 li::after{display:block;content:'';position:absolute;top:0;left:0;right:calc(-1 * clamp(16px,2vw,28px));height:2px;background:var(--line);transform:none}
+.pasos.linea4 li:last-child::after{right:0}
+.pasos.linea4 li::before{content:counter(p);position:absolute;top:-13px;left:0;display:grid;place-items:center;width:28px;height:28px;
+  border-radius:50%;background:var(--accent);color:var(--ink);font-size:14px;font-weight:700;margin:0;z-index:1}
+.pasos.linea4 h3{font-size:clamp(18px,1.5vw,21px);margin-top:10px}
+.pasos.linea4 p{font-size:16px;margin-top:6px;max-width:30ch}
+@media(max-width:900px){
+  .pasos.linea4{grid-template-columns:1fr;gap:0}
+  .pasos.linea4 li{padding:0 0 22px 44px}
+  .pasos.linea4 li::after{top:28px;bottom:0;left:13px;right:auto;width:2px;height:auto}
+  .pasos.linea4 li:last-child::after{display:none}
+  .pasos.linea4 li::before{top:0}
+  .pasos.linea4 h3{margin-top:2px}
+}
+
+/* menos tramos vacíos entre secciones */
+.sec{padding-block:clamp(56px,6.5vw,96px)}
+
+/* celulares bajos: el video un poco más chico para que el botón entre en la primera pantalla */
+@media(max-width:760px) and (max-height:700px){
+  .hero__visual{left:6%;right:6%;top:58px}
+  .hero__copy{margin-top:calc(58px + 88vw * 16 / 9 * .53)}
+  .hero__eyebrow{margin-bottom:12px}
+  .hero h1{font-size:1.95rem}
+  .hero__lead{margin-top:14px;font-size:16px}
+  .hero__actions{margin-top:20px}
+}
 </style>
 </head>
 <body>
@@ -733,8 +835,11 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
     </div>
     <div class="hero__visual">
       <div class="hero__media" data-hero-media>
-        <img class="hero__fallback" src="/media/hero/level-up-hero-poster-final.jpg" width="1920" height="1080" alt="" decoding="async" data-hero-fallback>
-        <video class="hero__video" width="1920" height="1080" poster="/media/hero/level-up-hero-poster.jpg"
+        <picture>
+          <source media="(max-width:760px)" srcset="/media/hero/level-up-hero-m-poster-final.jpg" width="720" height="1280">
+          <img class="hero__fallback" src="/media/hero/level-up-hero-poster-final.jpg" width="1920" height="1080" alt="" decoding="async" data-hero-fallback>
+        </picture>
+        <video class="hero__video" width="1920" height="1080"
           muted playsinline preload="none" aria-hidden="true" tabindex="-1" data-hero-video hidden></video>
       </div>
       <button type="button" class="hero__playback" data-hero-control hidden>Ver animación</button>
@@ -742,20 +847,62 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
   </div>
 </section>
 
-<!-- LO QUE TE FRENA -->
+<!-- POR DÓNDE EMPEZAMOS -->
 <section class="sec sec--alt" id="punto-de-partida">
-  <div class="wrap frena">
+  <div class="wrap">
     <div class="rv">
       <span class="k">Por dónde empezamos</span>
       <h2>Lo que hoy te frena puede ser el punto de partida.</h2>
     </div>
-    <div class="rv">
-      <ul class="frena-list">
-        <li>Un proceso que depende de una sola persona.</li>
-        <li>Información repartida en varios lugares.</li>
-        <li>Una herramienta que no contempla cómo trabajás.</li>
-      </ul>
-      <p class="frena-cierre">Empezamos por entender esa parte del negocio.</p>
+    <ul class="ordenar stg">
+      <li>Información repartida en varios lugares.</li>
+      <li>Presupuestos, pedidos o trabajos pendientes.</li>
+      <li>Procesos que dependen de una sola persona.</li>
+      <li>Atención y seguimiento que necesitan continuidad.</li>
+      <li>Herramientas que no contemplan una parte de la operación.</li>
+    </ul>
+    <div class="ordenar-cierre rv">
+      <p>No hace falta que sepas qué herramienta necesitás. Contanos qué está pasando.</p>
+      <a class="button button--primary" href="https://wa.me/5493482583784?text=Quiero%20mi%20Evaluaci%C3%B3n" target="_blank" rel="noopener">Pedí tu Evaluación</a>
+    </div>
+    <div class="pliegues calc-wrap rv">
+      <details class="plie">
+        <summary><span>¿Cuánto te lleva una tarea que hacés a mano?</span><i class="mas" aria-hidden="true"></i></summary>
+        <div class="plie-in">
+<div class="calc" id="calc">
+      <h3>¿Cuánto te cuesta lo que hacés a mano?</h3>
+
+      <p class="calc-k">Elegí tu tarea</p>
+      <!-- data-t va en infinitivo: se inserta en "en mi negocio [tarea] nos lleva unas
+           X horas", y en primera persona el mensaje quedaba roto. -->
+      <div class="chips" id="chips" role="group" aria-label="Elegí tu tarea">
+        <button type="button" class="chip" data-t="cargar el mismo dato en dos lugares">Cargar el mismo dato en dos lugares</button>
+        <button type="button" class="chip" data-t="armar el reporte de los lunes">Armar el reporte de los lunes</button>
+        <button type="button" class="chip" data-t="pasar los pedidos de WhatsApp a la planilla">Pasar pedidos de WhatsApp a la planilla</button>
+        <button type="button" class="chip" data-t="contestar siempre las mismas preguntas">Contestar siempre las mismas preguntas</button>
+        <button type="button" class="chip" data-t="buscar en qué quedó una conversación">Buscar en qué quedó una conversación</button>
+        <button type="button" class="chip" data-t="algo que hacemos a mano">Otra</button>
+      </div>
+
+      <p class="calc-k">¿Cuántas horas por semana se lleva?</p>
+      <div class="chips horas" id="horas" role="group" aria-label="Horas por semana">
+        <button type="button" class="chip" data-h="1">1</button>
+        <button type="button" class="chip" data-h="2">2</button>
+        <button type="button" class="chip" data-h="3">3</button>
+        <button type="button" class="chip" data-h="5">5</button>
+        <button type="button" class="chip" data-h="8">8+</button>
+      </div>
+
+      <div class="calc-r ejemplo" id="calcR" aria-live="polite">
+        <span class="calc-eg" id="calcEg">Ejemplo · 2 horas por semana</span>
+        <b id="calcH">104 horas al año.</b>
+        <span id="calcD">Trece días laborales haciendo lo mismo.</span>
+      </div>
+
+      <a class="g-cta" id="calcCta" href="https://wa.me/5493482583784" target="_blank" rel="noopener" hidden>Contanos y te decimos si se puede resolver →</a>
+    </div>
+        </div>
+      </details>
     </div>
   </div>
 </section>
@@ -789,27 +936,25 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       </div>
       <div class="shots">
         <span class="demo-tag">Pantalla de ejemplo · datos de ejemplo</span>
-        <div class="ui" aria-label="Pantalla de ejemplo de Alia" role="img">
-          <div class="ui-bar" aria-hidden="true"><i></i><i></i><i></i><span>Alia · tu negocio</span></div>
-          <div class="ui-in" aria-hidden="true">
-            <div class="ui-col">
-              <div class="ui-k">Tu mes</div>
-              <div class="stat"><i>Consultas</i><b>147</b><em>este mes</em></div>
-              <div class="stat ojo"><i>Sin tocar</i><b>9</b><em>para atender</em></div>
-              <div class="stat"><i>Visitas agendadas</i><b>38</b><em>confirmadas</em></div>
-            </div>
-            <div class="ui-col">
-              <div class="ui-k">Actividad</div>
-              <ul class="linea">
-                <li><span>Sáb 13:30</span><p>Entró una consulta por Instagram</p></li>
-                <li><span>Sáb 13:30</span><p>Quedó asignada a <b>Sofía</b></p></li>
-                <li><span>Lun 9:40</span><p><b>Sofía</b> abrió la consulta</p></li>
-                <li><span>Lun 11:02</span><p><b>Sofía</b> la movió a Presupuesto</p></li>
-                <li><span>Lun 11:05</span><p>Próximo paso: <b>llamar el mar 21</b></p></li>
-              </ul>
-            </div>
-          </div>
+        <div class="ui ui-lista">
+          <div class="ui-bar" aria-hidden="true"><i></i><i></i><i></i><span>Alia · Consultas</span></div>
+          <div class="ui-tabs" aria-hidden="true"><span class="on">Todas</span><span>Sin responder <b>1</b></span><span>Mías</span></div>
+          <ul class="consultas">
+            <li>
+              <p class="c-q">Camioneta 0km <small>Instagram</small></p>
+              <dl><dt>Responsable</dt><dd>Sofía</dd><dt>Último contacto</dt><dd>hace 2 h</dd><dt>Próximo paso</dt><dd class="c-next">Llamar · mar 21</dd></dl>
+            </li>
+            <li>
+              <p class="c-q">Usado con permuta <small>WhatsApp</small></p>
+              <dl><dt>Responsable</dt><dd>Martín</dd><dt>Último contacto</dt><dd>ayer</dd><dt>Próximo paso</dt><dd class="c-next">Enviar presupuesto</dd></dl>
+            </li>
+            <li class="c-pend">
+              <p class="c-q">Plan de ahorro <small>Facebook</small> <span class="c-tag">Sin responder</span></p>
+              <dl><dt>Responsable</dt><dd>Sin asignar</dd><dt>Último contacto</dt><dd>—</dd><dt>Próximo paso</dt><dd class="c-next">Responder</dd></dl>
+            </li>
+          </ul>
         </div>
+        <p class="shots-nota">Cada consulta con su responsable, su último contacto y lo que falta hacer. Las que nadie respondió quedan aparte.</p>
       </div>
     </article>
 
@@ -838,7 +983,6 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
           <li><b>Armamos las campañas</b> en Instagram y Facebook.</li>
           <li><b>Nos juntamos una vez por mes</b> a mirar los números.</li>
         </ul>
-        <p class="sis-cupo">Los cupos para ponerlo en marcha son limitados de verdad.</p>
         <div class="sis-cta">
           <a class="button button--primary" href="https://wa.me/5493482583784?text=Quiero%20mi%20Evaluaci%C3%B3n" target="_blank" rel="noopener">Pedí tu Evaluación</a>
           <a class="link link-ext" href="https://wa.me/5493482583784?text=Hola%2C%20vengo%20de%20la%20web%20y%20quiero%20probar%20el%20sistema." target="_blank" rel="noopener">Probalo por WhatsApp</a>
@@ -944,16 +1088,21 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       </div>
       <div class="shots">
         <span class="demo-tag">Demo · datos de ejemplo</span>
-        <div class="shots--ev">
-          <figure>
-            <img class="shot" src="/media/eventria/salon-proximo-evento.png" width="1064" height="680" loading="lazy"
-              alt="Vista del salón en la demo de Eventria: próximo evento, un cumpleaños, a 12 días.">
-            <figcaption>Lo que ve el salón</figcaption>
+        <div class="ev-demo">
+          <figure class="ev-paso">
+            <figcaption><span class="ev-n">1</span>La familia arma las mesas y las manda a revisar.</figcaption>
+            <a class="zoom" href="/media/eventria/familia-mesa.png" target="_blank" rel="noopener" aria-label="Ampliar la captura de la mesa">
+              <img class="shot" src="/media/eventria/familia-mesa.png" width="1064" height="600" loading="lazy"
+                alt="Vista de la familia en la demo de Eventria: la Mesa 1 con 10 de 10 lugares y la lista de invitados."></a>
           </figure>
-          <figure>
-            <img class="shot" src="/media/eventria/familia-etapa.png" width="1155" height="732" loading="lazy"
-              alt="Vista de la familia en la demo de Eventria: la etapa Cuenta regresiva, lista para revisar.">
-            <figcaption>Lo que ve la familia</figcaption>
+          <figure class="ev-paso">
+            <figcaption><span class="ev-n">2</span>El salón la revisa y la aprueba.</figcaption>
+            <div class="ev-swap" id="evSwap">
+              <img class="shot ev-a" src="/media/eventria/salon-aprobar.png" width="1064" height="320" loading="lazy"
+                alt="Vista del salón: distribución lista para revisar, con el botón Aprobar distribución.">
+              <img class="shot ev-b" src="/media/eventria/salon-aprobada.png" width="1064" height="320" loading="lazy" alt="Vista del salón: distribución aprobada.">
+            </div>
+            <button type="button" class="ev-btn" id="evBtn" aria-pressed="false" aria-controls="evSwap">Probá aprobarla</button>
           </figure>
         </div>
       </div>
@@ -968,75 +1117,16 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       <span class="k">Cómo trabajamos</span>
       <h2>Primero entendemos. Después construimos.</h2>
     </div>
-    <ol class="pasos pila">
-      <li style="--i:0"><span class="paso-k">Paso 1 de 4</span><h3>Nos contás qué te frena</h3><p>Empezamos por cómo trabajás hoy y qué parte querés resolver.</p></li>
-      <li style="--i:1"><span class="paso-k">Paso 2 de 4</span><h3>Definimos qué conviene construir</h3><p>Revisamos el caso, lo que ya tenés y el alcance del trabajo.</p></li>
-      <li style="--i:2"><span class="paso-k">Paso 3 de 4</span><h3>Construimos y probamos</h3><p>Armamos la herramienta y comprobamos que funcione con el proceso definido.</p></li>
-      <li style="--i:3"><span class="paso-k">Paso 4 de 4</span><h3>Revisamos cómo quedó</h3><p>Vemos juntos el uso y los ajustes que correspondan al alcance acordado.</p></li>
+    <ol class="pasos linea4 stg">
+      <li style="--i:0"><h3>Nos contás qué te frena</h3><p>Empezamos por cómo trabajás hoy y qué parte querés resolver.</p></li>
+      <li style="--i:1"><h3>Definimos qué conviene construir</h3><p>Revisamos el caso, lo que ya tenés y el alcance del trabajo.</p></li>
+      <li style="--i:2"><h3>Construimos y probamos</h3><p>Armamos la herramienta y comprobamos que funcione con el proceso definido.</p></li>
+      <li style="--i:3"><h3>Revisamos cómo quedó</h3><p>Vemos juntos el uso y los ajustes que correspondan al alcance acordado.</p></li>
     </ol>
     <p class="nota-ia nota-ia--banda rv">La IA amplía lo que podemos construir. Nosotros decidimos qué tiene sentido para tu negocio y revisamos que funcione.</p>
   </div>
 </section>
 
-<!-- QUÉ QUERÉS ORDENAR -->
-<section class="sec" id="ordenar">
-  <div class="wrap">
-    <div class="rv">
-      <span class="k">Ejemplos</span>
-      <h2>¿Qué parte de tu negocio querés ordenar?</h2>
-    </div>
-    <ul class="ordenar stg">
-      <li>Información que hoy está repartida.</li>
-      <li>Presupuestos, pedidos o trabajos pendientes.</li>
-      <li>Procesos que dependen de una sola persona.</li>
-      <li>Atención y seguimiento que necesitan continuidad.</li>
-      <li>Herramientas que no contemplan una parte de la operación.</li>
-    </ul>
-    <div class="ordenar-cierre rv">
-      <p>No hace falta que sepas qué herramienta necesitás. Contanos qué está pasando.</p>
-      <a class="button button--primary" href="https://wa.me/5493482583784?text=Quiero%20mi%20Evaluaci%C3%B3n" target="_blank" rel="noopener">Pedí tu Evaluación</a>
-    </div>
-    <div class="pliegues calc-wrap rv">
-      <details class="plie">
-        <summary><span>¿Cuánto te lleva una tarea que hacés a mano?</span><i class="mas" aria-hidden="true"></i></summary>
-        <div class="plie-in">
-<div class="calc" id="calc">
-      <h3>¿Cuánto te cuesta lo que hacés a mano?</h3>
-
-      <p class="calc-k">Elegí tu tarea</p>
-      <!-- data-t va en infinitivo: se inserta en "en mi negocio [tarea] nos lleva unas
-           X horas", y en primera persona el mensaje quedaba roto. -->
-      <div class="chips" id="chips" role="group" aria-label="Elegí tu tarea">
-        <button type="button" class="chip" data-t="cargar el mismo dato en dos lugares">Cargar el mismo dato en dos lugares</button>
-        <button type="button" class="chip" data-t="armar el reporte de los lunes">Armar el reporte de los lunes</button>
-        <button type="button" class="chip" data-t="pasar los pedidos de WhatsApp a la planilla">Pasar pedidos de WhatsApp a la planilla</button>
-        <button type="button" class="chip" data-t="contestar siempre las mismas preguntas">Contestar siempre las mismas preguntas</button>
-        <button type="button" class="chip" data-t="buscar en qué quedó una conversación">Buscar en qué quedó una conversación</button>
-        <button type="button" class="chip" data-t="algo que hacemos a mano">Otra</button>
-      </div>
-
-      <p class="calc-k">¿Cuántas horas por semana se lleva?</p>
-      <div class="chips horas" id="horas" role="group" aria-label="Horas por semana">
-        <button type="button" class="chip" data-h="1">1</button>
-        <button type="button" class="chip" data-h="2">2</button>
-        <button type="button" class="chip" data-h="3">3</button>
-        <button type="button" class="chip" data-h="5">5</button>
-        <button type="button" class="chip" data-h="8">8+</button>
-      </div>
-
-      <div class="calc-r ejemplo" id="calcR" aria-live="polite">
-        <span class="calc-eg" id="calcEg">Ejemplo · 2 horas por semana</span>
-        <b id="calcH">104 horas al año.</b>
-        <span id="calcD">Trece días laborales haciendo lo mismo.</span>
-      </div>
-
-      <a class="g-cta" id="calcCta" href="https://wa.me/5493482583784" target="_blank" rel="noopener" hidden>Contanos y te decimos si se puede resolver →</a>
-    </div>
-        </div>
-      </details>
-    </div>
-  </div>
-</section>
 
 <!-- NOSOTROS -->
 <section class="sec sec--alt" id="nosotros">
@@ -1069,11 +1159,11 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
         <div class="plie-in"><p>Primero revisamos las herramientas y la información que ya tenés. Según el proyecto, podemos trabajar con eso o definir qué hace falta cambiar.</p></div></details>
       <details class="plie"><summary><span>¿Construyen solo agentes de atención?</span><i class="mas" aria-hidden="true"></i></summary>
         <div class="plie-in"><p>No. Alia es una plataforma para ordenar consultas y seguimiento; Eventria es una app para que la familia y el salón organicen un evento juntos. Construimos sistemas, herramientas y agentes según lo que necesite cada negocio.</p></div></details>
-      <details class="plie"><summary><span>¿La IA cierra las ventas por mí?</span><i class="mas" aria-hidden="true"></i></summary>
+      <details class="plie"><summary><span>En el Sistema, ¿la IA cierra las ventas?</span><i class="mas" aria-hidden="true"></i></summary>
         <div class="plie-in"><p>No. En el Sistema, LIA —nuestro agente— atiende, indaga, califica y agenda, y le pasa la conversación a tu equipo con un resumen. El cierre es de tu equipo.</p><p>LIA viene incluida y se activa solo si la querés. Sin ella, el Sistema funciona igual: el orden y el seguimiento no dependen del agente.</p></div></details>
       <details class="plie"><summary><span>¿Cuánto tarda y cuánto cuesta?</span><i class="mas" aria-hidden="true"></i></summary>
         <div class="plie-in"><p>Depende de lo que necesitemos construir. Después de entender el caso, definimos el alcance, los tiempos y la inversión.</p><p>En el Sistema, la puesta en marcha tiene un tope de 21 días hábiles: si no queda funcionando según lo que firmamos, se devuelve la implementación.</p></div></details>
-      <details class="plie"><summary><span>¿Hay permanencia? ¿Qué pasa con mis datos si me voy?</span><i class="mas" aria-hidden="true"></i></summary>
+      <details class="plie"><summary><span>En el Sistema, ¿hay permanencia? ¿Qué pasa con mis datos?</span><i class="mas" aria-hidden="true"></i></summary>
         <div class="plie-in"><p>En el Sistema no hay permanencia: te vas avisando con 30 días. Tus datos quedan aislados de los de otros negocios y, si te vas, te llevás tu base.</p></div></details>
       <details class="plie"><summary><span>¿Qué información necesita la IA?</span><i class="mas" aria-hidden="true"></i></summary>
         <div class="plie-in"><p>Definimos qué información hace falta para la tarea y cómo se va a usar. Eso forma parte del alcance del proyecto, y lo hablamos antes de construir.</p></div></details>
@@ -1124,7 +1214,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
           </label>
           <p class="aviso-priv">Al enviar aceptás nuestra <a href="https://levelup-legal.vercel.app/privacidad-web" target="_blank" rel="noopener">política de privacidad</a>. Usamos tus datos solo para contactarte; no los compartimos con terceros.</p>
           <button type="submit" class="send button button--primary" id="send">Pedí tu Evaluación</button>
-          <p class="fine">Te respondemos por WhatsApp antes de 24 horas. Sin venta disfrazada.</p>
+          <p class="fine">Te respondemos por WhatsApp antes de 24 horas.</p>
           <div class="fallo" id="fallo">No pudimos enviar el formulario — puede ser la conexión.
             Probá de nuevo, o escribinos por <a href="https://www.instagram.com/levelup.aima/" target="_blank" rel="noopener">Instagram</a> y lo resolvemos ahí.</div>
         </form>
@@ -1479,8 +1569,17 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
   var reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
   var connection=navigator.connection;
   var started=false, failed=false, finished=false, manuallyPaused=false, userRequested=false, inView=false;
-  var SRC='/media/hero/level-up-hero.mp4';
-  var POSTER='/media/hero/level-up-hero-poster.jpg', POSTER_FIN='/media/hero/level-up-hero-poster-final.jpg';
+  // celular: el video vertical; el resto, el horizontal. Se decide una vez, antes de
+  // asignar el archivo, así nunca se descargan los dos.
+  var MOV=window.matchMedia('(max-width:760px)').matches;
+  var SRC=MOV?'/media/hero/level-up-hero-m.mp4':'/media/hero/level-up-hero.mp4';
+  var POSTER=MOV?'/media/hero/level-up-hero-m-poster.jpg':'/media/hero/level-up-hero-poster.jpg';
+  var POSTER_FIN=MOV?'/media/hero/level-up-hero-m-poster-final.jpg':'/media/hero/level-up-hero-poster-final.jpg';
+  if(fallback && fallback.parentNode && fallback.parentNode.tagName==='PICTURE'){
+    [].slice.call(fallback.parentNode.querySelectorAll('source')).forEach(function(x){x.parentNode.removeChild(x);});
+  }
+  video.poster=POSTER;
+  if(MOV){ video.width=1080; video.height=1920; }
 
   video.muted=true; video.defaultMuted=true; video.hidden=true;
   function lento(){ return !!(connection && (connection.saveData || /2g/.test(connection.effectiveType||''))); }
@@ -1617,6 +1716,17 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
   }
   addEventListener('scroll',function(){if(!pend){pend=true;requestAnimationFrame(pinta);}},{passive:true});
   addEventListener('resize',pinta); pinta();
+})();
+</script>
+<script>
+/* EVENTRIA: el botón alterna entre las dos pantallas reales de la demo
+   (lista para revisar → aprobada). No guarda nada ni llama a ningún servidor. */
+(function(){
+  var b=document.getElementById('evBtn'), w=document.getElementById('evSwap'); if(!b||!w) return;
+  b.addEventListener('click',function(){
+    var on=w.classList.toggle('ok'); b.setAttribute('aria-pressed',on?'true':'false');
+    b.textContent=on?'Volver a como estaba':'Probá aprobarla';
+  });
 })();
 </script>
 </body>
