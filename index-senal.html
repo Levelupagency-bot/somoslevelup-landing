@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-AR">
 <head>
 <meta charset="UTF-8">
 <!-- minimum-scale=1 bloquea SOLO el alejar. Acercar sigue habilitado —esa es la
@@ -8,9 +8,9 @@
      fijo estirado al viewport visual mientras el contenido queda en el de maquetado. -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1">
 <title>Level Up™ | AIMA — Construimos con IA lo que tu negocio necesita</title>
-<meta name="description" content="Construimos con IA lo que tu negocio necesita: sistemas, agentes y automatizaciones que quedan funcionando. Pedí tu Evaluación por WhatsApp.">
+<meta name="description" content="Construimos sistemas, herramientas y agentes con IA a partir de cómo trabaja tu negocio. Contanos qué te frena y pedí tu Evaluación.">
 <meta property="og:title" content="Level Up™ | AIMA — Construimos con IA lo que tu negocio necesita">
-<meta property="og:description" content="Entendemos cómo vende y trabaja tu negocio, y construimos con IA lo que le falta. Funcionando, no en una presentación.">
+<meta property="og:description" content="Primero el negocio. Después la IA. Construimos sistemas, herramientas y agentes a partir de cómo trabaja tu negocio.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://somoslevelup.com/">
 <!-- og.jpg: 1200x630, ~110 KB. WhatsApp no muestra la vista previa si pasa de 300 KB. -->
@@ -23,15 +23,13 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<meta name="theme-color" content="#121110">
+<meta name="theme-color" content="#f5f2ea">
 <link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" as="image" href="/media/hero-poster-m.jpg" media="(max-width:1000px)">
-<link rel="preload" as="image" href="/media/hero-poster.jpg" media="(min-width:1001px)">
+<link rel="preload" as="image" href="/media/hero/level-up-hero-poster-final.jpg">
 <style>
 /* Archivo alojada en el propio sitio, no en Google Fonts: cargarla de Google le
    entregaba la IP de cada visitante, y la política de privacidad dice que ningún
-   componente externo informa la visita a un tercero. Es una fuente variable: un
-   archivo cubre los pesos 400 a 900. Sin el subconjunto vietnamita, que no se usa. */
+   componente externo informa la visita a un tercero. Fuente variable, pesos 400 a 900. */
 @font-face{font-family:'Archivo';font-style:normal;font-weight:400 900;font-display:swap;
   src:url(/fonts/archivo-latin-ext.woff2) format('woff2');
   unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
@@ -41,1541 +39,541 @@
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --void:#121110;--panel:#191817;
-  /* sobre #121110: dim .46 daba 4.28:1 y faint .30 daba 2.54:1 — ambos por debajo del mínimo.
-     Medido en pantalla: .62 => 6.8:1 · .52 => 5.2:1 (sobre panel, 4.9:1). Todo pasa el mínimo. */
-  --ink:#f2f0ec;--mid:rgba(242,240,236,.66);--dim:rgba(242,240,236,.62);--faint:rgba(242,240,236,.52);
-  /* tintas intermedias como token: escritas a mano quedaban del color del fondo
-     en las secciones claras (contraste 1.00, texto invisible) */
-  --ink-2:rgba(242,240,236,.88);--ink-3:rgba(242,240,236,.74);
-  --hot:#f26a1f;--trace:#e6e2db;
-  /* diagnóstico: verde suma, rojo descarta. Elegidos para pasar 4.5:1 en grafito */
-  --suma:#5ab07c;--descarta:#e06a52;
-  --line:rgba(242,240,236,.14);--line-2:rgba(242,240,236,.08);
-  --hover-bg:rgba(242,240,236,.045);
-  --g1:rgba(126,56,16,.32);--g2:rgba(20,19,18,.6);
-  /* una sola ley de movimiento en toda la página: exponencial que sale rápido
-     y se posa. Antes convivían cinco curvas casi iguales, una por cada capa. */
-  --ley:cubic-bezier(.16,1,.3,1);
+  /* marfil del fondo del video del hero (varía entre #f8f3ea y #f0eadc a lo largo del clip) */
+  --bg:#f5f2ea;--bg-2:#ece8df;--card:#fbf9f4;
+  --ink:#242522;--ink-2:#3a3b37;--muted:#5d5e58;--line:#d7d2c7;--line-2:#e4e0d6;
+  /* naranja de marca para superficies; el de texto es más oscuro para pasar 4.5:1 sobre marfil */
+  --accent:#e96a22;--accent-ink:#a8460f;
+  --ok:#2f7a4f;--no:#b4432c;
+  --ley:cubic-bezier(.2,.8,.2,1);
   --f:'Archivo',system-ui,sans-serif;
-  /* el mínimo sube de 20 a 26: en celular el texto llegaba muy al borde */
-  --pad:clamp(26px,4.5vw,60px);
+  --pad:clamp(20px,4.5vw,64px);
+  --wrap:1280px;
 }
 html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-/* Al entrar directo con #soluciones (enlace de la bio de Instagram) el navegador
-   apoya la seccion contra el borde de arriba y el encabezado fijo le come el titulo.
-   Este margen la deja arrancando justo debajo. */
-[id]{scroll-margin-top:86px}
-body{font-family:var(--f);background:var(--void);color:var(--ink);font-size:16px;line-height:1.65;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
+[id]{scroll-margin-top:88px}
+body{font-family:var(--f);background:var(--bg);color:var(--ink);font-size:18px;line-height:1.6;overflow-x:hidden}
+a{color:inherit}
+img,video{max-width:100%}
+.wrap{width:min(100% - 2 * var(--pad),var(--wrap));margin-inline:auto}
 
-.bg{position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:radial-gradient(80% 66% at 74% 20%,var(--g1),transparent 62%),
-             radial-gradient(70% 60% at 8% 94%,var(--g2),transparent 62%)}
-.grain{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.05;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:160px}
-.shell{position:relative;z-index:10}
+.skip{position:absolute;left:-9999px}
+.skip:focus{left:12px;top:12px;z-index:99;background:var(--ink);color:var(--bg);padding:10px 16px;font-weight:700}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
 
-/* ── nav ── */
-.nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
-  padding:20px var(--pad);border-bottom:1px solid transparent;transition:background .3s,border-color .3s}
-.nav.stuck{background:rgba(18,17,16,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:var(--line)}
-.mark{font-weight:900;font-size:16px;letter-spacing:-.045em}
-.mark .bar-m{color:var(--hot);font-weight:600;margin:0 1px}
-.mark sup{font-size:7px;font-weight:600;vertical-align:super}
-.nav-r{display:flex;align-items:center;gap:clamp(14px,2.4vw,30px)}
-/* alto mínimo de 44: entre 720 y 1000px estos links se ven Y se tocan (tablet) */
-.nav-r a{display:inline-flex;align-items:center;min-height:44px;
-  font-size:12.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
-  color:rgba(242,240,236,.88);transition:color .2s}
-.nav-r a:hover{color:var(--hot)}
-/* Soluciones es la puerta de AIMA: pesa más que el resto del menú */
-.nav-r a.destacado{color:var(--hot);font-weight:800}
-.nav-r a.destacado::after{content:'';display:block;position:absolute;left:0;right:0;bottom:8px;
-  height:2px;background:var(--hot);transform:scaleX(0);transform-origin:0 50%;
-  transition:transform .35s cubic-bezier(.16,1,.3,1)}
-.nav-r a.destacado{position:relative}
-@media(hover:hover) and (pointer:fine){.nav-r a.destacado:hover::after{transform:scaleX(1)}}
-
-/* ══ MENÚ DE CELULAR ══ */
+/* ── cabecera ── */
+.nav{position:sticky;top:0;z-index:50;background:rgba(245,242,234,.94);
+  -webkit-backdrop-filter:saturate(140%) blur(10px);backdrop-filter:saturate(140%) blur(10px);
+  border-bottom:1px solid transparent;transition:border-color .2s}
+.nav.stuck{border-color:var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:80px}
+.mark{font-weight:800;font-size:17px;letter-spacing:-.03em;white-space:nowrap;text-decoration:none}
+.mark .bar-m{color:var(--accent);font-weight:600;margin:0 2px}
+.mark sup{font-size:8px;font-weight:600;vertical-align:super}
+.nav-r{display:flex;align-items:center;gap:clamp(16px,2.4vw,32px)}
+.nav-r a{font-size:15px;font-weight:500;color:var(--ink-2);text-decoration:none;min-height:44px;display:inline-flex;align-items:center;transition:color .18s}
+.nav-r a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1px}
+.nav-r a.button{color:var(--ink)}
+.nav-r a.button:hover{text-decoration:none}
 .hamb{display:none;width:44px;height:44px;background:none;border:0;cursor:pointer;
   flex-direction:column;justify-content:center;align-items:flex-end;gap:5px;padding:0}
-/* Las tres barras miden lo mismo; la de abajo se acorta con scaleX desde la derecha.
-   Animar width obligaba a recalcular maquetado en cada cuadro — scaleX no. */
-.hamb span{display:block;width:22px;height:2px;background:var(--ink);
-  transition:transform .28s var(--ley),opacity .2s var(--ley)}
-/* la corta se achica desde el centro y se corre a la derecha para quedar al ras:
-   mover el origen al borde habría hecho girar las aspas de la X desde la punta. */
-.hamb span:nth-child(3){transform:translateX(3.52px) scaleX(.68)}
+.hamb span{display:block;width:22px;height:2px;background:var(--ink);transition:transform .22s var(--ley),opacity .18s}
 .hamb[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .hamb[aria-expanded="true"] span:nth-child(2){opacity:0}
-.hamb[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg) scaleX(1)}
-
-/* [hidden] es display:none del navegador, pero cualquier display en la clase lo pisa:
-   el panel quedaba renderizado y tapaba la pantalla entera, invisible pero bloqueando
-   todos los clics. Esta línea va sí o sí. */
+.hamb[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 .menu[hidden]{display:none}
-.menu{position:fixed;inset:0;z-index:49;background:rgba(18,17,16,.97);
-  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  display:flex;flex-direction:column;justify-content:center;gap:2px;padding:0 var(--pad);
-  opacity:0;transition:opacity .28s ease}
+.menu{position:fixed;inset:72px 0 auto 0;z-index:49;background:var(--bg);border-bottom:1px solid var(--line);
+  display:flex;flex-direction:column;padding:8px var(--pad) 24px;opacity:0;transition:opacity .2s ease}
 .menu.abierto{opacity:1}
-.menu a{display:flex;align-items:center;min-height:58px;font-size:clamp(23px,6.6vw,32px);
-  font-weight:900;letter-spacing:-.03em;color:var(--ink);
-  border-bottom:1px solid var(--line-2);transition:color .2s}
-.menu a.destacado{color:var(--hot)}
-.menu a.menu-cta{margin-top:24px;border-bottom:0;font-size:14px;font-weight:800;
-  letter-spacing:.1em;text-transform:uppercase;color:#fff;justify-content:center;min-height:54px;
-  border-radius:999px;background:linear-gradient(rgba(255,255,255,.24),rgba(255,255,255,.02) 52%),rgba(242,106,31,.70)}
+.menu a{display:flex;align-items:center;min-height:56px;font-size:20px;font-weight:600;color:var(--ink);
+  text-decoration:none;border-bottom:1px solid var(--line-2)}
+.menu a.menu-cta{margin-top:18px;border:0;justify-content:center;background:var(--accent);border-radius:10px;font-size:17px}
+
+/* ── botones ── */
+.button{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:12px 22px;
+  border-radius:10px;border:1px solid transparent;font:inherit;font-size:16px;font-weight:650;
+  text-decoration:none;cursor:pointer;transition:background .18s,border-color .18s,transform .18s}
+.button--primary{background:var(--accent);color:var(--ink)}
+.button--primary:hover{background:#f07a36}
+.button--ghost{border-color:var(--line);color:var(--ink);background:transparent}
+.button--ghost:hover{border-color:var(--ink)}
+.button--sm{min-height:44px;padding:8px 16px;font-size:15px}
+.link{color:var(--ink);font-weight:600;text-underline-offset:5px;text-decoration-thickness:1px}
+.link:hover{color:var(--accent-ink)}
+.link-arrow::after{content:' →'}
+.link-ext::after{content:' ↗'}
 
 /* ── hero ── */
-.via{position:fixed;right:0;top:0;width:54vw;height:100svh;z-index:5;pointer-events:none;
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 97%);
-  mask-image:linear-gradient(90deg,transparent,#000 14%,#000 97%)}
-.via canvas{width:100%;height:100%;display:block}
-.caps{position:absolute;inset:0}
-/* Las palabras de cada estación: legibles siempre, y encendidas cuando el trazo
-   las toca. El destello lo dibuja el canvas; acá sube el peso y el color. */
-.cap{position:absolute;bottom:15%;transform:translateX(-50%);white-space:nowrap;text-align:center;
-  font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);
-  transition:color .25s ease,transform .35s cubic-bezier(.16,1,.3,1)}
-.cap b{display:block;font-weight:800;font-size:12px}
-.cap.on{color:var(--hot);transform:translateX(-50%) translateY(-4px)}
-.cap.on b{color:var(--hot)}
-.cap.own::after{content:'tu equipo';display:block;font-size:9.5px;letter-spacing:.1em;
-  color:var(--dim);margin-top:4px;font-weight:600}
-
-.hero{position:relative;z-index:10;min-height:100svh;display:flex;flex-direction:column;justify-content:center;
-  padding:0 var(--pad)}
-.hero-in{position:relative;z-index:2;max-width:min(54vw,720px)}
-
-/* EL VIDEO DEL HERO. La portada es un fondo CSS: se pinta con el primer cuadro del
-   video antes de que el video cargue, y el video entra encima sin saltos. Hay dos
-   archivos —horizontal y vertical— y se elige por ancho, con el mismo corte (1000px)
-   que cambia el diseño del hero. Sin JavaScript, con "reducir movimiento", con ahorro
-   de datos o con conexión lenta, queda solo la imagen. */
-.hero{background:var(--void) url(/media/hero-poster.jpg) 62% center/cover no-repeat}
-.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% center;
-  z-index:0;opacity:0;transition:opacity .6s ease}
-.hero-video.on{opacity:1}
-/* el degradado une el video con el texto; la banda de arriba protege el menú, que
-   el haz de luz cruza al final del recorrido */
-.hero-shade{position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:
-    linear-gradient(180deg,rgba(18,17,16,.82) 0,rgba(18,17,16,0) 130px),
-    linear-gradient(90deg,rgba(18,17,16,.92) 0%,rgba(18,17,16,.74) 30%,rgba(18,17,16,.26) 50%,rgba(18,17,16,0) 70%)}
-.vid-toggle{position:absolute;left:var(--pad);bottom:clamp(18px,3vh,30px);z-index:3;width:44px;height:44px;
-  border-radius:50%;border:1px solid var(--line);background:rgba(18,17,16,.6);color:var(--ink);
-  display:none;place-items:center;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-.vid-toggle.on{display:grid}
-.vid-toggle svg{width:14px;height:14px}
-.vid-toggle .i-play{display:none}
-.vid-toggle[aria-pressed="true"] .i-play{display:block}
-.vid-toggle[aria-pressed="true"] .i-pause{display:none}
-a.btn{display:inline-block;text-decoration:none;text-align:center}
-.eyebrow{display:inline-flex;align-items:center;gap:11px;font-size:10.5px;letter-spacing:.22em;
-  text-transform:uppercase;color:var(--hot);margin-bottom:clamp(16px,2.2vw,24px);font-weight:600}
-.eyebrow::before{content:'';width:24px;height:1px;background:var(--hot)}
-h1{font-weight:900;font-size:clamp(36px,4.5vw,68px);line-height:.92;letter-spacing:-.05em}
-h1 .ln{display:block;text-wrap:balance}
-h1 em{font-style:normal;color:var(--hot)}
-.wd{display:inline-block;white-space:nowrap}
-.ch{display:inline-block;will-change:transform,opacity}
-.js .ch{opacity:0}
-.deny{font-size:clamp(15px,1.4vw,19px);color:var(--mid);max-width:46ch;margin-top:clamp(16px,1.8vw,24px);line-height:1.55}
-.deny b{color:var(--ink);font-weight:800}
-/* palabra que rota. El estado de reposo es VISIBLE: si el JS se traba o los timers
-   se estrangulan con la pestaña de fondo, la palabra se lee igual en vez de quedar
-   fantasma a media transición. Sin overflow:hidden — cortaba la p de "próximo". */
-.swap{display:inline-block;color:var(--hot);font-weight:800;vertical-align:baseline}
-.swap i{font-style:normal;display:inline-block;
-  transition:transform .34s cubic-bezier(.16,1,.3,1),opacity .3s ease}
-.swap.sale i{transform:translateY(-.55em);opacity:0}
-.swap.entra i{transform:translateY(.55em);opacity:0;transition:none}
-.act{display:flex;align-items:flex-start;gap:12px;flex-wrap:nowrap;margin-top:clamp(22px,2.6vw,34px)}
-/* el secundario no compite con el primario: mismo vidrio, sin el relleno naranja */
-.btn.suave{--relleno:rgba(242,240,236,.07);color:var(--ink);border-color:rgba(255,255,255,.26)}
-/* centrado, no alineado a la izquierda: la leyenda mide 10px menos que el boton y
-   pegada al margen izquierdo se veia corrida. La columna mide lo que mide el boton,
-   asi que centrar dentro de la columna la deja centrada bajo el boton. */
-.acol{display:flex;flex-direction:column;align-items:flex-start;gap:9px;min-width:0}
-
-/* El relleno es una propiedad registrada para que el hover pueda INTERPOLAR el color:
-   sin @property un custom property es texto y salta de golpe. El var() lleva reserva
-   por si el navegador no la soporta — sin eso se caeria el fondo entero del boton. */
-@property --relleno{syntax:'<color>';initial-value:rgba(242,106,31,.58);inherits:false}
-/* Vidrio: el relleno es translucido y detras pasa la animacion del hero, asi que se la
-   ve moverse a traves del boton. El degradado de arriba es el brillo de la arista, que
-   es lo que hace que lea como vidrio y no como un color pastel. El borde es FIJO: el
-   anillo que giraba era decoracion perpetua sobre el boton mas visto de la pagina, y
-   ademas repintaba un degradado conico en cada cuadro, encima de un backdrop-filter. */
-.btn{font-family:var(--f);font-size:15px;font-weight:800;padding:16px 32px;white-space:nowrap;
-  color:#fff;border:1.5px solid rgba(255,255,255,.20);border-radius:999px;cursor:pointer;
-  background:linear-gradient(rgba(255,255,255,.20),rgba(255,255,255,.02) 52%) padding-box,
-             linear-gradient(var(--relleno,rgba(242,106,31,.58)),var(--relleno,rgba(242,106,31,.58))) padding-box;
-  backdrop-filter:blur(16px) saturate(180%);-webkit-backdrop-filter:blur(16px) saturate(180%);
-  transition:transform .26s var(--ley),--relleno .34s var(--ley)}
-@media(hover:hover) and (pointer:fine){
-  .btn:hover{--relleno:rgba(255,124,48,.64);transform:translateY(-1px)}
-  .btn.suave:hover{--relleno:rgba(242,240,236,.14);border-color:rgba(255,255,255,.42)}
-}
-.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:600}
-.btn.ghost:hover{border-color:var(--hot);background:transparent}
-.hint{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);
-  text-shadow:0 0 10px rgba(18,17,16,.95),0 0 3px rgba(18,17,16,.9)}
-
-/* ── la franja de AIMA ──
-   Toda la banda es el enlace: en el celular el blanco de toque es la pantalla entera
-   de ancho, no un renglon de texto. */
-.puerta{position:relative;z-index:10;display:block;text-decoration:none;overflow:hidden;
-  padding:clamp(32px,4.4vw,50px) var(--pad);background:#17110d;
-  border-top:1px solid rgba(242,106,31,.30);border-bottom:1px solid var(--line)}
-.puerta::before{content:'';position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(130% 210% at 93% 50%,rgba(242,106,31,.17),transparent 60%)}
-.puerta::after{content:'';position:absolute;top:-1px;left:0;height:1px;width:110px;pointer-events:none;
-  background:linear-gradient(90deg,transparent,#ffb279,var(--hot),transparent);
-  transform:translateX(-110px);opacity:0}
-@keyframes recorre{
-  0%{transform:translateX(-110px);opacity:0}
-  7%{opacity:1} 88%{opacity:1}
-  100%{transform:translateX(100vw);opacity:0}}
-/* Tres pasadas, no infinitas: el objetivo es que la franja se note al llegar, y eso se
-   cumple en las primeras. En bucle pasa a ser un tic en el borde de la pantalla.
-   Declarada en pausa y encendida por el observador, asi las tres se cuentan desde que
-   la franja entra en pantalla y no se gastan antes de que alguien la vea. */
-@media(prefers-reduced-motion:no-preference){
-  .puerta::after{animation:recorre 4.8s linear 3;animation-play-state:paused}
-  .puerta.gira::after{animation-play-state:running}
-}
-.puerta-in{position:relative;display:flex;align-items:center;justify-content:space-between;
-  gap:clamp(13px,2.4vw,28px);flex-wrap:wrap}
-.puerta-k{font-size:clamp(21px,3.3vw,32px);font-weight:800;color:var(--ink);letter-spacing:-.02em;
-  line-height:1.12}
-.puerta-k b{font-weight:900;color:var(--hot);letter-spacing:.01em}
-/* vidrio: hay un resplandor naranja detras, asi que el desenfoque tiene algo que hacer */
-.puerta-c{position:relative;display:inline-flex;align-items:center;gap:12px;overflow:hidden;
-  padding:14px 22px;min-height:48px;border-radius:999px;border:1px solid rgba(242,240,236,.22);
-  background:linear-gradient(rgba(255,255,255,.13),rgba(255,255,255,.02) 55%),rgba(242,240,236,.05);
-  backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);
-  transition:border-color .25s var(--ley)}
-/* el relleno entra deslizandose desde la izquierda */
-.puerta-c::before{content:'';position:absolute;inset:0;background:var(--hot);
-  transform:scaleX(0);transform-origin:0 50%;transition:transform .24s var(--ley)}
-.puerta-t,.flecha{position:relative}
-.puerta-t{font-size:clamp(14px,1.5vw,16.5px);font-weight:800;color:var(--ink);
-  letter-spacing:-.01em;transition:color .2s var(--ley)}
-.flecha{width:20px;height:9px;flex-shrink:0;color:var(--hot);
-  transition:transform .2s var(--ley),color .2s var(--ley)}
-.flecha::before{content:'';position:absolute;left:0;top:4px;width:100%;height:1.5px;background:currentColor}
-.flecha::after{content:'';position:absolute;right:0;top:1px;width:8px;height:8px;
-  border-top:1.5px solid currentColor;border-right:1.5px solid currentColor;transform:rotate(45deg)}
-@media(hover:hover) and (pointer:fine){
-  .puerta:hover .puerta-c{border-color:var(--hot)}
-  .puerta:hover .puerta-c::before{transform:scaleX(1)}
-  .puerta:hover .puerta-t,.puerta:hover .flecha{color:#120d08}
-  .puerta:hover .flecha{transform:translateX(5px)}
-}
-.puerta:focus-visible{outline:2px solid var(--hot);outline-offset:-3px}
+.hero{padding-block:clamp(40px,6vw,88px);background:#f1ede2}
+.nav:not(.stuck){background:rgba(241,237,226,.94)}
+.hero__grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);align-items:center;gap:clamp(24px,3vw,48px)}
+.hero__copy,.hero__visual{min-width:0}
+.hero__eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:600;color:var(--ink-2);margin-bottom:22px}
+.hero__eyebrow::before{content:'';width:10px;height:10px;background:var(--accent);border-radius:2px}
+.hero h1{max-width:12ch;font-size:clamp(2.75rem,4.7vw,4.25rem);line-height:1.06;letter-spacing:-.035em;font-weight:700}
+.hero__lead{max-width:44ch;margin-top:24px;font-size:clamp(17px,1.35vw,20px);line-height:1.6;color:var(--ink-2)}
+.hero__actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px 28px;margin-top:32px}
+.hero__note{margin-top:14px;font-size:14px;color:var(--muted)}
+.hero__visual{width:100%;max-width:720px;justify-self:end}
+.hero__media{position:relative;aspect-ratio:16/9;overflow:hidden;isolation:isolate;background:#f3efe4}
+/* bordes del cuadro: se funden apenas con el fondo; no toca a la figura del centro */
+/* los bordes del cuadro se desvanecen apenas en el fondo; la figura del centro no se toca */
+.hero__media{-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 90%,transparent),linear-gradient(180deg,transparent,#000 12%,#000 88%,transparent);
+  -webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 12%,#000 90%,transparent),linear-gradient(180deg,transparent,#000 12%,#000 88%,transparent);
+  mask-composite:intersect;background:transparent}
+.hero__video,.hero__fallback{width:100%;height:100%;display:block;object-fit:contain}
+.hero__fallback{position:absolute;inset:0}
+.hero [hidden]{display:none!important}
+.hero__playback{margin-top:12px;min-height:44px;padding:8px 14px;color:var(--muted);background:transparent;
+  border:1px solid var(--line);border-radius:8px;font:inherit;font-size:14px;cursor:pointer}
+.hero__playback:hover{color:var(--ink);border-color:var(--ink)}
 
 /* ── secciones ── */
-/* El corte no se consigue estirando la sección — así quedan larguísimas. Se consigue
-   marcándolo: regla arriba + una marca naranja corta que dice "acá empieza otra cosa". */
-.sec{position:relative;z-index:10;padding:clamp(74px,8vw,120px) var(--pad);
-  background:var(--void);border-top:1px solid var(--line)}
-.sec::before{content:'';position:absolute;top:-1px;left:var(--pad);width:clamp(40px,5vw,72px);
-  height:2px;background:var(--hot)}
-.sec.alt{background:var(--panel)}
-/* RESTAURADO: otro reemplazo se llevó el bloque de la zona clara entera. */
-/* ══ INVERSIÓN A CLARO ══
-   No repinta nada a mano: redefine los tokens dentro del bloque y todas las reglas
-   que ya usan var(--ink)/var(--hot)/var(--line) se dan vuelta solas. El naranja baja
-   a #b0430c porque el de marca sobre marfil da 2.7:1 — ilegible. Así da 5.1:1. */
-.luz{
-  --void:#f2f0ec;--panel:#e8e5df;
-  /* Los grises de marfil pesaban poco: sobre fondo claro el ojo pide más tinta que
-     sobre oscuro para leer igual. Todos suben ~10 puntos de alfa. */
-  --ink:#161513;--mid:rgba(22,21,19,.86);--dim:rgba(22,21,19,.80);--faint:rgba(22,21,19,.74);
-  --ink-2:rgba(22,21,19,.94);--ink-3:rgba(22,21,19,.86);
-  --hot:#b0430c;--trace:#3a3833;
-  --line:rgba(22,21,19,.17);--line-2:rgba(22,21,19,.09);
-  --hover-bg:rgba(22,21,19,.055);
-  background:#f2f0ec;color:var(--ink)}
-.luz .tag i,.luz .shead span:last-child{color:#f2f0ec}
+.sec{padding-block:clamp(64px,8vw,112px)}
+.sec--alt{background:var(--bg-2)}
+.k{display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:var(--muted);margin-bottom:18px}
+.k::before{content:'';width:8px;height:8px;background:var(--accent);border-radius:2px}
+h2{font-size:clamp(28px,3.2vw,44px);line-height:1.1;letter-spacing:-.03em;font-weight:700;max-width:22ch}
+h3{font-size:clamp(21px,1.8vw,26px);line-height:1.2;letter-spacing:-.02em;font-weight:700}
+.lead{font-size:clamp(17px,1.3vw,19px);line-height:1.6;color:var(--ink-2);max-width:60ch;margin-top:18px}
+.lead b{font-weight:650;color:var(--ink)}
+.small{font-size:14px;color:var(--muted)}
 
-.sec.luz{border-top-color:rgba(22,21,19,.16)}
-/* el rótulo de sección es la señalización de la página: tiene que leerse de un vistazo,
-   no ser un susurro gris. Número naranja con peso + etiqueta en tinta casi plena. */
-.tag{display:flex;align-items:center;gap:13px;font-size:15px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--ink);margin-bottom:clamp(24px,3vw,38px);font-weight:800}
-/* el número va en chapa naranja llena: es el mojón de la página, tiene que verse de lejos */
-.tag i{font-style:normal;background:var(--hot);color:#120d08;font-weight:900;font-size:14px;
-  letter-spacing:.04em;line-height:1;padding:6px 9px 5px}
-.tag .bar{width:30px;height:3px;background:var(--hot);flex-shrink:0}
-@media(max-width:720px){.tag{font-size:13px;gap:10px}.tag .bar{width:18px}}
-h2{font-weight:900;font-size:clamp(28px,4.2vw,60px);line-height:1;letter-spacing:-.045em;max-width:18ch;
-  margin-bottom:clamp(16px,1.8vw,24px)}
-h2 em{font-style:normal;color:var(--hot)}
-/* "Un sistema. Se entrega entero." tiene que entrar en un renglón: sin el tope de
-   18ch, "entero" caía solo abajo */
-.h-sistema{max-width:none;white-space:nowrap}
-@media(max-width:900px){.h-sistema{white-space:normal;max-width:14ch}}
-.lead{font-size:clamp(15px,1.15vw,18px);color:var(--mid);max-width:54ch;margin-top:0;line-height:1.75}
-.lead b{color:var(--ink);font-weight:600}
-/* tres parrafos seguidos con margin-top:0 se leian como un bloque unico: cada beat
-   del texto necesita su respiro. Solo entre hermanos, no debajo del titulo. */
-.lead+.lead{margin-top:clamp(14px,1.5vw,20px)}
-
-.rv{opacity:0;transform:translateY(16px);
-  transition:opacity .42s cubic-bezier(.16,1,.3,1),transform .42s cubic-bezier(.16,1,.3,1)}
+.rv{opacity:0;transform:translateY(10px);transition:opacity .5s var(--ley),transform .5s var(--ley)}
 .js-rv .rv.in,.rv.in{opacity:1;transform:none}
 html:not(.js-rv) .rv{opacity:1;transform:none}
-
-/* ── entradas escalonadas ──
-   Las listas repetidas entran una atrás de otra en vez de todas de golpe. Es el mismo
-   observador que .rv, así que hereda la misma red de seguridad: si el JS no corre,
-   el CSS de abajo las deja visibles igual. */
-.js-rv .stg>*{opacity:0;transform:translateY(15px);
-  transition:opacity .36s cubic-bezier(.16,1,.3,1),transform .36s cubic-bezier(.16,1,.3,1)}
+.js-rv .stg>*{opacity:0;transform:translateY(10px);transition:opacity .5s var(--ley),transform .5s var(--ley)}
 .js-rv .stg.in>*{opacity:1;transform:none}
-.js-rv .stg.in>*:nth-child(1){transition-delay:.02s}
 .js-rv .stg.in>*:nth-child(2){transition-delay:.06s}
 .js-rv .stg.in>*:nth-child(3){transition-delay:.12s}
 .js-rv .stg.in>*:nth-child(4){transition-delay:.18s}
-.js-rv .stg.in>*:nth-child(5){transition-delay:.24s}
-.js-rv .stg.in>*:nth-child(6){transition-delay:.30s}
-.js-rv .stg.in>*:nth-child(n+7){transition-delay:.36s}
+.js-rv .stg.in>*:nth-child(n+5){transition-delay:.24s}
 html:not(.js-rv) .stg>*{opacity:1;transform:none}
 
-/* hilo de avance arriba de todo: dice cuánto falta sin ocupar lugar */
-.prog{position:fixed;top:0;left:0;right:0;height:2px;background:var(--hot);z-index:70;
-  transform:scaleX(0);transform-origin:0 50%;pointer-events:none;will-change:transform}
+/* ── lo que te frena ── */
+.frena{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,80px);align-items:start}
+.frena-list{list-style:none;border-top:1px solid var(--line)}
+.frena-list li{padding:18px 0;border-bottom:1px solid var(--line);font-size:clamp(17px,1.3vw,19px);line-height:1.5}
+.frena-list li::before{content:'—';color:var(--accent-ink);margin-right:12px;font-weight:700}
+.frena-cierre{margin-top:22px;color:var(--ink-2)}
 
-/* micro-reacciones: nada que se mueva solo, solo respuesta a lo que hace el visitante */
-@media(hover:hover){
-  /* mismo gesto que los módulos del sistema: se ilumina la fila y la marca la recorre */
-  /* hover fuerte: la fila se ilumina, la columna HOY sube a tinta plena, el filo se
-     enciende y la marca naranja recorre el borde de punta a punta. */
-  .srow:hover{--marca:1;background:var(--hover-bg)}
-  .srow:hover .a{color:var(--ink)}
-  .srow:hover .a{border-left-color:var(--hot)}
-  .srow:hover .b{color:var(--hot)}
-  .srow::after{height:3px}
-  .qs li{transition:transform .32s cubic-bezier(.16,1,.3,1)}
-  .qs li:hover{transform:translateX(7px)}
-}
-@media(prefers-reduced-motion:reduce){
-  .js-rv .stg>*{opacity:1;transform:none;transition:none}
-  .prog{transition:none}
-  .srow,.qs li,.mod{transition:none}
-}
+/* ── proyectos ── */
+.proy-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap}
+.proy{margin-top:clamp(36px,4vw,56px);display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);
+  gap:clamp(24px,4vw,64px);align-items:center;padding:clamp(24px,3vw,44px);background:var(--card);
+  border:1px solid var(--line);border-radius:16px}
+.proy--inv{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr)}
+.proy--inv .proy-tx{order:2}
+.estado{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:650;color:var(--ink-2);
+  padding:5px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg)}
+.estado::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.estado--prod::before{background:var(--accent)}
+.proy h3{margin-top:16px;font-size:clamp(24px,2.2vw,32px)}
+.proy-dl{margin-top:20px;display:grid;gap:14px}
+.proy-dl dt{font-size:13px;font-weight:650;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.proy-dl dd{font-size:17px;line-height:1.55;color:var(--ink-2);margin-top:2px}
+.proy-cta{margin-top:24px;display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center}
 
-/* divisor con el punto que viaja: el mismo motivo del hero */
-.rail{position:relative;height:1px;background:var(--line-2);margin:clamp(48px,5.5vw,80px) 0;overflow:visible}
-/* Punto sólido, sin halo: el resplandor de color es el tic de las webs hechas con IA.
-   La capa mide TODO el riel y el punto se dibuja en su borde izquierdo, así que
-   translateX(100%) recorre exactamente el ancho sin que el CSS tenga que conocerlo.
-   Antes animaba 'left', que recalcula maquetado en cada cuadro — y esto va en bucle. */
-.rail::after{content:'';position:absolute;top:-2px;left:0;width:100%;height:5px;
-  background:radial-gradient(circle at 2.5px 50%,var(--hot) 2.2px,transparent 2.8px);
-  animation:corre 9s linear infinite}
-@keyframes corre{0%{transform:translateX(0);opacity:0}6%{opacity:1}94%{opacity:1}100%{transform:translateX(100%);opacity:0}}
+/* capturas: con su proporción, borde fino, sin marco de dispositivo */
+.shots{position:relative;min-width:0}
+.shot{display:block;width:100%;height:auto;border-radius:12px;border:1px solid var(--line);background:#fff}
+.shots--ev{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;align-items:start}
+.shots--ev figure:last-child{margin-top:44px}
+.shots figcaption{margin-top:8px;font-size:13px;color:var(--muted)}
+.demo-tag{display:inline-block;margin-bottom:12px;font-size:13px;font-weight:650;color:var(--ink-2);
+  background:var(--bg-2);border:1px solid var(--line);border-radius:6px;padding:4px 10px}
 
-/* antes / después */
-.shift{margin-top:clamp(30px,3.5vw,48px);border-top:1px solid var(--line)}
-.srow{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,4vw,64px);
-  padding:clamp(18px,2.4vw,28px) clamp(12px,1.4vw,18px);
-  margin-left:clamp(-12px,-1.4vw,-18px);margin-right:clamp(-12px,-1.4vw,-18px);
-  border-bottom:1px solid var(--line-2);align-items:start;transition:background .3s ease}
-.srow::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--hot);
-  transform-origin:0 50%;transform:scaleX(var(--marca,0));
-  transition:transform .22s cubic-bezier(.16,1,.3,1)}
-.srow .b{transition:color .3s ease}
-/* la columna HOY iba tan apagada que no se leía. La jerarquía ahora la marca el peso
-   y el filo de color, no la falta de contraste: gris legible vs. tinta plena en negrita. */
-.srow .a{color:var(--ink-3);font-size:clamp(15px,1.22vw,18.5px);line-height:1.6;font-weight:600;
-  padding-left:16px;border-left:2px solid var(--line);transition:color .25s ease,border-color .25s ease}
-.srow .b{color:var(--ink);font-size:clamp(15px,1.22vw,18.5px);line-height:1.6;font-weight:800;
-  padding-left:16px;border-left:2px solid var(--hot);transition:color .25s ease}
-/* lo que depende de activar LIA va marcado aparte: el sistema es el orden, el agente es opcional.
-   Ojo: la clase .opt ya existe más abajo (la chapita OPCIONAL del módulo 04). */
-/* aclaracion, no argumento: mas chica y mas apagada que el texto que aclara, y el
-   borde punteado deja de ser naranja pleno para no pedir la misma atencion */
-.srow .b .si-lia{display:block;margin-top:9px;font-style:normal;font-weight:400;font-size:.76em;
-  line-height:1.55;color:var(--faint);padding-left:11px;
-  border-left:1px dashed rgba(242,106,31,.42);max-width:44ch}
-.srow .b .si-lia b{color:var(--hot);font-weight:800}
-.shead{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,4vw,64px);padding-bottom:10px;
-  font-size:13px;letter-spacing:.16em;text-transform:uppercase;font-weight:800}
-/* chapas, igual que el número de sección: la comparación es el corazón del módulo
-   y con un rótulo subrayado de 12px no se veía. Ahora se lee de un vistazo cuál es cuál. */
-.shead span{justify-self:start;align-self:end;display:inline-flex;align-items:center;
-  padding:9px 14px;border:1px solid var(--line);color:var(--ink-3)}
-.shead span:last-child{background:var(--hot);color:#120d08;border-color:var(--hot)}
-
-/* módulos del sistema */
-.mods{margin-top:clamp(30px,3.5vw,48px)}
-.mod{position:relative;display:grid;grid-template-columns:64px minmax(0,1fr) minmax(0,1.3fr);
-  gap:clamp(14px,3vw,44px);padding:clamp(22px,2.8vw,34px) clamp(12px,1.4vw,18px);
-  margin-left:clamp(-12px,-1.4vw,-18px);margin-right:clamp(-12px,-1.4vw,-18px);
-  border-top:1px solid var(--line);transition:background .35s ease}
-.mod::before{content:'';position:absolute;top:-1px;left:0;right:0;height:2px;background:var(--hot);
-  transform-origin:0 50%;transform:scaleX(var(--marca,0));
-  transition:transform .22s cubic-bezier(.16,1,.3,1)}
-.mod .n,.mod h3{transition:color .3s ease}
-@media(hover:hover){
-  /* se ilumina la fila entera y la marca naranja la recorre */
-  .mod:hover{--marca:1;background:var(--hover-bg)}
-  .mod:hover h3{color:var(--hot)}
-}
-.mod .n{font-size:12px;color:var(--hot);font-weight:800;letter-spacing:.08em;padding-top:5px}
-.mod h3{font-weight:800;font-size:clamp(17px,1.6vw,23px);letter-spacing:-.03em;line-height:1.15}
-.mod p{color:var(--mid);font-size:clamp(14px,1.05vw,16px);line-height:1.72}
-.mod p b{color:var(--ink);font-weight:600}
-.mod .meta{display:block;font-size:10.5px;letter-spacing:.06em;color:var(--faint);margin-top:9px;text-transform:uppercase}
-.opt{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.1em;color:var(--hot);
-  border:1px solid var(--hot);padding:2px 6px;margin-left:8px;vertical-align:3px}
-
-/* ══ AIMA · la sección con más carácter ══
-   Sin cajas: dos grupos, cada uno con su rótulo y sus renglones. El hover ilumina
-   la fila entera y estira la marca naranja — el circuito que se conecta. */
-/* absuelve sin sacar el filtro: va más apagada que las preguntas, es una nota al pie
-   de ellas y no un argumento nuevo */
-.absuelve{margin-top:clamp(22px,2.6vw,32px);max-width:52ch;font-size:clamp(14px,1.05vw,16px);
-  line-height:1.7;color:var(--dim);padding-left:14px;border-left:2px solid var(--line)}
-.absuelve em{font-style:normal;color:var(--hot);font-weight:800}
-/* ── AIMA: bloques en secuencia, no en grilla ── */
-.bloque-a{margin-top:clamp(38px,4.6vw,66px)}
-.bloque-a+.bloque-a{padding-top:clamp(30px,3.4vw,46px);border-top:1px solid var(--line-2)}
-.bloque-a .lead-aima+.lead-aima{margin-top:clamp(14px,1.5vw,20px)}
-.bloque-a .grupo-tit{margin-bottom:clamp(16px,2vw,24px)}
-
-/* ── LA CUENTA · calculadora ──
-   Se llama .calc y NO .cuenta: esa clase ya era el bloque de "el sistema se paga" y
-   le robaba su barra naranja. Tercer choque de nombres en esta página — grep antes. */
-.calc{margin-top:clamp(26px,3vw,38px);padding:clamp(20px,2.4vw,32px);
-  background:var(--panel);border:1px solid var(--line-2);border-radius:16px}
-.calc h3{font-size:clamp(19px,2vw,26px);font-weight:800;letter-spacing:-.03em;line-height:1.2}
-.calc-k{margin-top:clamp(20px,2.2vw,28px);font-size:10px;letter-spacing:.16em;
-  text-transform:uppercase;font-weight:800;color:var(--dim)}
-.chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:11px}
-.chip{font-family:var(--f);font-size:13.5px;font-weight:600;color:var(--mid);cursor:pointer;
-  min-height:44px;padding:10px 16px;border-radius:999px;
-  background:transparent;border:1px solid var(--line);
-  transition:color .2s var(--ley),border-color .2s var(--ley),background .2s var(--ley)}
-.chip[aria-pressed="true"]{background:var(--hot);border-color:var(--hot);color:#120d08;font-weight:800}
-.chip:focus-visible{outline:2px solid var(--hot);outline-offset:3px}
-@media(hover:hover) and (pointer:fine){
-  .chip:hover{border-color:var(--hot);color:var(--ink)}
-  .chip[aria-pressed="true"]:hover{color:#120d08}
-}
-.chips.horas{display:grid;grid-template-columns:repeat(5,1fr)}
-.chips.horas .chip{padding:10px 4px;text-align:center}
-/* el resultado es tiempo, nunca plata: una promesa economica esta prohibida */
-.calc-r{margin-top:clamp(22px,2.4vw,30px);padding-top:clamp(18px,2vw,24px);
-  border-top:1px solid var(--line)}
-.calc-r b{display:block;font-size:clamp(30px,4.6vw,54px);font-weight:900;
-  letter-spacing:-.04em;line-height:1.02;color:var(--hot)}
-/* mientras es ejemplo va apagado: el naranja se enciende recién con SU número */
-.calc-eg{display:block;margin-bottom:8px;font-size:10px;letter-spacing:.16em;
-  text-transform:uppercase;font-weight:800;color:var(--faint)}
-.calc-r.ejemplo b{color:var(--dim)}
-.calc-r:not(.ejemplo) .calc-eg{display:none}
-.calc-r span{display:block;margin-top:7px;font-size:clamp(15px,1.2vw,18px);color:var(--mid)}
-.calc .g-cta{margin-top:clamp(20px,2.2vw,28px)}
-
-/* ── LA PLATAFORMA · tarjetas de interfaz ──
-   Van en la zona clara, así que los colores salen de los tokens de .luz (fondo marfil,
-   naranja más oscuro para que aguante contraste sobre claro). La tarjeta es blanca
-   sobre el marfil; adentro, cada dato es su propio bloque. La leyenda va DEBAJO de la
-   tarjeta, no adentro: la tarjeta muestra, la leyenda explica. */
-.plata{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(20px,2.4vw,32px);
-  margin-top:clamp(28px,3.4vw,44px);align-items:start}
-.pieza{display:flex;flex-direction:column;min-width:0}
-.tarj{flex:1;background:#fffdfa;border:1px solid rgba(22,21,19,.11);border-radius:14px;
-  padding:clamp(13px,1.4vw,17px)}
-.tarj-k{font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;
-  color:rgba(22,21,19,.62);padding:2px 2px 13px;
-  display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px}
-/* las cifras y los nombres de estas pantallas son de muestra: sin el rótulo, el
-   41% de "Por qué se pierden" se lee como una estadística real que no tenemos */
-.tarj-k .muestra{font-size:10.5px;letter-spacing:.02em;text-transform:none;font-weight:600}
-.pie-t{margin-top:14px}
-.pie-t b{display:block;font-size:clamp(14.5px,1.15vw,16.5px);color:var(--ink);
-  font-weight:800;letter-spacing:-.02em}
-.pie-t span{display:block;margin-top:3px;font-size:clamp(13px,1.05vw,14.5px);
-  color:var(--dim);line-height:1.6}
-
-/* 1 · los números del mes */
-.stat{background:#fff;border:1px solid rgba(22,21,19,.09);border-radius:10px;padding:12px 14px}
-.stat+.stat{margin-top:10px}
-.stat i{display:block;font-style:normal;font-size:9.5px;letter-spacing:.15em;
-  text-transform:uppercase;font-weight:800;color:rgba(22,21,19,.62)}
-.stat b{display:block;margin-top:5px;font-size:clamp(30px,3.2vw,40px);font-weight:800;
-  letter-spacing:-.035em;line-height:1.02}
-.stat em{display:block;margin-top:2px;font-style:normal;font-size:12.5px;color:var(--dim)}
-/* El único acento: lo que todavía no tocó nadie. Se marca con el número y un tinte,
-   NO con una franja lateral de color — está en la lista de rechazados y además es el
-   tic más reconocible de las interfaces hechas con IA. */
-.stat.ojo{border-color:rgba(176,67,12,.34);background:rgba(176,67,12,.05)}
-.stat.ojo i{color:var(--hot)}
-.stat.ojo b{color:var(--hot)}
-
-/* 2 · la consulta con dueño */
-.ficha{display:grid;gap:9px}
-.ficha dt{font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;font-weight:800;
-  color:rgba(22,21,19,.62)}
-.ficha dd{margin:0 0 4px;font-size:clamp(14px,1.1vw,15.5px);color:var(--ink);font-weight:600;
-  padding-bottom:9px;border-bottom:1px solid rgba(22,21,19,.08)}
-.ficha dd:last-child{border-bottom:0;padding-bottom:0}
-.marca-f{display:inline-block;background:rgba(176,67,12,.10);color:var(--hot);
-  font-weight:800;padding:5px 10px;border-radius:7px}
-
-/* 3 · la actividad */
-.linea{list-style:none;display:grid;gap:0}
-.linea li{position:relative;display:grid;grid-template-columns:52px 1fr;gap:18px;
-  align-items:baseline;padding:9px 0;font-size:clamp(13px,1.05vw,14.5px);color:var(--mid);
-  border-bottom:1px solid rgba(22,21,19,.07)}
+/* pantalla de ejemplo de Alia, dibujada en HTML */
+.ui{border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden}
+.ui-bar{display:flex;align-items:center;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line-2);background:#faf8f3}
+.ui-bar i{width:9px;height:9px;border-radius:50%;background:var(--line)}
+.ui-bar span{margin-left:8px;font-size:13px;color:var(--muted)}
+.ui-in{display:grid;grid-template-columns:.9fr 1.1fr;gap:0}
+.ui-col{padding:16px}
+.ui-col+.ui-col{border-left:1px solid var(--line-2)}
+.ui-k{display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:650;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.ui-k small{text-transform:none;letter-spacing:0;font-weight:500}
+.stat{border:1px solid var(--line-2);border-radius:8px;padding:10px 12px}
+.stat+.stat{margin-top:8px}
+.stat i{display:block;font-style:normal;font-size:12px;color:var(--muted)}
+.stat b{display:block;font-size:28px;font-weight:700;letter-spacing:-.03em;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat em{font-style:normal;font-size:12.5px;color:var(--muted)}
+.stat.ojo{border-color:rgba(233,106,34,.5);background:#fdf3ec}
+.stat.ojo b{color:var(--accent-ink)}
+.linea{list-style:none}
+.linea li{display:grid;grid-template-columns:76px 1fr;gap:10px;padding:9px 0;border-bottom:1px solid var(--line-2);font-size:14px;color:var(--ink-2)}
 .linea li:last-child{border-bottom:0}
 .linea li p{margin:0}
-.linea li b{color:var(--ink);font-weight:800}
-.linea span{font-size:12px;color:rgba(22,21,19,.62);font-variant-numeric:tabular-nums}
-/* El punto marca lo que hizo el sistema solo, sin nadie del equipo. Vive en el hueco
-   entre la hora y el texto —de ahí que el hueco sea de 18px— porque pegado al texto
-   se leía como un asterisco. */
-.linea li.sist::before{content:'';position:absolute;left:57px;top:50%;
-  transform:translateY(-50%);width:5px;height:5px;border-radius:50%;background:var(--hot)}
+.linea span{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.linea b{font-weight:650;color:var(--ink)}
 
-/* 4 · los motivos de pérdida */
-.barras{list-style:none;display:grid;gap:13px}
-.barras li{display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:clamp(13px,1.05vw,14.5px)}
-.barras span{color:var(--mid)}
-.barras i{font-style:normal;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
-.barras u{grid-column:1/-1;height:5px;border-radius:3px;background:rgba(22,21,19,.10);
-  text-decoration:none;position:relative;overflow:hidden}
-.barras u::after{content:'';position:absolute;inset:0 auto 0 0;width:var(--v);
-  background:var(--hot);border-radius:3px}
+.sistema-nota{margin-top:clamp(28px,3vw,40px);padding-top:24px;border-top:1px solid var(--line)}
+.sistema-nota p{font-size:17px;color:var(--ink-2);max-width:66ch}
+.sistema-nota p b{color:var(--ink);font-weight:650}
+.probalo{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;font-size:16px;color:var(--ink-2)}
 
-.cierre-plata{margin-top:clamp(30px,3.6vw,48px);max-width:60ch;
-  font-size:clamp(15px,1.15vw,18px);line-height:1.75;color:var(--mid);
-  padding-left:16px;border-left:2px solid var(--hot)}
-.cierre-plata b{color:var(--ink);font-weight:800}
+/* ── desplegables (Sistema y preguntas) ── */
+.pliegues{margin-top:22px;border-top:1px solid var(--line)}
+.plie{border-bottom:1px solid var(--line)}
+.plie summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:20px;
+  min-height:60px;padding:16px 2px;font-size:clamp(17px,1.4vw,20px);font-weight:650;color:var(--ink)}
+.plie summary::-webkit-details-marker{display:none}
+.mas{position:relative;width:28px;height:28px;flex-shrink:0;border-radius:50%;border:1px solid var(--line);transition:border-color .18s}
+.mas::before,.mas::after{content:'';position:absolute;left:50%;top:50%;width:11px;height:1.5px;margin:-.75px 0 0 -5.5px;
+  background:currentColor;transition:transform .2s var(--ley)}
+.mas::after{transform:rotate(90deg)}
+.plie[open] .mas::after{transform:rotate(0)}
+.plie summary:hover .mas{border-color:var(--ink)}
+.plie-in{padding:2px 2px 28px;color:var(--ink-2)}
+.plie-in>p{max-width:66ch;font-size:17px;line-height:1.6}
+.plie-in>p+p{margin-top:10px}
 
-@media(max-width:860px){
-  .plata{grid-template-columns:1fr;gap:clamp(26px,4vw,34px)}
-}
-/* El corte entre los dos movimientos se MARCA, no se estira: una línea, aire y una
-   chapa naranja corta, igual que el corte entre secciones. El titular baja un escalón
-   respecto del h2 de arriba —es el segundo acto de la misma idea, no otra sección—. */
-.acto2{margin-top:clamp(52px,6vw,86px);padding-top:clamp(34px,4vw,54px);
-  border-top:1px solid var(--line);position:relative}
-.acto2::before{content:'';position:absolute;top:-2px;left:0;width:64px;height:3px;background:var(--hot)}
-.h-acto{font-size:clamp(26px,4.4vw,44px);font-weight:900;letter-spacing:-.04em;
-  line-height:1.06;max-width:18ch;margin-bottom:clamp(14px,1.6vw,20px)}
-.h-acto em{font-style:normal;color:var(--hot)}
-.h-aima{max-width:22ch}
-/* el diálogo vive donde el texto lo levanta, no como titular suelto */
-.dialogo{margin:0 0 clamp(18px,2vw,26px);padding-left:16px;border-left:2px solid var(--hot)}
-.dialogo p{font-size:clamp(16px,1.5vw,21px);font-weight:600;color:var(--ink);line-height:1.5}
-.dialogo em{font-style:normal;color:var(--hot);font-weight:800}
-.quienes{background:var(--void)}
-.h-q{max-width:20ch}
-.lead-aima{max-width:66ch}
-.lead-aima b{color:var(--ink);font-weight:800}
+.mods{margin-top:14px}
+.mod{display:grid;grid-template-columns:40px minmax(0,1fr) minmax(0,1.6fr);gap:12px 24px;padding:18px 0;border-top:1px solid var(--line-2)}
+.mod .n{font-size:13px;font-weight:650;color:var(--muted);padding-top:3px}
+.mod h3{font-size:18px}
+.mod p{font-size:16px;line-height:1.6;color:var(--ink-2)}
+.mod p b{color:var(--ink);font-weight:650}
+.mod .meta{display:block;margin-top:8px;font-size:13px;color:var(--muted)}
+.opt{display:inline-block;margin-left:8px;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--muted);
+  border:1px solid var(--line);border-radius:4px;padding:1px 6px;vertical-align:3px}
+.nots{margin-top:10px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0 32px}
+.nots div{display:grid;grid-template-columns:18px 1fr;gap:10px;padding:12px 0;border-bottom:1px solid var(--line-2);font-size:16px}
+.nots div::before{content:'×';color:var(--no);font-weight:800}
+.diag{margin-top:14px;display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(20px,4vw,48px)}
+.col-tit{display:block;font-size:14px;font-weight:700;padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.col-no .col-tit{color:var(--muted)}
+.dx{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--line-2);font-size:16px;line-height:1.5}
+.dx b{font-weight:650;color:var(--ink)}
+.dx .marca{position:relative;width:18px;height:18px;margin-top:3px;border-radius:4px;border:1.5px solid var(--line)}
+.dx .marca::before,.dx .marca::after{content:'';position:absolute;background:currentColor;opacity:0;transition:opacity .25s}
+.dx.suma .marca::before{width:6px;height:1.5px;left:2px;top:9px;transform:rotate(45deg);transform-origin:0 50%}
+.dx.suma .marca::after{width:10px;height:1.5px;left:5px;top:10.5px;transform:rotate(-50deg);transform-origin:0 50%}
+.dx.descarta .marca::before{width:10px;height:1.5px;left:2.5px;top:7.5px;transform:rotate(45deg)}
+.dx.descarta .marca::after{width:10px;height:1.5px;left:2.5px;top:7.5px;transform:rotate(-45deg)}
+.dx.on .marca::before,.dx.on .marca::after,html:not(.js-rv) .dx .marca::before,html:not(.js-rv) .dx .marca::after{opacity:1}
+.dx.suma .marca{color:var(--ok);border-color:var(--ok)}
+.dx.descarta .marca{color:var(--no);border-color:var(--no)}
+.cuenta{margin-top:20px;padding-top:18px;border-top:1px solid var(--line);display:grid;grid-template-columns:1.2fr 1fr;gap:12px 32px}
+.cuenta .c2{font-size:clamp(19px,1.8vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.25}
+.cuenta .c3{font-size:15px;color:var(--muted)}
 
-.grupo{margin-top:clamp(38px,4.6vw,66px)}
-/* separacion real entre los dos grupos: se marca con una linea y aire, no
-   estirando el bloque —igual que el corte entre secciones— */
-.grupo+.grupo{margin-top:clamp(52px,5.6vw,84px);padding-top:clamp(30px,3.4vw,46px);
-  border-top:1px solid var(--line-2)}
-/* rótulos de grupo: son títulos secundarios, no etiquetitas. Barra naranja al
-   costado + tamaño de subtítulo real. */
-/* el rotulo tiene que pesar MAS que sus items: con 15px contra 18px se leian como
-   una lista plana de cuatro cosas equivalentes, y son dos grupos distintos */
-.grupo-tit{display:flex;align-items:center;gap:13px;font-size:clamp(20px,1.9vw,25px);
-  letter-spacing:.12em;text-transform:uppercase;font-weight:900;color:var(--ink);
-  margin-bottom:clamp(20px,2.6vw,34px)}
-.grupo-tit::before{content:'';width:clamp(22px,2.4vw,34px);height:3px;background:var(--hot);flex-shrink:0}
-.items{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,44px)}
-.items.dos{grid-template-columns:repeat(2,1fr)}
-.item{position:relative;border-top:1px solid var(--line);padding:clamp(20px,2.4vw,30px) clamp(12px,1.4vw,18px) 4px;
-  margin-left:clamp(-12px,-1.4vw,-18px);transition:background .35s ease}
-.item::before{content:'';position:absolute;top:-1px;left:0;right:0;height:2px;background:var(--hot);
-  transform-origin:0 50%;transform:scaleX(var(--marca,.18));
-  transition:transform .22s cubic-bezier(.16,1,.3,1)}
-.item h3{font-weight:800;font-size:clamp(16.5px,1.6vw,23px);letter-spacing:-.03em;line-height:1.24}
-.item h3 sup{font-size:9px;color:var(--hot);vertical-align:super}
-.item p{margin-top:10px;color:var(--mid);font-size:clamp(14px,1.05vw,16px);line-height:1.72}
-.item p b{color:var(--ink);font-weight:800}
-@media(hover:hover){
-  .item:hover{--marca:1;background:var(--hover-bg)}
-  .item:hover h3{color:var(--hot)}
-}
-.item h3{transition:color .3s ease}
-/* tarjeta que es un enlace entero (Qué construimos) */
-a.item{display:block;color:inherit;text-decoration:none}
-#construimos .items{margin-top:clamp(30px,3.6vw,52px)}
-.item .ir{display:inline-flex;align-items:center;gap:8px;margin-top:16px;font-size:12.5px;font-weight:800;
-  letter-spacing:.1em;text-transform:uppercase;color:var(--hot)}
-.item .ir::after{content:'→';transition:transform .25s cubic-bezier(.16,1,.3,1)}
-.item .ir.ext::after{content:'↗'}
-@media(hover:hover){a.item:hover .ir::after{transform:translate(3px,-1px)}}
-a.item:focus-visible{outline:2px solid var(--hot);outline-offset:4px}
-.lead a{color:var(--hot);font-weight:800;text-decoration:underline;text-underline-offset:3px}
+/* ── cómo trabajamos ── */
+.pasos{list-style:none;margin-top:clamp(32px,4vw,48px);display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(20px,2.4vw,36px);counter-reset:p}
+.pasos li{counter-increment:p;padding-top:20px;border-top:2px solid var(--ink)}
+.pasos li::before{content:counter(p,decimal-leading-zero);display:block;font-size:14px;font-weight:650;color:var(--accent-ink);margin-bottom:10px}
+.pasos h3{font-size:clamp(19px,1.5vw,22px)}
+.pasos p{margin-top:8px;font-size:16px;line-height:1.55;color:var(--ink-2)}
+.nota-ia{margin-top:clamp(28px,3vw,40px);font-size:17px;color:var(--ink-2);max-width:62ch}
 
-.g-cta{display:inline-flex;align-items:center;min-height:48px;margin-top:clamp(30px,3.6vw,46px);
-  padding:0 24px;border:1px solid var(--hot);color:var(--hot);font-weight:800;font-size:12.5px;
-  letter-spacing:.1em;text-transform:uppercase;transition:background .25s,color .25s}
-.g-cta:hover{background:var(--hot);color:#120d08}
-/* sin esto el atributo hidden no hace nada: cualquier display en la clase le gana */
+/* ── qué querés ordenar ── */
+.ordenar{margin-top:clamp(28px,3vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.ordenar li{list-style:none;padding:18px 18px 20px;border:1px solid var(--line);border-radius:12px;background:var(--card);
+  font-size:17px;line-height:1.45;font-weight:500}
+.ordenar-cierre{margin-top:28px;display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px}
+.ordenar-cierre p{font-size:18px;font-weight:600}
+
+/* calculadora (plegada): el resultado es tiempo, nunca plata */
+.calc-wrap{margin-top:28px}
+.calc{padding:4px 2px 8px}
+.calc h3{font-size:20px}
+.calc-k{margin-top:18px;font-size:13px;font-weight:650;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{font:inherit;font-size:15px;font-weight:500;color:var(--ink-2);cursor:pointer;min-height:44px;padding:8px 14px;
+  border-radius:8px;background:var(--card);border:1px solid var(--line);transition:border-color .18s,background .18s}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg);font-weight:650}
+.chips.horas{display:grid;grid-template-columns:repeat(5,minmax(0,80px))}
+.calc-r{margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
+.calc-r b{display:block;font-size:clamp(28px,3vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.1;color:var(--ink)}
+.calc-r span{display:block;margin-top:4px;color:var(--ink-2)}
+.calc-r .calc-eg{display:block;margin:0 0 6px;font-size:13px;font-weight:650;color:var(--muted)}
+.calc-r.ejemplo b{color:var(--muted)}
+.calc-r:not(.ejemplo) .calc-eg{display:none}
+.calc .g-cta{margin-top:16px}
+.g-cta{display:inline-flex;align-items:center;min-height:44px;font-weight:650;color:var(--ink);text-underline-offset:5px}
 .g-cta[hidden]{display:none}
-@media(max-width:860px){
-  .items,.items.dos{grid-template-columns:1fr;gap:0}
-  .item{margin-left:0;padding-left:0;padding-right:0}
-}
 
-/* RESTAURADO: un reemplazo anterior se llevó este bloque por delante y dejó
-   los respiros y "lo que no hacemos" sin estilos. */
-/* ══ RESPIRO ══ una sola frase, sola en pantalla. Sin número ni kicker. */
-.respiro{position:relative;z-index:10;background:var(--void);display:flex;align-items:center;
-  min-height:clamp(400px,70svh,820px);padding:clamp(64px,10vw,140px) var(--pad)}
-.respiro .frase{font-weight:900;font-size:clamp(31px,6.3vw,86px);line-height:.97;
-  letter-spacing:-.05em;max-width:15ch}
-.respiro .frase em{font-style:normal;color:var(--hot)}
-.respiro .pie-frase{margin-top:clamp(22px,2.6vw,34px);padding-top:16px;border-top:1px solid var(--line);
-  max-width:54ch;font-size:clamp(13.5px,1.02vw,15.5px);color:var(--dim);line-height:1.65}
+/* ── nosotros ── */
+.nos{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(24px,5vw,80px);align-items:end}
+.nos .lead+.lead{margin-top:12px}
 
-/* entra directo al contenido: el respiro de arriba ya puso el titular */
-.entrada{max-width:62ch;font-size:clamp(16px,1.4vw,21px);margin-top:0}
+/* ── preguntas ── */
+.faq{margin-top:clamp(24px,3vw,36px)}
 
-/* centrada, sin número */
-.centro{text-align:center;max-width:58ch;margin:0 auto}
-.centro h2{max-width:none}
-.nots3{margin-top:clamp(26px,3vw,40px)}
-.nots3 div{padding:clamp(14px,1.7vw,20px) 0;border-bottom:1px solid var(--line-2);
-  color:var(--mid);font-size:clamp(15px,1.25vw,19px);line-height:1.45}
-.nots3 div:first-child{border-top:1px solid var(--line-2)}
-.nots3 .nota-tec{border-bottom:0;color:var(--faint);font-size:clamp(12.5px,.95vw,14px);padding-top:18px}
+/* ── evaluación ── */
+.eva{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,80px);align-items:start}
+.eva-pasos{margin-top:22px;list-style:none;counter-reset:e;border-top:1px solid var(--line)}
+.eva-pasos li{counter-increment:e;display:grid;grid-template-columns:28px 1fr;gap:10px;padding:14px 0;border-bottom:1px solid var(--line);font-size:17px;color:var(--ink-2)}
+.eva-pasos li::before{content:counter(e,decimal-leading-zero);font-size:13px;font-weight:650;color:var(--accent-ink);padding-top:3px}
+.eva-cta{margin-top:26px;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center}
+.viable{margin-top:22px;font-size:18px;font-weight:650}
+.hon{margin-top:10px;font-size:15px;color:var(--muted);max-width:56ch}
+.form-card{padding:clamp(22px,2.6vw,36px);background:var(--card);border:1px solid var(--line);border-radius:16px}
+.form-card h3{font-size:20px;margin-bottom:6px}
+.form-card>.small{margin-bottom:18px}
 
-/* lo que no hacemos */
-.nots{margin-top:clamp(28px,3.4vw,44px);display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0 clamp(24px,4vw,60px)}
-.nots div{display:grid;grid-template-columns:18px 1fr;gap:11px;padding:13px 0;border-bottom:1px solid var(--line-2);
-  color:var(--mid);font-size:clamp(14px,1.05vw,16px);line-height:1.5}
-.nots div::before{content:'×';color:var(--hot);font-weight:900;line-height:1.3}
-
-/* extras */
-.extras{margin-top:clamp(28px,3.4vw,44px);border-top:1px solid var(--line)}
-.ex{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.6fr) auto;gap:clamp(14px,3vw,44px);
-  align-items:center;padding:clamp(20px,2.6vw,32px) 0;border-bottom:1px solid var(--line-2)}
-.ex h3{font-weight:800;font-size:clamp(17px,1.5vw,22px);letter-spacing:-.03em}
-.ex h3 sup{font-size:8px;color:var(--hot);vertical-align:super}
-.ex p{color:var(--mid);font-size:clamp(13.5px,1vw,15.5px);line-height:1.55}
-/* inline-flex + alto mínimo: en el celular era un renglón de 22px, imposible de acertar */
-.ex a{display:inline-flex;align-items:center;min-height:44px;margin-top:2px;
-  font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--hot);
-  /* subrayado sobre el texto, no en el borde de la caja: si no, la línea quedaba suelta abajo */
-  text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px;white-space:nowrap}
-
-/* ══ EL DIAGNÓSTICO ══
-   Dos columnas: lo que descarta a la izquierda, apagado; lo que suma a la derecha,
-   con peso. La lectura termina en el sí, que es donde queremos dejarlo. */
-.diag{margin-top:clamp(32px,3.8vw,52px);display:grid;grid-template-columns:1fr 1.15fr;
-  gap:clamp(24px,4vw,64px);align-items:start}
-.col-tit{display:flex;align-items:center;gap:11px;font-size:clamp(13px,1.2vw,16px);
-  letter-spacing:.16em;text-transform:uppercase;font-weight:900;
-  padding-bottom:12px;margin-bottom:clamp(8px,1vw,14px);border-bottom:1px solid var(--line)}
-.col-tit::before{content:'';width:22px;height:3px;flex-shrink:0}
-.col-no .col-tit{color:var(--dim)}
-.col-no .col-tit::before{background:var(--descarta)}
-.col-si .col-tit{color:var(--ink)}
-.col-si .col-tit::before{background:var(--suma)}
-
-.dx{position:relative;display:grid;grid-template-columns:auto 1fr;gap:clamp(12px,1.5vw,18px);
-  align-items:start;padding:clamp(15px,1.8vw,21px) 0;border-bottom:1px solid var(--line-2);
-  line-height:1.6;transition:color .28s var(--ley)}
-.col-si .dx{font-size:clamp(15px,1.25vw,18px);color:var(--mid)}
-.col-no .dx{font-size:clamp(14px,1.1vw,16px);color:var(--dim)}
-.dx .marca{width:22px;height:22px;flex-shrink:0;position:relative;margin-top:2px;
-  border:1.5px solid var(--line);transition:border-color .28s var(--ley),background .28s var(--ley)}
-.dx .marca::before,.dx .marca::after{content:'';position:absolute;background:currentColor;
-  opacity:0;transition:opacity .35s ease}
-.dx.suma .marca::before{width:8px;height:1.5px;left:3px;top:11px;transform:rotate(45deg);transform-origin:0 50%}
-.dx.suma .marca::after{width:12px;height:1.5px;left:6.5px;top:12.5px;transform:rotate(-50deg);transform-origin:0 50%}
-.dx.descarta .marca::before{width:12px;height:1.5px;left:4px;top:10px;transform:rotate(45deg)}
-.dx.descarta .marca::after{width:12px;height:1.5px;left:4px;top:10px;transform:rotate(-45deg)}
-.dx.on .marca::before,.dx.on .marca::after{opacity:1}
-.col-si .dx.on{color:var(--ink)}
-.dx.suma.on .marca{border-color:var(--suma);color:var(--suma);background:rgba(90,176,124,.12)}
-.dx.descarta.on .marca{border-color:var(--descarta);color:var(--descarta);background:rgba(224,106,82,.1)}
-.dx b{color:var(--ink);font-weight:800}
-html:not(.js-rv) .dx .marca::before,html:not(.js-rv) .dx .marca::after{opacity:1}
-@media(max-width:820px){
-  .diag{grid-template-columns:1fr;gap:clamp(26px,5vw,40px)}
-}
-
-/* la cuenta que cierra: el margen es del cliente, nosotros no prometemos nada */
-/* Nada de tarjeta con franja de color al costado: es el tic más reconocible de las
-   webs hechas con IA. Usa el mismo recurso que los rótulos de sección — línea fina
-   arriba con la marca naranja corta encima. El peso lo pone la tipografía, no una caja. */
-.cuenta{position:relative;margin-top:clamp(34px,4vw,58px);padding-top:clamp(26px,3vw,40px);
-  border-top:1px solid var(--line);
-  /* fila sin separación: las dos primeras líneas son una sola idea, no dos bloques */
-  display:grid;grid-template-columns:1.35fr 1fr;gap:0 clamp(20px,3.5vw,56px);align-items:end;align-content:center}
-.cuenta::before{content:'';position:absolute;top:-2px;left:0;width:64px;height:3px;background:var(--hot)}
-.cuenta .c2{font-size:clamp(21px,2.5vw,36px);font-weight:800;color:var(--ink);line-height:1.14;
-  letter-spacing:-.04em;grid-column:1}
-.cuenta .c2 b{color:var(--hot);font-weight:800}
-/* la aclaración va al lado, no debajo: es la que impide que la cuenta suene a promesa */
-.cuenta .c3{grid-column:2;font-size:clamp(13.5px,1vw,15px);color:var(--dim);
-  line-height:1.65;padding-left:clamp(16px,1.8vw,26px);border-left:1px solid var(--line)}
-@media(max-width:820px){
-  .cuenta{display:block}
-  .cuenta .c3{padding-left:0;border-left:0;border-top:1px solid var(--line);padding-top:14px;margin-top:18px}
-}
-.policy{margin-top:clamp(26px,3vw,40px);padding-top:18px;border-top:1px solid var(--line);
-  font-size:clamp(14px,1.05vw,16px);color:var(--mid);line-height:1.6}
-.policy b{color:var(--hot);font-weight:800}
-
-/* la sesión */
-/* ── 02 · la prueba: las preguntas las contesta el visitante ── */
-.test{position:relative;display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(28px,4.5vw,76px);
-  margin-top:clamp(30px,3.6vw,48px);align-items:start}
-.qs{counter-reset:q;list-style:none}
-.qs li{counter-increment:q;display:grid;grid-template-columns:auto 1fr;gap:clamp(14px,1.6vw,22px);
-  align-items:baseline;padding:clamp(16px,1.8vw,24px) 0;border-bottom:1px solid var(--line-2);
-  font-size:clamp(18px,2.05vw,29px);font-weight:800;letter-spacing:-.035em;line-height:1.2;color:var(--ink)}
-.qs li:first-child{padding-top:0}
-.qs li::before{content:counter(q,decimal-leading-zero);color:var(--hot);font-weight:900;
-  font-size:clamp(11px,.85vw,13px);letter-spacing:.06em}
-/* filo de 1px, no franja gruesa: la barra de color al costado es el tic de las webs con IA */
-/* El veredicto vive a la derecha, no debajo: es la respuesta a las tres preguntas
-   y tiene que leerse junto a ellas. Marca naranja arriba para que se despegue. */
-.ver{position:sticky;top:112px;padding:clamp(22px,2.4vw,30px) 0 0 clamp(20px,2.2vw,32px);
-  border-left:1px solid var(--line);border-top:1px solid var(--line)}
-.ver::before{content:'';position:absolute;top:-1px;left:0;width:clamp(40px,4vw,64px);height:2px;
-  background:var(--hot)}
-.ver .v1{font-size:clamp(17px,1.5vw,21px);font-weight:800;line-height:1.35;letter-spacing:-.025em;color:var(--ink)}
-.ver .v1 em{font-style:normal;color:var(--hot)}
-.ver .v2{margin-top:18px;padding-top:18px;border-top:1px solid var(--line-2);
-  font-size:clamp(13.5px,1vw,15px);color:var(--dim);line-height:1.65}
-.ver .v2 b{color:var(--ink);font-weight:800}
-@media(max-width:820px){
-  .test{grid-template-columns:1fr;gap:clamp(24px,4vw,36px)}
-  .ver{padding-left:0;border-left:0;position:static}
-}
-
-.ses{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,80px);margin-top:clamp(28px,3.4vw,44px);align-items:start}
-.three{counter-reset:t;margin-top:4px}
-.three p{counter-increment:t;display:grid;grid-template-columns:26px 1fr;gap:12px;padding:13px 0;
-  border-bottom:1px solid var(--line-2);font-size:clamp(14px,1.05vw,16px);color:var(--mid);line-height:1.5}
-.three p::before{content:counter(t,decimal-leading-zero);color:var(--hot);font-weight:800;font-size:11px;padding-top:3px}
-.ask{margin-top:22px;padding:16px 18px;border-left:2px solid var(--hot);background:rgba(242,106,31,.06);
-  font-size:clamp(15px,1.25vw,18px);font-weight:800;letter-spacing:-.02em;line-height:1.4}
-.hon{font-size:13px;color:var(--dim);margin-top:16px;line-height:1.65}
-
-form{display:grid;gap:12px}
-.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+form{display:grid;gap:14px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .fg{display:grid;gap:6px;min-width:0}
-label{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
-input,textarea{background:rgba(242,240,236,.04);border:1px solid var(--line);color:var(--ink);
-  /* 16px es obligatorio: con menos, Safari del iPhone hace zoom solo al tocar el campo
-     y el visitante queda con la página descuadrada justo cuando va a dejar los datos.
-     El alto de 46px deja el blanco táctil por encima del mínimo de 44. */
-  font-family:var(--f);font-size:16px;padding:13px 14px;min-height:46px;width:100%;
-  outline:none;transition:border-color .2s,background .2s}
-input::placeholder,textarea::placeholder{color:var(--faint)}
-input:focus,textarea:focus{border-color:var(--hot);background:rgba(242,106,31,.05)}
-textarea{resize:vertical;min-height:88px}
-input.bad,textarea.bad{border-color:#ff5b4d}
-.err{font-size:10.5px;color:#ff8b7f;font-weight:600;display:none}
+label{font-size:14px;font-weight:600;color:var(--ink-2)}
+input,textarea{background:#fff;border:1px solid var(--line);border-radius:8px;color:var(--ink);
+  font-family:var(--f);font-size:16px;padding:12px 14px;min-height:48px;width:100%;outline:none;transition:border-color .18s}
+input::placeholder,textarea::placeholder{color:#8a8b84}
+input:focus,textarea:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(36,37,34,.12)}
+textarea{resize:vertical;min-height:96px}
+input.bad,textarea.bad{border-color:var(--no)}
+.err{font-size:13px;color:var(--no);font-weight:600;display:none}
 .err.on{display:block}
-.aviso-priv{font-size:12px;line-height:1.6;color:var(--dim);margin-bottom:14px;max-width:52ch}
-.aviso-priv a{color:var(--hot);text-decoration:underline;text-underline-offset:3px;
-  text-decoration-thickness:1px}
-.send{color:#fff;border:1.5px solid rgba(255,255,255,.20);border-radius:999px;padding:16px;font-size:15px;font-weight:900;letter-spacing:-.01em;
-  cursor:pointer;font-family:var(--f);
-  background:linear-gradient(rgba(255,255,255,.20),rgba(255,255,255,.02) 52%) padding-box,
-             linear-gradient(var(--relleno,rgba(242,106,31,.58)),var(--relleno,rgba(242,106,31,.58))) padding-box;
-  backdrop-filter:blur(16px) saturate(180%);-webkit-backdrop-filter:blur(16px) saturate(180%);
-  transition:transform .26s var(--ley),--relleno .34s var(--ley)}
-@media(hover:hover) and (pointer:fine){
-  .send:hover{--relleno:rgba(255,124,48,.64);transform:translateY(-1px)}
-}
-.send:disabled{opacity:.6;cursor:default;transform:none}
-.fine{font-size:11px;color:var(--faint);line-height:1.6}
-
-/* ── casilla de consentimiento ── */
-/* el blanco de toque es todo el renglon, no los 20px del cuadrito */
-/* Este formulario estiliza label{} e input{} por elemento (rotulitos en mayuscula y
-   campos de 46px de alto), asi que la casilla los heredaba: se veia como un recuadro
-   grande con el texto en VERSALITAS. Importa mas de lo que parece — consent_text
-   guarda el textContent, que sigue en minusculas, y quedaba diciendo algo distinto de
-   lo que la persona leyo en pantalla. Por eso se anulan uno por uno. */
-.consent{display:flex;align-items:flex-start;gap:11px;cursor:pointer;min-height:44px;
-  margin-top:4px;padding:10px 0 6px;font-size:13.5px;font-weight:400;letter-spacing:normal;text-transform:none;
-  line-height:1.5;color:var(--mid);max-width:44ch}
-.consent input{appearance:none;-webkit-appearance:none;position:relative;flex-shrink:0;
-  width:20px;height:20px;min-height:0;padding:0;margin:1px 0 0;
-  border:1.5px solid var(--line);border-radius:5px;
-  background:transparent;cursor:pointer;
-  transition:background .2s var(--ley),border-color .2s var(--ley)}
-.consent input:checked{background:var(--hot);border-color:var(--hot)}
-.consent input:checked::after{content:'';position:absolute;left:6px;top:2px;width:5px;height:10px;
-  border:solid #120d08;border-width:0 2px 2px 0;transform:rotate(45deg)}
-.consent input:focus-visible{outline:2px solid var(--hot);outline-offset:3px}
-@media(hover:hover) and (pointer:fine){.consent:hover input{border-color:var(--hot)}}
-.fallo{display:none;border:1px solid #ff5b4d;padding:14px 16px;font-size:13.5px;color:#ffb3aa;line-height:1.55}
+.consent{display:flex;align-items:flex-start;gap:11px;cursor:pointer;min-height:44px;padding:8px 0 4px;
+  font-size:15px;font-weight:400;line-height:1.5;color:var(--ink-2);max-width:46ch}
+.consent input{appearance:none;-webkit-appearance:none;position:relative;flex-shrink:0;width:20px;height:20px;min-height:0;
+  padding:0;margin:2px 0 0;border:1.5px solid var(--muted);border-radius:4px;background:#fff;cursor:pointer}
+.consent input:checked{background:var(--ink);border-color:var(--ink)}
+.consent input:checked::after{content:'';position:absolute;left:5.5px;top:1.5px;width:5px;height:10px;
+  border:solid var(--bg);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.consent input:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.aviso-priv{font-size:13.5px;line-height:1.55;color:var(--muted);max-width:52ch}
+.aviso-priv a{color:var(--ink);text-underline-offset:3px}
+.send{width:100%}
+.send:disabled{opacity:.6;cursor:default}
+.fine{font-size:13.5px;color:var(--muted)}
+.fallo{display:none;border:1px solid var(--no);border-radius:8px;padding:12px 14px;font-size:15px;color:var(--no)}
 .fallo.on{display:block}
-.fallo a{color:var(--hot);border-bottom:1px solid var(--hot)}
-.done{display:none;border:1px solid var(--hot);padding:26px;text-align:center}
+.fallo a{color:var(--ink)}
+.done{display:none;border:1px solid var(--line);border-radius:12px;padding:24px;text-align:center;background:var(--card)}
 .done.on{display:block}
-.done h3{font-size:24px;font-weight:900;color:var(--hot);margin-bottom:8px;letter-spacing:-.03em}
-.done p{color:var(--mid);font-size:14.5px;line-height:1.6}
-.done a{color:var(--hot);border-bottom:1px solid var(--hot)}
+.done h3{margin-bottom:6px}
+.done p{color:var(--ink-2);font-size:16px}
 
-/* pie */
-.foot{position:relative;z-index:10;background:var(--void);border-top:1px solid var(--line);padding:clamp(48px,6vw,80px) var(--pad) 32px}
-.fg-top{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:clamp(24px,4vw,60px);padding-bottom:clamp(28px,3.4vw,44px);
-  border-bottom:1px solid var(--line-2)}
-.foot .mark{font-size:20px;margin-bottom:12px;display:block}
-.foot .desc{color:var(--dim);font-size:14px;max-width:34ch;line-height:1.6}
-/* el pie era una mancha gris: encabezado casi invisible y links sin peso.
-   El encabezado se marca con la regla naranja; los links van en tinta plena. */
-.foot h4{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,240,236,.9);
-  margin-bottom:16px;font-weight:800;padding-bottom:10px;border-bottom:2px solid var(--hot);display:inline-block}
-.foot a.l{display:flex;align-items:center;min-height:44px;color:var(--ink);font-size:15px;font-weight:600;
-  transition:color .2s,transform .2s}
-.foot a.l:hover{color:var(--hot)}
-@media(hover:hover) and (pointer:fine){.foot a.l:hover{transform:translateX(3px)}}
-/* ── WhatsApp flotante ──
-   Nada de burbuja verde: el verde de WhatsApp pelea con el grafito y el naranja, y la
-   burbuja genérica es justo el pegote que no queremos. El glifo solo ya se reconoce. */
-/* La primera versión animaba width y max-width: eso obliga a recalcular el maquetado en
-   cada cuadro. Ahora el botón mide siempre 174px y lo que se anima es el recorte
-   (clip-path), que no toca el maquetado. Efecto secundario bueno: el glifo NO se mueve,
-   la píldora se abre hacia la izquierda por detrás. Sin sombra, que además era lo único
-   con sombra en todo el sitio. El recorte también recorta el área clicable: cerrado,
-   solo se puede tocar el círculo. */
-.wa{position:fixed;right:clamp(16px,2vw,28px);bottom:clamp(16px,2vw,28px);z-index:55;
-  /* row-reverse: en el markup el glifo va primero, y tiene que quedar a la DERECHA
-     (es la parte que queda visible cuando el botón está recortado en círculo) */
-  display:none;align-items:center;flex-direction:row-reverse;justify-content:flex-start;
-  gap:11px;white-space:nowrap;
-  width:174px;height:56px;padding:0 16px;border-radius:999px;contain:layout paint;
-  background:rgba(25,24,23,.96);backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);
-  border:1px solid rgba(242,106,31,.5);color:var(--hot);
-  -webkit-clip-path:inset(0 0 0 118px round 999px);clip-path:inset(0 0 0 118px round 999px);
-  /* entra recién cuando el visitante pasó el hero: en la primera pantalla estorba */
-  opacity:0;transform:translateY(14px) scale(.92);pointer-events:none;
-  transition:clip-path .38s cubic-bezier(.16,1,.3,1),-webkit-clip-path .38s cubic-bezier(.16,1,.3,1),
-             background .25s,color .25s,border-color .25s,
-             opacity .35s ease,transform .35s cubic-bezier(.16,1,.3,1)}
-.wa.on{display:inline-flex}
-/* nombre propio: .ver ya lo usa el veredicto del módulo 02 y le pasaba su top:96px */
+/* ── pie ── */
+.foot{border-top:1px solid var(--line);padding-block:clamp(44px,5vw,64px) 32px}
+.fg-top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:clamp(24px,4vw,56px)}
+.foot .mark{font-size:19px;display:inline-block;margin-bottom:10px}
+.foot .desc{font-size:15px;color:var(--ink-2);max-width:34ch}
+.foot h4{font-size:13px;font-weight:650;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em}
+.foot a.l{display:flex;align-items:center;min-height:40px;font-size:15px;color:var(--ink);text-decoration:none}
+.foot a.l:hover{text-decoration:underline;text-underline-offset:4px}
+.fg-bot{margin-top:32px;padding-top:18px;border-top:1px solid var(--line-2);display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:13.5px;color:var(--muted)}
+.legal-l{color:var(--muted);text-underline-offset:3px}
+.legal-l:hover{color:var(--ink)}
+.razon{margin-top:14px;font-size:13px;line-height:1.6;color:var(--muted);max-width:72ch}
+
+/* ── WhatsApp flotante: círculo chico, aparece pasado el hero ── */
+.wa{position:fixed;right:clamp(14px,2vw,26px);bottom:calc(clamp(14px,2vw,26px) + env(safe-area-inset-bottom,0px));z-index:55;
+  display:none;width:52px;height:52px;border-radius:50%;place-items:center;
+  background:var(--ink);color:var(--bg);opacity:0;transform:translateY(10px);pointer-events:none;
+  transition:opacity .2s,transform .2s,background .18s}
+.wa.on{display:grid}
 .wa.asoma{opacity:1;transform:none;pointer-events:auto}
-.wa svg{width:23px;height:23px;fill:currentColor;flex-shrink:0}
-.wa span{opacity:0;font-weight:800;font-size:14px;letter-spacing:-.01em;transition:opacity .22s ease}
-/* se abre solo donde hay mouse: en el celular queda el círculo y listo */
-@media(hover:hover){
-  .wa:hover{-webkit-clip-path:inset(0 round 999px);clip-path:inset(0 round 999px);
-    background:var(--hot);color:#fff;border-color:var(--hot)}
-  .wa:hover span{opacity:1;transition-delay:.1s}
-}
-.wa:focus-visible{outline:2px solid var(--hot);outline-offset:4px}
-/* Debajo de 1000px el canvas se va al pie y queda fijo ahí, con las leyendas
-   (ENTRA · RESPONDE · … · CIERRE) pegadas abajo. El botón las tapaba de forma
-   permanente, así que sube por encima de esa franja. */
-@media(max-width:1000px){
-  /* el botón va al rincón de siempre; las leyendas del canvas suben para dejarle lugar
-     (el valor de .cap está en el otro bloque de 1000px, más abajo, que es el que manda) */
-  .wa{bottom:calc(20px + env(safe-area-inset-bottom,0px))}
-  /* aire al final: si no, el botón flotante se queda tapando el último renglón del pie */
-  .foot{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
-}
-@media(max-width:720px){
-  /* en el celular no hay hover: queda recortado en círculo y no se abre nunca */
-  .wa span{display:none}
-}
-@media(prefers-reduced-motion:reduce){.wa{transition:border-color .2s,color .2s}}
-
-/* Sigue al final y sigue siendo la salida chica — pero se veía tan poco que no existía.
-   Ahora tiene marco, marca naranja arriba y un enlace que parece un enlace. */
-.banda-cero{position:relative;z-index:10;background:var(--panel);
-  padding:clamp(52px,6vw,84px) var(--pad);border-top:1px solid var(--line-2)}
-.cero{position:relative;max-width:1180px;margin:0 auto;padding:clamp(22px,2.6vw,32px) 0 0;
-  border-top:1px solid var(--line);
-  display:grid;grid-template-columns:1fr auto;gap:clamp(14px,2.5vw,32px);align-items:center}
-.cero::before{content:'';position:absolute;top:-1px;left:0;width:64px;height:2px;background:var(--hot)}
-.cero p{font-size:clamp(14.5px,1.2vw,17px);color:var(--mid);line-height:1.7;max-width:60ch}
-.cf-eti{display:block;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
-  font-weight:800;color:var(--hot);margin-bottom:9px}
-.cero p b{color:var(--ink);font-weight:800}
-.cero p b sup{font-size:.6em;color:var(--hot);vertical-align:super}
-.cero a{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:44px;
-  padding:0 20px;white-space:nowrap;border:1px solid var(--hot);color:var(--hot);
-  font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
-  transition:background .2s,color .2s}
-.cero a:hover{background:var(--hot);color:#120d08}
-@media(max-width:720px){.cero{grid-template-columns:1fr}.cero a{justify-content:flex-start}}
-/* Discreta, pero legible: es la línea que lee el revisor de Meta para atar la marca
-   a la persona. A .42 daba 3.74:1 y no pasaba el mínimo. */
-.razon{margin-top:16px;font-size:11.5px;line-height:1.65;color:rgba(242,240,236,.56);max-width:70ch}
-.legal-l{color:var(--dim);text-decoration:underline;text-underline-offset:3px;
-  text-decoration-thickness:1px;transition:color .2s}
-.legal-l:hover{color:var(--hot)}
-.fg-bot{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;padding-top:20px;
-  font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
-
-.skip{position:absolute;left:-9999px}
-.skip:focus{left:10px;top:10px;z-index:99;background:var(--hot);color:#120d08;padding:10px 16px;font-weight:800}
-:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+.wa:hover{background:#000}
+.wa svg{width:24px;height:24px;fill:currentColor}
+.wa span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
 @media(max-width:1000px){
-  /* De fijo a absoluto: pegado al viewport, el canvas se quedaba abajo mientras el
-     contenido subía, y el hueco entre ambos crecía a medida que scrolleabas. Ahora
-     vive dentro del hero y se va con él. */
-  .via{position:absolute;left:0;z-index:0;width:100%;height:40svh;top:auto;bottom:0;
-    -webkit-mask-image:linear-gradient(0deg,#000 45%,transparent);mask-image:linear-gradient(0deg,#000 45%,transparent)}
-  /* Se atenúan las LÍNEAS, no las leyendas. El .6 estaba en todo .via y arrastraba
-     las cinco palabras (Entra, Responde…) a ~4,1:1, debajo del 4,5:1 que pide el
-     texto chico, en todo celular y tablet. Medido el 06/10 con capturas a 390 y 768. */
-  .via canvas{opacity:.6}
-  /* 26% y no 8%: abajo del todo quedaban justo debajo del botón de WhatsApp, que en
-     el celular está fijo en el rincón. A 8% la leyenda "Cierre" quedaba tapada siempre. */
-  /* Las cinco leyendas suman 359px en una pantalla de 390: no entran en un renglón.
-     Van alternadas en dos alturas, así cada una tiene el hueco entre dos estaciones
-     para respirar y ninguna pisa a la vecina. */
-  .cap{bottom:30%;font-size:8.5px;letter-spacing:.12em}
-  .cap:nth-child(even){bottom:calc(30% - 26px)}
-  .cap.own::after{font-size:8px}
-  /* El contenido se centra en la franja de arriba del canvas: antes quedaba pegado
-     arriba y dejaba 380px de vacío en el medio, casi media pantalla. */
-  .hero{min-height:100svh;justify-content:center;padding-top:clamp(70px,11vh,100px);
-    padding-bottom:38svh}
-  .hero-in{max-width:none}
-  .hero{background-image:url(/media/hero-poster-m.jpg);background-position:center bottom}
-  .hero-video{object-position:center bottom}
-  .hero-shade{background:linear-gradient(180deg,rgba(18,17,16,.85) 0,rgba(18,17,16,.55) 35%,rgba(18,17,16,.5) 55%,rgba(18,17,16,.12) 72%,rgba(18,17,16,0) 90%)}
-  .mod{grid-template-columns:44px 1fr}
+  .proy,.proy--inv{grid-template-columns:1fr}
+  .proy--inv .proy-tx{order:0}
+  .pasos{grid-template-columns:1fr 1fr}
+  .frena,.eva,.nos{grid-template-columns:1fr}
+}
+@media(max-width:900px){
+  .hero__grid{grid-template-columns:1fr;gap:32px}
+  .hero__visual{justify-self:center}
+  .hero h1{max-width:16ch;font-size:clamp(2.25rem,6vw,3.5rem)}
+  .ui-in{grid-template-columns:1fr}
+  .ui-col+.ui-col{border-left:0;border-top:1px solid var(--line-2)}
+  .diag,.cuenta{grid-template-columns:1fr}
+  .mod{grid-template-columns:32px 1fr}
   .mod p{grid-column:2}
-  .ses,.who,.ex{grid-template-columns:1fr}
-  .ex{gap:10px}
-  .fg-top{grid-template-columns:1fr 1fr}
 }
-@media(max-width:720px){
-  h1{font-size:clamp(26px,8.3vw,54px)}
-  .nav-r a{display:none}
+@media(max-width:760px){
+  .nav-r a:not(.button){display:none}
+  .nav-r .button{display:none}
   .hamb{display:flex}
-  .mark{white-space:nowrap}
-  /* 168+18+157 = 343 en 338 disponibles: los dos botones no entraban por 5px y el
-     segundo caía solo. Con menos relleno entran juntos y el "45 min" baja limpio. */
-
-  /* En 320px los dos botones mas el aire no entran en 268: el relleno se afina con
-     el ancho real de pantalla en vez de dejar que la fila desborde. */
-  .btn{padding:15px clamp(11px,4.6vw,22px);font-size:14.5px}
-  .srow{grid-template-columns:1fr;gap:14px}
-  /* apiladas, las dos chapas de arriba pierden sentido: cada fila se rotula sola */
-  .shead{display:none}
-  .srow .a::before,.srow .b::before{display:block;font-size:10px;letter-spacing:.18em;
-    text-transform:uppercase;font-weight:800;margin-bottom:6px}
-  .srow .a::before{content:'Hoy';color:var(--ink-3)}
-  .srow .b::before{content:'Con el sistema';color:var(--hot)}
-  .frow{grid-template-columns:1fr}
+  .nav-in{min-height:68px}
+  .menu{inset:68px 0 auto 0}
   .fg-top{grid-template-columns:1fr}
 }
-@media(prefers-reduced-motion:reduce){
-  /* Más suave, no cero: se apaga el desplazamiento y se conservan los desvanecidos
-     de color y opacidad, que orientan sin marear. Antes matábamos todo a .01ms. */
-  .js .ch{opacity:1!important;transform:none!important}
-  .rail::after{animation:none;left:0}
-  .rv,.js .stg>*{opacity:1!important;transform:none!important;transition:none!important}
-  .btn,.send,.foot a.l,.item,.mod,.srow,.pieza{transform:none!important}
-  .srow::after,.mod::before,.item::before,.pieza .pin{transition:none!important}
-  .wa{transition:opacity .2s,background .2s,color .2s,border-color .2s!important}
-}
-
-/* ══════════ AIRE ══════════
-   Capa final: manda sobre todo lo anterior. Un solo fondo grafito parejo, mucho
-   espacio entre bloques, títulos más livianos y el naranja reservado para el botón
-   principal y un único detalle por pantalla. */
-:root{
-  --void:#1a1918;--panel:#1f1e1c;
-  --surf:rgba(242,240,236,.028);--surf-2:rgba(242,240,236,.05);
-  --g1:rgba(126,56,16,.14);--g2:rgba(10,9,8,.35);
-  --wrap:1160px;
-  --gap-sec:clamp(112px,14vw,196px);
-  interpolate-size:allow-keywords;
-}
-body{background:var(--void)}
-.grain{opacity:.035}
-.prog{background:rgba(242,240,236,.42);height:1px}
-
-/* menú: en minúscula, livianos; el único lleno es el de la Evaluación */
-.nav{padding-top:18px;padding-bottom:18px}
-.nav.stuck{background:rgba(26,25,24,.78);border-color:var(--line-2)}
-.nav-r a{font-size:14px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--ink-3)}
-.nav-r a:hover,.nav-r a.destacado{color:var(--ink)}
-.nav-r a.destacado{font-weight:500}
-.nav-r a.destacado::after{display:none}
-.nav-r a.nav-cta{padding:0 18px;min-height:40px;border-radius:999px;border:1px solid var(--line);color:var(--ink);
-  transition:border-color .3s var(--ley),background .3s var(--ley)}
-.nav-r a.nav-cta:hover{border-color:rgba(242,240,236,.4);background:var(--surf-2)}
-@media(max-width:720px){.nav-r a.nav-cta{display:none}}
-.menu{background:rgba(26,25,24,.97)}
-.menu a{font-weight:700;letter-spacing:-.025em}
-.menu a.destacado{color:var(--ink)}
-
-/* el hero se funde con lo que sigue en vez de cortar */
-.hero::after{content:'';position:absolute;left:0;right:0;bottom:0;height:160px;z-index:1;pointer-events:none;
-  background:linear-gradient(180deg,rgba(26,25,24,0),var(--void))}
-.hero-shade{background:
-    linear-gradient(180deg,rgba(26,25,24,.8) 0,rgba(26,25,24,0) 130px),
-    linear-gradient(90deg,rgba(26,25,24,.92) 0%,rgba(26,25,24,.72) 30%,rgba(26,25,24,.24) 50%,rgba(26,25,24,0) 70%)}
-@media(max-width:1000px){
-  .hero-shade{background:linear-gradient(180deg,rgba(26,25,24,.85) 0,rgba(26,25,24,.55) 35%,rgba(26,25,24,.5) 55%,rgba(26,25,24,.12) 72%,rgba(26,25,24,0) 90%)}
-}
-
-/* ── secciones: un solo fondo, mucho aire, contenido centrado en un ancho cómodo ── */
-.sec,.sec.alt,.quienes{background:transparent;border-top:0;
-  padding:var(--gap-sec) max(var(--pad),calc((100% - var(--wrap))/2))}
-/* el corte entre bloques es una línea de luz que se desvanece en las puntas */
-.sec::before{left:max(var(--pad),calc((100% - var(--wrap))/2));right:max(var(--pad),calc((100% - var(--wrap))/2));
-  width:auto;height:1px;top:0;background:linear-gradient(90deg,transparent,rgba(242,240,236,.12) 30%,rgba(242,240,236,.12) 70%,transparent)}
-#construimos::before{display:none}
-.shell{position:relative}
-
-/* rótulo de sección: chico y tranquilo, sin chapa naranja */
-.k{display:inline-flex;align-items:center;gap:12px;margin-bottom:clamp(22px,2.4vw,30px);
-  font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--faint)}
-.k::before{content:'';width:6px;height:6px;border-radius:50%;background:rgba(242,240,236,.32)}
-
-h2{font-weight:700;font-size:clamp(30px,3.7vw,54px);line-height:1.06;letter-spacing:-.032em;max-width:24ch;
-  margin-bottom:clamp(20px,2vw,28px);text-wrap:balance}
-/* dos tonos en vez de naranja: la segunda mitad del título baja de tinta */
-h2 em{color:rgba(242,240,236,.46)}
-.h-aima{max-width:22ch}
-.lead{font-size:clamp(16px,1.2vw,19px);line-height:1.7;max-width:52ch;color:var(--mid)}
-.lead b{font-weight:600}
-.lead a{color:var(--ink);font-weight:600;text-decoration-color:rgba(242,240,236,.35)}
-.num{display:block;font-size:12px;font-weight:600;letter-spacing:.12em;color:var(--faint);font-variant-numeric:tabular-nums}
-
-/* ── entradas: suben, se aclaran y se enfocan, sin apuro ── */
-.rv{transition:opacity 1s var(--ley),transform 1.1s var(--ley),filter 1s var(--ley)}
-.js-rv .rv:not(.in){filter:blur(6px)}
-.js-rv .stg>*{transform:translateY(26px);filter:blur(6px);
-  transition:opacity .9s var(--ley),transform 1s var(--ley),filter .9s var(--ley)}
-.js-rv .stg.in>*{filter:none}
-.js-rv .stg.in>*:nth-child(1){transition-delay:.05s}
-.js-rv .stg.in>*:nth-child(2){transition-delay:.17s}
-.js-rv .stg.in>*:nth-child(3){transition-delay:.29s}
-.js-rv .stg.in>*:nth-child(4){transition-delay:.41s}
-.js-rv .stg.in>*:nth-child(n+5){transition-delay:.5s}
-
-/* ── 03 · tres pasos en fila, unidos por una línea que se dibuja al entrar ── */
-.pasos{position:relative;list-style:none;display:grid;grid-template-columns:repeat(3,1fr);
-  gap:clamp(28px,4vw,64px);margin-top:clamp(52px,6vw,88px);padding-top:clamp(30px,3vw,40px)}
-.pasos::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--line);
-  transform-origin:0 50%;transform:scaleX(0);transition:transform 1.6s var(--ley) .1s}
-.pasos.in::before,html:not(.js-rv) .pasos::before{transform:none}
-.pasos li{position:relative}
-.pasos li::before{content:'';position:absolute;top:calc(-1 * clamp(30px,3vw,40px) - 3px);left:0;width:7px;height:7px;border-radius:50%;
-  background:var(--void);border:1px solid rgba(242,240,236,.4)}
-.pasos li:first-child::before{background:var(--hot);border-color:var(--hot)}
-.pasos h3{margin-top:14px;font-size:clamp(19px,1.6vw,23px);font-weight:700;letter-spacing:-.022em;line-height:1.2}
-.pasos p{margin-top:10px;color:var(--mid);font-size:clamp(15px,1.05vw,16.5px);line-height:1.65;max-width:30ch}
-
-/* ── 04 · el Sistema: la pantalla en una vitrina con un resplandor detrás ── */
-.vitrina{position:relative;display:grid;grid-template-columns:1fr 1.25fr;gap:clamp(16px,1.8vw,24px);
-  margin-top:clamp(52px,6vw,88px);align-items:start}
-.vitrina::before{content:'';position:absolute;inset:-12% -6%;z-index:-1;pointer-events:none;
-  background:radial-gradient(50% 55% at 55% 45%,rgba(242,106,31,.09),transparent 70%)}
-.tarj{background:rgba(32,31,29,.72);border:1px solid var(--line-2);border-radius:20px;
-  padding:clamp(18px,1.8vw,24px);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  box-shadow:0 30px 80px -40px rgba(0,0,0,.6)}
-.tarj-k{color:var(--faint);padding:2px 2px 16px}
-.tarj-k .muestra{color:var(--faint)}
-.stat{background:var(--surf);border:1px solid var(--line-2);border-radius:14px;padding:14px 16px}
-.stat i{color:var(--faint)}
-.stat b{font-weight:700}
-.stat.ojo{background:rgba(242,106,31,.06);border-color:rgba(242,106,31,.28)}
-.linea li{grid-template-columns:72px 1fr;border-bottom-color:var(--line-2);padding:12px 0}
-.linea span{color:var(--faint);font-size:12.5px}
-.linea li.sist::before{left:77px;background:rgba(242,240,236,.5)}
-.linea li b{font-weight:600}
-
-.probalo{display:flex;align-items:center;justify-content:space-between;gap:clamp(20px,3vw,48px);flex-wrap:wrap;
-  margin-top:clamp(52px,6vw,80px);padding:clamp(24px,2.6vw,34px) clamp(24px,2.8vw,40px);
-  border-radius:22px;background:var(--surf);border:1px solid var(--line-2)}
-.probalo p{max-width:58ch;font-size:clamp(16px,1.2vw,18.5px);line-height:1.6;color:var(--mid)}
-.probalo p b{color:var(--ink);font-weight:700}
-.probalo .g-cta{margin-top:0}
-
-/* desplegables: el texto fijo está entero, pero plegado */
-.pliegues{margin-top:clamp(52px,6vw,80px);border-top:1px solid var(--line-2)}
-.plie{border-bottom:1px solid var(--line-2)}
-.plie summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:20px;
-  min-height:76px;padding:22px 4px;font-size:clamp(19px,1.7vw,24px);font-weight:600;letter-spacing:-.02em;
-  color:var(--ink-2);transition:color .4s var(--ley)}
-.plie summary::-webkit-details-marker{display:none}
-.plie summary:focus-visible{outline:2px solid var(--hot);outline-offset:4px;border-radius:6px}
-.mas{position:relative;width:34px;height:34px;flex-shrink:0;border-radius:50%;border:1px solid var(--line);
-  transition:transform .6s var(--ley),border-color .4s var(--ley),background .4s var(--ley)}
-.mas::before,.mas::after{content:'';position:absolute;left:50%;top:50%;width:12px;height:1.5px;margin:-.75px 0 0 -6px;
-  background:currentColor;transition:transform .6s var(--ley)}
-.mas::after{transform:rotate(90deg)}
-.plie[open] .mas{transform:rotate(180deg);border-color:rgba(242,240,236,.3)}
-.plie[open] .mas::after{transform:rotate(0)}
-@media(hover:hover) and (pointer:fine){
-  .plie summary:hover{color:var(--ink)}
-  .plie summary:hover .mas{background:var(--surf-2);border-color:rgba(242,240,236,.3)}
-}
-/* abre deslizando donde el navegador lo permite; donde no, abre directo */
-.plie::details-content{block-size:0;overflow:hidden;
-  transition:block-size .7s var(--ley),content-visibility .7s allow-discrete}
-.plie[open]::details-content{block-size:auto}
-.plie-in{padding:4px 4px clamp(34px,4vw,52px)}
-.plie[open] .plie-in{animation:abre .8s var(--ley) both}
-@keyframes abre{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.plie-in>.lead:first-child{margin-bottom:8px}
-
-/* lo de adentro, más calmo */
-.plie .mods{margin-top:clamp(18px,2vw,26px)}
-.mod{border-top-color:var(--line-2)}
-.mod::before{display:none}
-.mod .n{color:var(--faint);font-weight:600}
-.mod h3{font-weight:700}
-@media(hover:hover){.mod:hover{background:transparent}.mod:hover h3{color:inherit}}
-.opt{color:var(--ink-3);border-color:var(--line)}
-.nots div::before{color:var(--faint)}
-.col-tit{font-weight:700;font-size:13px}
-.cuenta::before{display:none}
-.cuenta{border-top-color:var(--line-2)}
-.cuenta .c2{font-weight:700}
-.cuenta .c2 b{color:var(--ink)}
-
-/* ── 05 · hecho para tu negocio ── */
-.dialogo{margin:clamp(44px,5vw,72px) 0 0;padding:0;border:0}
-.dialogo p{font-size:clamp(24px,2.8vw,40px);font-weight:600;letter-spacing:-.03em;line-height:1.25;color:var(--faint)}
-.dialogo em{color:var(--ink);font-weight:600}
-.tres{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(28px,4vw,64px);margin-top:clamp(52px,6vw,88px)}
-.tres h3{font-size:clamp(19px,1.6vw,23px);font-weight:700;letter-spacing:-.022em;padding-top:20px;border-top:1px solid var(--line)}
-.tres p{margin-top:10px;color:var(--mid);font-size:clamp(15px,1.05vw,16.5px);line-height:1.65;max-width:32ch}
-.calc{margin-top:clamp(52px,6vw,88px);padding:clamp(28px,3.4vw,52px);border-radius:24px;
-  background:var(--surf);border:1px solid var(--line-2)}
-.calc h3{font-weight:700}
-.calc-r .calc-eg{font-size:11px;letter-spacing:.16em;font-weight:700;color:var(--faint)}
-.calc-r{border-top-color:var(--line-2)}
-.calc-r b{font-weight:700}
-.chip{transition:color .35s var(--ley),border-color .35s var(--ley),background .35s var(--ley)}
-.tambien{margin-top:clamp(36px,4vw,56px);max-width:62ch;font-size:clamp(15px,1.1vw,17px);line-height:1.7;color:var(--dim)}
-.tambien b{color:var(--ink-2);font-weight:600}
-.tambien sup{font-size:.6em}
-.cierre{margin-top:clamp(52px,6vw,80px)}
-.cierre .g-cta{margin-top:22px}
-
-/* enlace secundario: píldora fina; el lleno es solo del botón principal */
-.g-cta{gap:10px;min-height:48px;padding:0 24px;border-radius:999px;border:1px solid var(--line);color:var(--ink);
-  font-size:15px;font-weight:600;letter-spacing:-.005em;text-transform:none;
-  transition:border-color .4s var(--ley),background .4s var(--ley)}
-.g-cta::after{content:'→';transition:transform .5s var(--ley)}
-.g-cta:hover{background:var(--surf-2);color:var(--ink);border-color:rgba(242,240,236,.4)}
-@media(hover:hover) and (pointer:fine){.g-cta:hover::after{transform:translateX(4px)}}
-.calc .g-cta{border-color:rgba(242,106,31,.5)}
-
-/* ── 06 · la Evaluación: el formulario en una tarjeta ── */
-.ses{margin-top:clamp(44px,5vw,72px);gap:clamp(36px,6vw,96px)}
-.ses>div:last-child{padding:clamp(24px,3vw,44px);border-radius:24px;background:var(--surf);border:1px solid var(--line-2)}
-.three p::before{color:var(--faint);font-weight:600}
-.three p{border-bottom-color:var(--line-2);padding:16px 0}
-.hon{font-size:14px;margin-top:22px}
-input,textarea{border-radius:12px;background:rgba(242,240,236,.03);border-color:var(--line-2);
-  transition:border-color .35s var(--ley),background .35s var(--ley)}
-input:focus,textarea:focus{border-color:rgba(242,106,31,.6);background:rgba(242,240,236,.045)}
-label{font-weight:600}
-.done{border-radius:20px;border-color:var(--line)}
-.done h3{color:var(--ink);font-weight:700}
-
-/* ── quiénes somos: una franja ── */
-.quienes{padding-top:clamp(84px,9vw,128px);padding-bottom:clamp(84px,9vw,128px)}
-.q-row{display:flex;align-items:flex-end;justify-content:space-between;gap:clamp(24px,4vw,60px);flex-wrap:wrap}
-.q-row h2{font-size:clamp(26px,2.6vw,36px);margin-bottom:12px}
-.q-row .g-cta{margin-top:0}
-
-/* pie */
-.foot{background:transparent;border-top:1px solid var(--line-2);
-  padding-left:max(var(--pad),calc((100% - var(--wrap))/2));padding-right:max(var(--pad),calc((100% - var(--wrap))/2))}
-.foot h4{border-bottom:0;padding-bottom:0;color:var(--faint);font-weight:600}
-.foot a.l{font-weight:500;color:var(--ink-2)}
-
-@media(max-width:900px){
-  .pasos,.tres{grid-template-columns:1fr}
-  .pasos{gap:40px;padding-top:0;padding-left:28px;border-left:0}
-  .pasos::before{top:6px;bottom:6px;left:3px;right:auto;width:1px;height:auto;transform-origin:50% 0;transform:scaleY(0)}
-  .pasos.in::before,html:not(.js-rv) .pasos::before{transform:none}
-  .pasos li::before{top:6px;left:-28px}
-  .vitrina{grid-template-columns:1fr}
-  .probalo .g-cta{width:100%;justify-content:center}
-}
-@media(max-width:720px){
-  :root{--gap-sec:clamp(84px,22vw,120px)}
-  .plie summary{min-height:68px}
+@media(max-width:520px){
+  body{font-size:17px}
+  .hero{padding-block:32px 48px}
+  .hero h1{font-size:clamp(2.125rem,9.4vw,2.625rem)}
+  .hero__actions{flex-direction:column;align-items:stretch}
+  .hero__actions .button{width:100%}
+  .hero__actions .link{align-self:flex-start}
+  .pasos{grid-template-columns:1fr}
+  .frow{grid-template-columns:1fr}
+  .shots--ev{grid-template-columns:1fr}
+  .shots--ev figure:last-child{margin-top:0}
+  .chips.horas{grid-template-columns:repeat(5,1fr)}
 }
 @media(prefers-reduced-motion:reduce){
-  .js-rv .rv,.js-rv .stg>*{filter:none!important}
-  .pasos::before{transform:none!important;transition:none}
-  .g-cta::after,.mas,.mas::before,.mas::after{transition:none!important}
-  .plie::details-content{transition:none}
-  .plie[open] .plie-in{animation:none}
-}
-
-/* ══════════ COLOR Y VIDA ══════════
-   Paleta cálida que sale del video del hero: naranja de marca, ámbar y cobre.
-   Cada bloque tiene su propia luz, y hay dos cortes de ritmo: la cinta y el enredo→orden. */
-:root{--amber:#f5a524;--cobre:#e0583f;--peach:#f2ac86}
-h2 em{color:var(--peach)}
-.k{color:var(--ink-3)}
-.k::before{background:var(--hot)}
-
-/* ── los pasos, cada uno con su luz ── */
-.pasos li:nth-child(1)::before{background:var(--hot);border-color:var(--hot)}
-.pasos li:nth-child(2)::before{background:var(--amber);border-color:var(--amber)}
-.pasos li:nth-child(3)::before{background:var(--cobre);border-color:var(--cobre)}
-.pasos li:nth-child(1) .num{color:var(--hot)}
-.pasos li:nth-child(2) .num{color:var(--amber)}
-.pasos li:nth-child(3) .num{color:var(--cobre)}
-.pasos::before{background:linear-gradient(90deg,var(--hot),var(--amber),var(--cobre));opacity:.55}
-@media(max-width:900px){.pasos::before{background:linear-gradient(180deg,var(--hot),var(--amber),var(--cobre))}}
-
-/* ── El Sistema: el bloque se enciende con su propia luz ── */
-#el-sistema{background:
-  radial-gradient(45% 30% at 88% 42%,rgba(242,106,31,.13),transparent 70%),
-  radial-gradient(45% 30% at 6% 80%,rgba(224,88,63,.11),transparent 70%)}
-.vitrina::before{background:radial-gradient(55% 60% at 55% 45%,rgba(242,106,31,.18),transparent 70%)}
-.probalo{background:linear-gradient(110deg,rgba(242,106,31,.14),rgba(245,165,36,.05) 55%,rgba(242,240,236,.02));
-  border-color:rgba(242,106,31,.25)}
-.probalo .g-cta{background:var(--hot);border-color:var(--hot);color:#160d07;font-weight:700}
-.probalo .g-cta:hover{background:#ff7d36;border-color:#ff7d36;color:#160d07}
-.plie[open] summary{color:var(--ink)}
-.plie[open] .mas{border-color:var(--hot);color:var(--hot)}
-
-/* ── Hecho para tu negocio: un panel cálido, despegado del fondo ── */
-#soluciones{margin:0 clamp(10px,1.6vw,26px);border-radius:clamp(26px,3.2vw,48px);
-  border:1px solid rgba(242,240,236,.07);
-  background:radial-gradient(70% 45% at 100% 0%,rgba(245,165,36,.12),transparent 62%),
-             radial-gradient(60% 50% at 0% 100%,rgba(224,88,63,.12),transparent 62%),#201c19}
-#soluciones::before{display:none}
-.tres>div:nth-child(1) h3{border-top:2px solid var(--hot)}
-.tres>div:nth-child(2) h3{border-top:2px solid var(--amber)}
-.tres>div:nth-child(3) h3{border-top:2px solid var(--cobre)}
-.dialogo em{color:var(--ink)}
-.calc{background:linear-gradient(160deg,rgba(245,165,36,.08),rgba(242,240,236,.02) 50%);border-color:rgba(245,165,36,.2)}
-
-/* ── La Evaluación: luz detrás del formulario ── */
-#sesion .ses>div:last-child{position:relative;
-  background:linear-gradient(170deg,rgba(242,106,31,.10),rgba(242,240,236,.025) 45%);
-  border-color:rgba(242,106,31,.22);
-  box-shadow:0 40px 90px -40px rgba(0,0,0,.8)}
-
-@media(prefers-reduced-motion:reduce){
-}
-
-/* ══════════ RITMO ══════════
-   Cada bloque con su propia composición: filas tipográficas, números grandes,
-   un plano naranja entero, un bloque centrado. Más contraste de escala. */
-h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
-
-/* ── Qué construimos: filas grandes que se llenan de color ── */
-.filas{list-style:none;margin-top:clamp(48px,6vw,90px);border-top:1px solid var(--line)}
-.filas li{border-bottom:1px solid var(--line)}
-.fila{position:relative;display:grid;grid-template-columns:56px minmax(0,1.1fr) minmax(0,1fr) 56px;
-  align-items:center;gap:clamp(16px,2.5vw,40px);padding:clamp(26px,3.2vw,46px) clamp(8px,1.4vw,22px);
-  color:inherit;text-decoration:none;overflow:hidden;isolation:isolate}
-.fila::before{content:'';position:absolute;inset:0;z-index:-1;background:var(--c);
-  transform:scaleY(0);transform-origin:50% 100%;transition:transform .65s var(--ley)}
-.fila .num{color:var(--c);transition:color .4s var(--ley)}
-.fila .t{font-size:clamp(30px,4.6vw,72px);font-weight:700;letter-spacing:-.045em;line-height:1;
-  transition:transform .65s var(--ley),color .4s var(--ley)}
-.fila .d{color:var(--mid);font-size:clamp(15px,1.1vw,17px);line-height:1.6;max-width:40ch;
-  transition:color .4s var(--ley)}
-.fila .fl{justify-self:end;display:grid;place-items:center;width:52px;height:52px;border-radius:50%;
-  border:1px solid var(--line);font-size:20px;color:var(--ink);
-  transition:transform .65s var(--ley),background .4s var(--ley),border-color .4s var(--ley),color .4s var(--ley)}
-@media(hover:hover) and (pointer:fine){
-  .fila:hover::before{transform:scaleY(1)}
-  .fila:hover .t{transform:translateX(14px);color:#170e08}
-  .fila:hover .num,.fila:hover .d{color:rgba(23,14,8,.82)}
-  .fila:hover .fl{background:#170e08;border-color:#170e08;color:var(--ink);transform:rotate(-45deg)}
-}
-.fila:focus-visible{outline:2px solid var(--c);outline-offset:-2px}
-@media(max-width:820px){
-  .fila{grid-template-columns:1fr auto;gap:10px 16px;padding:28px 0}
-  .fila .num{grid-column:1/-1}
-  .fila .t{grid-column:1}
-  .fila .fl{grid-column:2;grid-row:2;width:44px;height:44px}
-  .fila .d{grid-column:1/-1}
-}
-
-/* ── Cómo trabajamos: números enormes que se llenan al entrar ── */
-.pasos .num{font-size:clamp(72px,9vw,140px);font-weight:700;letter-spacing:-.06em;line-height:.9;
-  color:transparent;-webkit-text-stroke:1.5px currentColor;transition:color 1s var(--ley) .3s}
-.pasos li:nth-child(1) .num{-webkit-text-stroke-color:var(--hot)}
-.pasos li:nth-child(2) .num{-webkit-text-stroke-color:var(--amber)}
-.pasos li:nth-child(3) .num{-webkit-text-stroke-color:var(--cobre)}
-.pasos.in li:nth-child(1) .num,html:not(.js-rv) .pasos li:nth-child(1) .num{color:var(--hot)}
-.pasos.in li:nth-child(2) .num,html:not(.js-rv) .pasos li:nth-child(2) .num{color:var(--amber);transition-delay:.6s}
-.pasos.in li:nth-child(3) .num,html:not(.js-rv) .pasos li:nth-child(3) .num{color:var(--cobre);transition-delay:.9s}
-.pasos h3{margin-top:22px}
-
-/* ── el plano naranja: del enredo al orden ── */
-.naranja{position:relative;z-index:10;display:grid;place-items:center;overflow:hidden;text-align:center;
-  min-height:clamp(520px,88vh,860px);padding:clamp(90px,11vw,150px) var(--pad);
-  background:var(--hot);color:#170e08;
-  clip-path:circle(var(--abre,150%) at 50% 100%)}
-.motas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.naranja-tx{position:relative;z-index:2;max-width:980px}
-.naranja-f{font-size:clamp(52px,9.5vw,150px);font-weight:700;letter-spacing:-.055em;line-height:.92}
-.naranja-s{margin:clamp(24px,2.8vw,36px) auto 0;max-width:42ch;font-size:clamp(17px,1.4vw,21px);
-  line-height:1.55;color:rgba(23,14,8,.86);font-weight:500}
-.sec+.naranja,.naranja+.sec{border-top:0}
-.naranja+.sec::before{display:none}
-
-/* ── El Sistema: centrado, la pantalla protagonista ── */
-#el-sistema>.rv:first-child{text-align:center}
-#el-sistema>.rv:first-child h2,#el-sistema>.rv:first-child .lead{margin-left:auto;margin-right:auto}
-#el-sistema>.rv:first-child .k{justify-content:center}
-.vitrina .linea li{opacity:1;transform:none;transition:opacity .6s var(--ley),transform .6s var(--ley)}
-.js-rv .vitrina:not(.in) .linea li{opacity:0;transform:translateX(-10px)}
-.vitrina.in .linea li:nth-child(1){transition-delay:.5s}
-.vitrina.in .linea li:nth-child(2){transition-delay:.9s}
-.vitrina.in .linea li:nth-child(3){transition-delay:1.3s}
-.vitrina.in .linea li:nth-child(4){transition-delay:1.7s}
-.vitrina.in .linea li:nth-child(5){transition-delay:2.1s}
-.stat b{font-variant-numeric:tabular-nums}
-
-/* ── Hecho para tu negocio: la frase al centro, enorme ── */
-#soluciones>.rv:first-child{text-align:center}
-#soluciones>.rv:first-child h2{margin-left:auto;margin-right:auto}
-#soluciones>.rv:first-child .k{justify-content:center}
-.dialogo{text-align:center;margin-top:clamp(56px,6vw,96px);margin-bottom:clamp(12px,2vw,20px)}
-.dialogo p{font-size:clamp(28px,4vw,58px);letter-spacing:-.04em;line-height:1.12}
-
-@media(prefers-reduced-motion:reduce){
-  .fila::before,.fila .t,.fila .fl{transition:none}
-  .pasos .num{transition:none}
-  .naranja{clip-path:none}
-  .vitrina .linea li{transition:none;opacity:1!important;transform:none!important}
-}
-
-/* ══════════ DETALLES ══════════ */
-/* títulos: cada palabra sube desde abajo de su propio renglón */
-.w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.14em;margin-bottom:-.14em}
-.wi{display:inline-block;transform:translateY(108%);transition:transform 1.05s var(--ley)}
-.in .wi,html:not(.js-rv) .wi{transform:none}
-.js-rv .rv:has(.w){filter:none}
-
-/* menú: una píldora marca dónde estás */
-.nav-r{position:relative}
-.nav-pill{position:absolute;top:50%;left:0;height:36px;width:0;margin-top:-18px;border-radius:999px;z-index:-1;
-  background:rgba(242,240,236,.07);border:1px solid rgba(242,240,236,.08);opacity:0;
-  transition:transform .6s var(--ley),opacity .4s var(--ley)}
-.nav-r a{position:relative;padding:0 12px}
-.nav-r a.on{color:var(--ink)}
-@media(max-width:720px){.nav-pill{display:none}}
-
-/* botones: se acercan apenas al cursor */
-.btn,.g-cta,.nav-r a.nav-cta,.fila .fl{will-change:transform}
-.mag{transition:transform .5s var(--ley)}
-
-/* ── el plano naranja ── */
-.naranja-tx::before{content:'';position:absolute;inset:-14% -10%;z-index:-1;pointer-events:none;
-  background:radial-gradient(closest-side,var(--hot) 55%,rgba(242,106,31,0))}
-.naranja-k{display:inline-flex;align-items:center;gap:10px;margin-bottom:clamp(22px,2.6vw,34px);
-  padding:9px 16px 9px 12px;border-radius:999px;background:#170e08;color:#f6e3d6;
-  font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase}
-.naranja-k::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--hot)}
-.naranja-f{color:#120904;font-weight:800;letter-spacing:-.06em}
-.subr{position:relative;display:inline-block}
-.subr svg{position:absolute;left:-2%;right:-2%;bottom:-.06em;width:104%;height:.26em;overflow:visible}
-.subr path{fill:none;stroke:#120904;stroke-width:7;stroke-linecap:round;
-  stroke-dasharray:640;stroke-dashoffset:640;transition:stroke-dashoffset 1.4s var(--ley) .3s}
-.naranja.ve .subr path,html:not(.js-rv) .subr path{stroke-dashoffset:0}
-.naranja-s{color:#170e08;font-weight:600}
-
-/* ── El Sistema como captura de producto: marco de app, inclinado, se endereza al bajar ── */
-.marco{position:relative;margin-top:clamp(52px,6vw,88px);padding:0 clamp(10px,1.2vw,16px) clamp(10px,1.2vw,16px);
-  border-radius:26px;background:linear-gradient(180deg,#262422,#1e1d1b);border:1px solid rgba(242,240,236,.1);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 60px 120px -50px rgba(0,0,0,.9),0 30px 60px -40px rgba(0,0,0,.7);
-  transform:perspective(1600px) rotateX(var(--tilt,0deg)) scale(var(--sc,1));transform-origin:50% 0}
-.marco-bar{display:flex;align-items:center;gap:7px;height:46px;padding:0 6px}
-.marco-bar i{width:10px;height:10px;border-radius:50%;background:rgba(242,240,236,.16)}
-.marco-bar i:first-child{background:var(--hot)}
-.marco-bar span{margin:0 auto;padding:5px 14px;border-radius:8px;background:rgba(242,240,236,.05);
-  font-size:12px;color:var(--faint);letter-spacing:.02em;transform:translateX(-24px)}
-.marco .vitrina{margin-top:0}
-.marco .vitrina::before{display:none}
-.marco .tarj{background:rgba(26,25,24,.9);box-shadow:none}
-
-/* ── pie: la marca, enorme ── */
-.foot{overflow:hidden}
-.foot-big{margin-top:clamp(40px,5vw,72px);font-size:min(17vw,250px);font-weight:800;letter-spacing:-.07em;
-  line-height:.78;white-space:nowrap;text-align:center;color:transparent;-webkit-text-stroke:1px rgba(242,240,236,.16);
-  -webkit-mask-image:linear-gradient(180deg,#000 30%,transparent 95%);mask-image:linear-gradient(180deg,#000 30%,transparent 95%);
-  user-select:none}
-
-@media(prefers-reduced-motion:reduce){
-  .wi{transform:none!important;transition:none}
-  .marco{transform:none!important}
-  .subr path{stroke-dashoffset:0;transition:none}
-  .nav-pill,.mag{transition:none}
+  html{scroll-behavior:auto}
+  .rv,.js-rv .stg>*{opacity:1!important;transform:none!important;transition:none!important}
+  .button,.wa,.menu,.hamb span,.mas::before,.mas::after{transition:none}
 }
 </style>
 </head>
 <body>
+<a href="#contenido" class="skip">Ir al contenido</a>
 <a href="#sesion" class="skip">Ir al formulario</a>
-<div class="bg" aria-hidden="true"></div>
-<div class="grain" aria-hidden="true"></div>
 
-<div class="prog" id="prog" aria-hidden="true"></div>
-
-<div class="shell">
-
-<nav class="nav" id="nav">
-  <span class="mark">LEVEL UP<sup>™</sup> <span class="bar-m">|</span> AIMA</span>
-  <div class="nav-r">
-    <a href="#construimos">Qué construimos</a>
-    <a href="#metodo">Cómo trabajamos</a>
-    <a href="#el-sistema">El Sistema</a>
-    <a href="#soluciones">Para tu negocio</a>
-    <a href="#sesion" class="nav-cta">Pedí tu Evaluación</a>
-    <span class="nav-pill" aria-hidden="true"></span>
-    <button class="hamb" id="hamb" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
-      <span></span><span></span><span></span>
-    </button>
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a class="mark" href="#inicio">LEVEL UP<sup>™</sup> <span class="bar-m">|</span> AIMA</a>
+    <nav class="nav-r" aria-label="Principal">
+      <a href="#proyectos">Qué construimos</a>
+      <a href="#como-trabajamos">Cómo trabajamos</a>
+      <a href="#nosotros">Nosotros</a>
+      <a class="button button--primary button--sm" href="https://wa.me/5493482583784?text=Quiero%20mi%20Evaluaci%C3%B3n" target="_blank" rel="noopener">Pedí tu Evaluación</a>
+      <button class="hamb" id="hamb" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
   </div>
-</nav>
-
-<div class="menu" id="menu" hidden>
-  <a href="#construimos" data-go="construimos">Qué construimos</a>
-  <a href="#metodo" data-go="metodo">Cómo trabajamos</a>
-  <a href="#el-sistema" data-go="el-sistema">El Sistema</a>
-  <a href="#soluciones" data-go="soluciones">Para tu negocio</a>
-  <a href="#nosotros" data-go="nosotros">Quiénes somos</a>
-  <a href="#sesion" data-go="sesion" class="menu-cta">Pedí tu Evaluación</a>
-</div>
-
-<!-- 01 · HERO -->
-<main id="contenido">
-<header class="hero" id="inicio">
-  <!-- El video lo carga el script del final: sin él (o sin permiso para moverse) se ve solo la portada. -->
-  <video class="hero-video" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"
-    data-desk="/media/hero.mp4" data-mob="/media/hero-m.mp4"></video>
-  <div class="hero-shade" aria-hidden="true"></div>
-  <div class="hero-in">
-    <span class="eyebrow">Primero el negocio. Después la IA.</span>
-    <h1 id="h1"><span class="ln">Construimos con IA</span><span class="ln"><em>lo que tu negocio necesita.</em></span></h1>
-    <p class="deny">Entendemos cómo vende y cómo trabaja tu negocio, y recién ahí construimos lo que le falta. <b>Funcionando, no en una presentación.</b></p>
-    <!-- Un solo camino, como la bio de Instagram: la Evaluación, por WhatsApp. La sesión
-         de 45 minutos y "Probalo" siguen más abajo, en la sección del Sistema. -->
-    <div class="act">
-      <div class="acol">
-        <a class="btn" href="https://wa.me/5493482583784?text=Quiero%20mi%20Evaluaci%C3%B3n" target="_blank" rel="noopener">Pedí tu Evaluación</a>
-        <span class="hint">Por WhatsApp · nos contás qué te frena</span>
-      </div>
-    </div>
-  </div>
-  <button class="vid-toggle" type="button" aria-label="Pausar video de fondo" aria-pressed="false">
-    <svg class="i-pause" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true"><rect x="2" y="1" width="3.5" height="12" rx="1"/><rect x="8.5" y="1" width="3.5" height="12" rx="1"/></svg>
-    <svg class="i-play" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true"><path d="M3 1.2v11.6a.6.6 0 0 0 .9.5l9-5.8a.6.6 0 0 0 0-1L3.9.7A.6.6 0 0 0 3 1.2z"/></svg>
-  </button>
 </header>
 
-<!-- 02 · QUÉ CONSTRUIMOS -->
-<section class="sec" id="construimos">
-  <div class="rv">
-    <span class="k">Qué construimos</span>
-    <h2>Cada negocio necesita algo distinto. <em>Esto es parte de lo que ya construimos.</em></h2>
-  </div>
-  <ul class="filas stg">
-    <li><a class="fila" href="#el-sistema" data-go="el-sistema" style="--c:var(--hot)">
-      <span class="num">01</span><span class="t">El Sistema</span>
-      <span class="d">Alia, donde queda cada consulta con su responsable, más la puesta en marcha, la captación y una reunión por mes.</span>
-      <span class="fl" aria-hidden="true">→</span></a></li>
-    <li><a class="fila" href="https://eventria.com.ar" target="_blank" rel="noopener" style="--c:var(--amber)">
-      <span class="num">02</span><span class="t">Eventria</span>
-      <span class="d">Para salones y organizadoras: cada 15, casamiento o cumpleaños coordinado con la familia, paso a paso.</span>
-      <span class="fl" aria-hidden="true">↗</span></a></li>
-    <li><a class="fila" href="#soluciones" data-go="soluciones" style="--c:var(--cobre)">
-      <span class="num">03</span><span class="t">Hecho para tu negocio</span>
-      <span class="d">Un sistema, un agente o una automatización, pensados desde cero para lo que hoy hacés a mano.</span>
-      <span class="fl" aria-hidden="true">→</span></a></li>
-  </ul>
-</section>
+<div class="menu" id="menu" hidden>
+  <a href="#proyectos" data-go="proyectos">Qué construimos</a>
+  <a href="#como-trabajamos" data-go="como-trabajamos">Cómo trabajamos</a>
+  <a href="#nosotros" data-go="nosotros">Nosotros</a>
+  <a href="#preguntas" data-go="preguntas">Preguntas</a>
+  <a href="https://wa.me/5493482583784?text=Quiero%20mi%20Evaluaci%C3%B3n" target="_blank" rel="noopener" class="menu-cta">Pedí tu Evaluación</a>
+</div>
 
+<main id="contenido">
 
-<!-- 03 · CÓMO TRABAJAMOS -->
-<section class="sec" id="metodo">
-  <div class="rv">
-    <span class="k">Cómo trabajamos</span>
-    <h2>La IA escribe el código. <em>Nosotros decidimos qué construir.</em></h2>
-  </div>
-  <ol class="pasos stg">
-    <li><span class="num">01</span><h3>Entendemos tu negocio</h3>
-      <p>Cómo vendés, cómo trabaja tu equipo y dónde se pierde cada cosa.</p></li>
-    <li><span class="num">02</span><h3>Construimos solo lo que hace falta</h3>
-      <p>Por piezas, en semanas. La primera ya trabaja sola.</p></li>
-    <li><span class="num">03</span><h3>Queda funcionando</h3>
-      <p>Lo ponemos en marcha con vos y lo verificamos juntos.</p></li>
-  </ol>
-</section>
-
-<!-- CORTE -->
-<section class="naranja" id="corte" aria-label="Del enredo al orden">
-  <canvas class="motas" aria-hidden="true"></canvas>
-  <div class="naranja-tx">
-    <span class="naranja-k">Lo que hace Level Up</span>
-    <p class="naranja-f">Del enredo<br><span class="subr">al orden.<svg viewBox="0 0 600 40" preserveAspectRatio="none" aria-hidden="true"><path d="M6 28 C 120 12, 260 8, 380 18 S 560 30, 594 14"/></svg></span></p>
-    <p class="naranja-s">Eso construimos: que cada cosa de tu negocio tenga su lugar, su responsable y su próximo paso.</p>
-  </div>
-</section>
-
-<!-- 04 · EL SISTEMA -->
-<section class="sec" id="el-sistema">
-  <div class="rv">
-    <span class="k">El Sistema</span>
-    <h2>Alia, más lo que <em>hacemos nosotros.</em></h2>
-    <p class="lead">Alia es la plataforma donde queda cada consulta con su responsable, su último contacto y su próximo paso. Nosotros la ponemos en marcha, armamos las campañas y nos juntamos una vez por mes a mirar los números.</p>
-  </div>
-
-  <div class="marco" id="marco">
-  <div class="marco-bar" aria-hidden="true"><i></i><i></i><i></i><span>Alia · tu negocio</span></div>
-  <div class="vitrina stg" id="plataforma">
-    <div class="tarj">
-      <div class="tarj-k">Tu mes<small class="muestra">Datos de ejemplo</small></div>
-      <div class="stat"><i>Consultas</i><b>147</b><em>este mes</em></div>
-      <div class="stat ojo"><i>Sin tocar</i><b>9</b><em>para atender</em></div>
-      <div class="stat"><i>Visitas agendadas</i><b>38</b><em>confirmadas</em></div>
+<!-- HERO -->
+<section class="hero" id="inicio" aria-labelledby="h1">
+  <div class="wrap hero__grid">
+    <div class="hero__copy">
+      <p class="hero__eyebrow">Primero el negocio. Después la IA.</p>
+      <h1 id="h1">Construimos con IA lo que tu negocio necesita.</h1>
+      <p class="hero__lead">Entendemos cómo trabajás y construimos sistemas, herramientas y agentes para resolver lo que hoy te frena.</p>
+      <div class="hero__actions">
+        <a class="button button--primary" href="https://wa.me/5493482583784?text=Quiero%20mi%20Evaluaci%C3%B3n" target="_blank" rel="noopener">Pedí tu Evaluación</a>
+        <a class="link link-arrow" href="#proyectos">Mirá lo que construimos</a>
+      </div>
+      <p class="hero__note">Contanos tu caso por WhatsApp.</p>
     </div>
-    <div class="tarj">
-      <div class="tarj-k">Actividad<small class="muestra">Datos de ejemplo</small></div>
-      <ul class="linea">
-        <li class="sist"><span>Sáb 13:30</span><p>Entró una consulta por Instagram</p></li>
-        <li class="sist"><span>Sáb 13:30</span><p>Quedó asignada a <b>Sofía</b></p></li>
-        <li><span>Lun 9:40</span><p><b>Sofía</b> abrió la consulta</p></li>
-        <li><span>Lun 11:02</span><p><b>Sofía</b> la movió a Presupuesto</p></li>
-        <li><span>Lun 11:05</span><p>Próximo paso: <b>llamar el mar 21</b></p></li>
+    <div class="hero__visual">
+      <div class="hero__media" data-hero-media>
+        <img class="hero__fallback" src="/media/hero/level-up-hero-poster-final.jpg" width="1920" height="1080" alt="" decoding="async" data-hero-fallback>
+        <video class="hero__video" width="1920" height="1080" poster="/media/hero/level-up-hero-poster.jpg"
+          muted playsinline preload="none" aria-hidden="true" tabindex="-1" data-hero-video hidden></video>
+      </div>
+      <button type="button" class="hero__playback" data-hero-control hidden>Ver animación</button>
+    </div>
+  </div>
+</section>
+
+<!-- LO QUE TE FRENA -->
+<section class="sec sec--alt" id="punto-de-partida">
+  <div class="wrap frena">
+    <div class="rv">
+      <span class="k">Por dónde empezamos</span>
+      <h2>Lo que hoy te frena puede ser el punto de partida.</h2>
+    </div>
+    <div class="rv">
+      <ul class="frena-list">
+        <li>Un proceso que depende de una sola persona.</li>
+        <li>Información repartida en varios lugares.</li>
+        <li>Una herramienta que no contempla cómo trabajás.</li>
       </ul>
+      <p class="frena-cierre">Empezamos por entender esa parte del negocio.</p>
     </div>
   </div>
+</section>
 
-  </div>
+<!-- PROYECTOS -->
+<section class="sec" id="proyectos">
+  <div class="wrap">
+    <div class="proy-head rv">
+      <div>
+        <span class="k">Qué construimos</span>
+        <h2>Mirá lo que construimos.</h2>
+        <p class="lead">Cada proyecto empieza con una parte del negocio que necesita funcionar mejor. Estos son algunos ejemplos.</p>
+      </div>
+    </div>
 
-  <div class="probalo rv" id="probalo">
-    <p><b>No nos creas. Probalo.</b> Escribinos un sábado a la una y media: te contesta el mismo sistema que instalamos, andando en nuestro propio negocio.</p>
-    <a class="g-cta" href="https://wa.me/5493482583784?text=Hola%2C%20vengo%20de%20la%20web%20y%20quiero%20probar%20el%20sistema."
-       target="_blank" rel="noopener">Probalo por WhatsApp</a>
-  </div>
+    <!-- Eventria -->
+    <article class="proy rv" id="eventria">
+      <div class="proy-tx">
+        <span class="estado">Entregado · septiembre 2026</span>
+        <h3>Eventria: el evento se organiza de los dos lados.</h3>
+        <dl class="proy-dl">
+          <dt>El problema</dt>
+          <dd>La familia y la organizadora necesitan trabajar sobre el mismo evento.</dd>
+          <dt>Qué construimos</dt>
+          <dd>Una app donde la familia organiza su evento por etapas, y el salón ve lo que va cargando y lo aprueba.</dd>
+        </dl>
+        <div class="proy-cta">
+          <a class="link link-ext" href="https://eventria.com.ar" target="_blank" rel="noopener">Ver cómo funciona</a>
+        </div>
+      </div>
+      <div class="shots">
+        <span class="demo-tag">Demo · datos de ejemplo</span>
+        <div class="shots--ev">
+          <figure>
+            <img class="shot" src="/media/eventria/salon-proximo-evento.png" width="1064" height="680" loading="lazy"
+              alt="Vista del salón en la demo de Eventria: próximo evento, un cumpleaños, a 12 días.">
+            <figcaption>Lo que ve el salón</figcaption>
+          </figure>
+          <figure>
+            <img class="shot" src="/media/eventria/familia-etapa.png" width="1155" height="732" loading="lazy"
+              alt="Vista de la familia en la demo de Eventria: la etapa Cuenta regresiva, lista para revisar.">
+            <figcaption>Lo que ve la familia</figcaption>
+          </figure>
+        </div>
+      </div>
+    </article>
 
-  <div class="pliegues rv">
-    <details class="plie" id="sistema">
+    <!-- Alia -->
+    <article class="proy proy--inv rv" id="alia">
+      <div class="proy-tx">
+        <span class="estado estado--prod">Producto en uso</span>
+        <h3>Alia: las consultas, con seguimiento y trazabilidad.</h3>
+        <dl class="proy-dl">
+          <dt>El problema</dt>
+          <dd>Cuando la información queda repartida, cuesta ver qué se respondió y qué sigue pendiente.</dd>
+          <dt>Qué construimos</dt>
+          <dd>Una plataforma donde cada consulta queda con su responsable, su último contacto y su próximo paso.</dd>
+        </dl>
+      </div>
+      <div class="shots">
+        <span class="demo-tag">Pantalla de ejemplo · datos de ejemplo</span>
+        <div class="ui" aria-label="Pantalla de ejemplo de Alia" role="img">
+          <div class="ui-bar" aria-hidden="true"><i></i><i></i><i></i><span>Alia · tu negocio</span></div>
+          <div class="ui-in" aria-hidden="true">
+            <div class="ui-col">
+              <div class="ui-k">Tu mes</div>
+              <div class="stat"><i>Consultas</i><b>147</b><em>este mes</em></div>
+              <div class="stat ojo"><i>Sin tocar</i><b>9</b><em>para atender</em></div>
+              <div class="stat"><i>Visitas agendadas</i><b>38</b><em>confirmadas</em></div>
+            </div>
+            <div class="ui-col">
+              <div class="ui-k">Actividad</div>
+              <ul class="linea">
+                <li><span>Sáb 13:30</span><p>Entró una consulta por Instagram</p></li>
+                <li><span>Sáb 13:30</span><p>Quedó asignada a <b>Sofía</b></p></li>
+                <li><span>Lun 9:40</span><p><b>Sofía</b> abrió la consulta</p></li>
+                <li><span>Lun 11:02</span><p><b>Sofía</b> la movió a Presupuesto</p></li>
+                <li><span>Lun 11:05</span><p>Próximo paso: <b>llamar el mar 21</b></p></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- El Sistema: la forma de contratar Alia -->
+    <div class="sistema-nota rv" id="el-sistema">
+      <p><b>El Sistema</b> es Alia más lo que hacemos nosotros: la ponemos en marcha, armamos las campañas en Instagram y Facebook y nos juntamos una vez por mes a mirar los números.</p>
+      <p class="probalo">Te contesta el mismo sistema que instalamos, andando en nuestro propio negocio.
+        <a class="link link-ext" href="https://wa.me/5493482583784?text=Hola%2C%20vengo%20de%20la%20web%20y%20quiero%20probar%20el%20sistema." target="_blank" rel="noopener">Probalo por WhatsApp</a></p>
+      <div class="pliegues">
+        <details class="plie" id="sistema">
       <summary><span>Qué incluye</span><i class="mas" aria-hidden="true"></i></summary>
       <div class="plie-in">
         <p class="lead">Todo lo que sigue viene adentro. Se instala una vez y queda funcionando.</p>
@@ -1598,7 +596,7 @@ h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
   </div>
       </div>
     </details>
-    <details class="plie" id="no-hacemos">
+        <details class="plie" id="no-hacemos">
       <summary><span>Lo que no hacemos</span><i class="mas" aria-hidden="true"></i></summary>
       <div class="plie-in">
         <p class="lead">Escrito acá para que no haya sorpresas.</p>
@@ -1612,7 +610,7 @@ h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
     </div>
       </div>
     </details>
-    <details class="plie" id="quien">
+        <details class="plie" id="quien">
       <summary><span>Para quién es</span><i class="mas" aria-hidden="true"></i></summary>
       <div class="plie-in">
         <p class="lead">No trabajamos con todos. Preferimos decirlo ahora y no descubrirlo a los dos meses.</p>
@@ -1644,29 +642,51 @@ h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
   </div>
       </div>
     </details>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- 05 · HECHO PARA TU NEGOCIO -->
-<section class="sec" id="soluciones">
-  <div class="rv">
-    <span class="k">Hecho para tu negocio</span>
-    <h2 class="h-aima">Construimos el sistema que tu negocio necesita. <em>No el que te tocó.</em></h2>
+<!-- CÓMO TRABAJAMOS -->
+<section class="sec sec--alt" id="como-trabajamos">
+  <div class="wrap">
+    <div class="rv">
+      <span class="k">Cómo trabajamos</span>
+      <h2>Primero entendemos. Después construimos.</h2>
+    </div>
+    <ol class="pasos stg">
+      <li><h3>Nos contás qué te frena</h3><p>Empezamos por cómo trabajás hoy y qué parte querés resolver.</p></li>
+      <li><h3>Definimos qué conviene construir</h3><p>Revisamos el caso, lo que ya tenés y el alcance del trabajo.</p></li>
+      <li><h3>Construimos y probamos</h3><p>Armamos la herramienta y comprobamos que funcione con el proceso definido.</p></li>
+      <li><h3>Revisamos cómo quedó</h3><p>Vemos juntos el uso y los ajustes que correspondan al alcance acordado.</p></li>
+    </ol>
+    <p class="nota-ia rv">La IA amplía lo que podemos construir. Nosotros decidimos qué tiene sentido para tu negocio y revisamos que funcione.</p>
   </div>
+</section>
 
-  <blockquote class="dialogo rv">
-    <p>— ¿Por qué lo cargan así?</p>
-    <p><em>— Porque el sistema no me deja.</em></p>
-  </blockquote>
-
-  <div class="tres stg">
-    <div><h3>Sistemas</h3><p>Cada pantalla existe porque tu negocio la necesita. Se arma por piezas, en semanas.</p></div>
-    <div><h3>Agentes</h3><p>Atienden, responden y agendan cuando no hay nadie.</p></div>
-    <div><h3>Automatizaciones</h3><p>Las tareas repetitivas que se hacen solas.</p></div>
-  </div>
-
-  <div class="rv">
-    <div class="calc" id="calc">
+<!-- QUÉ QUERÉS ORDENAR -->
+<section class="sec" id="ordenar">
+  <div class="wrap">
+    <div class="rv">
+      <span class="k">Ejemplos</span>
+      <h2>¿Qué parte de tu negocio querés ordenar?</h2>
+    </div>
+    <ul class="ordenar stg">
+      <li>Información que hoy está repartida.</li>
+      <li>Presupuestos, pedidos o trabajos pendientes.</li>
+      <li>Procesos que dependen de una sola persona.</li>
+      <li>Atención y seguimiento que necesitan continuidad.</li>
+      <li>Herramientas que no contemplan una parte de la operación.</li>
+    </ul>
+    <div class="ordenar-cierre rv">
+      <p>No hace falta que sepas qué herramienta necesitás. Contanos qué está pasando.</p>
+      <a class="button button--primary" href="https://wa.me/5493482583784?text=Quiero%20mi%20Evaluaci%C3%B3n" target="_blank" rel="noopener">Pedí tu Evaluación</a>
+    </div>
+    <div class="pliegues calc-wrap rv">
+      <details class="plie">
+        <summary><span>¿Cuánto te lleva una tarea que hacés a mano?</span><i class="mas" aria-hidden="true"></i></summary>
+        <div class="plie-in">
+<div class="calc" id="calc">
       <h3>¿Cuánto te cuesta lo que hacés a mano?</h3>
 
       <p class="calc-k">Elegí tu tarea</p>
@@ -1698,37 +718,74 @@ h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
 
       <a class="g-cta" id="calcCta" href="https://wa.me/5493482583784" target="_blank" rel="noopener" hidden>Contanos y te decimos si se puede resolver →</a>
     </div>
-  </div>
-
-  <p class="tambien rv">También hacemos <b>Radiografía Comercial<sup>™</sup></b> —tu proceso comercial de punta a punta— y <b>capacitación de equipos</b> sobre tu operación real.</p>
-
-  <div class="cierre rv">
-    <p class="lead"><b>Si no es viable o no te conviene, también te lo decimos.</b></p>
-    <a class="g-cta" href="https://wa.me/5493482583784?text=Hola%2C%20vengo%20de%20la%20web.%20Esto%20es%20lo%20que%20mi%20sistema%20no%20me%20deja%20hacer%3A%20" target="_blank" rel="noopener">Contanos qué es lo que tu sistema (o tu Excel) no te deja hacer</a>
+        </div>
+      </details>
+    </div>
   </div>
 </section>
 
-<!-- 06 · LA EVALUACIÓN -->
-<section class="sec" id="sesion">
-  <div class="rv">
-    <span class="k">La Evaluación</span>
-    <h2>Tu Evaluación: <em>45 minutos.</em></h2>
-    <p class="lead">Sin cargo. Miramos tus propios números juntos. <b>Los cupos son limitados de verdad</b>: se hacen dos implementaciones por mes.</p>
-    <p class="lead">¿Preferís escribir? <a href="https://wa.me/5493482583784?text=Quiero%20mi%20Evaluaci%C3%B3n" target="_blank" rel="noopener">Pedila por WhatsApp</a>.</p>
+<!-- NOSOTROS -->
+<section class="sec sec--alt" id="nosotros">
+  <div class="wrap nos rv">
+    <div>
+      <span class="k">Nosotros</span>
+      <h2>Detrás de lo que construimos estamos Nico y Juli.</h2>
+      <p class="lead">Trabajamos con cada negocio para entender qué necesita, decidir qué construir y revisar cómo funciona. Desde Reconquista, Santa Fe.</p>
+    </div>
+    <div>
+      <p class="lead">En nuestro Instagram mostramos lo que construimos cada semana — y lo que sale mal, también.</p>
+      <p style="margin-top:18px"><a class="button button--ghost" href="https://instagram.com/levelup.aima" target="_blank" rel="noopener">Vernos trabajar</a></p>
+    </div>
   </div>
+</section>
 
-  <div class="ses">
+<!-- PREGUNTAS -->
+<section class="sec" id="preguntas">
+  <div class="wrap">
     <div class="rv">
-      <div class="three">
-        <p>Nos contás cómo trabaja tu negocio hoy, con lo que tengas: planilla, cuaderno, capturas de WhatsApp.</p>
-        <p>Vemos juntos qué se puede resolver, y qué no.</p>
-        <p>Salís con una respuesta escrita: qué haríamos y cómo, contrates o no.</p>
+      <span class="k">Preguntas</span>
+      <h2>Lo que nos suelen preguntar.</h2>
+    </div>
+    <div class="pliegues faq rv">
+      <details class="plie"><summary><span>¿Tengo que saber qué herramienta necesito?</span><i class="mas" aria-hidden="true"></i></summary>
+        <div class="plie-in"><p>No. Empezamos por lo que te frena y por cómo trabajás hoy.</p></div></details>
+      <details class="plie"><summary><span>¿Qué pasa cuando pido una Evaluación?</span><i class="mas" aria-hidden="true"></i></summary>
+        <div class="plie-in"><p>Nos contás tu caso por WhatsApp. Si es un caso para nosotros, te ofrecemos una llamada de 45 minutos con el equipo; si no, te respondemos por escrito si se puede hacer y cómo. El alcance y la inversión se definen a partir de ese caso.</p></div></details>
+      <details class="plie"><summary><span>¿Tengo que reemplazar lo que ya uso?</span><i class="mas" aria-hidden="true"></i></summary>
+        <div class="plie-in"><p>Primero revisamos las herramientas y la información que ya tenés. Según el proyecto, podemos trabajar con eso o definir qué hace falta cambiar.</p></div></details>
+      <details class="plie"><summary><span>¿Construyen solo agentes de atención?</span><i class="mas" aria-hidden="true"></i></summary>
+        <div class="plie-in"><p>No. También construimos programas y sistemas para ordenar distintas partes del negocio.</p></div></details>
+      <details class="plie"><summary><span>¿Cuánto tarda y cuánto cuesta?</span><i class="mas" aria-hidden="true"></i></summary>
+        <div class="plie-in"><p>Depende de lo que necesitemos construir. Después de entender el caso, definimos el alcance, los tiempos y la inversión.</p></div></details>
+      <details class="plie"><summary><span>¿Qué información necesita la IA?</span><i class="mas" aria-hidden="true"></i></summary>
+        <div class="plie-in"><p>Definimos qué información hace falta para la tarea y cómo se va a utilizar. Eso forma parte del alcance del proyecto.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- EVALUACIÓN -->
+<section class="sec sec--alt" id="sesion">
+  <div class="wrap eva">
+    <div class="rv">
+      <span class="k">La Evaluación</span>
+      <h2>Contanos qué te frena.</h2>
+      <p class="lead">Vemos juntos qué se puede construir para tu negocio.</p>
+      <ol class="eva-pasos">
+        <li>Nos contás tu caso por WhatsApp.</li>
+        <li>Si es un caso para nosotros, te ofrecemos una llamada de 45 minutos con el equipo. Si no, te respondemos por escrito si se puede hacer y cómo.</li>
+        <li>El precio llega con el alcance.</li>
+      </ol>
+      <div class="eva-cta">
+        <a class="button button--primary" href="https://wa.me/5493482583784?text=Quiero%20mi%20Evaluaci%C3%B3n" target="_blank" rel="noopener">Pedí tu Evaluación por WhatsApp</a>
       </div>
-      <p class="hon">Si de la Evaluación sale que lo que necesitás no es algo que hagamos, te lo decimos y no te vendemos nada. Pasa, y está bien que pase.</p>
+      <p class="small" style="margin-top:10px">Con que nos cuentes qué está pasando, alcanza para empezar.</p>
+      <p class="viable">Si no es viable o no te conviene, también te lo decimos.</p>
     </div>
 
-    <div class="rv">
-      <div id="formView">
+    <div class="form-card rv">
+      <h3>¿Preferís dejarnos tus datos?</h3>
+      <p class="small">Te escribimos nosotros.</p>
+<div id="formView">
         <form id="form" data-form-id="sesion" novalidate>
           <div class="frow">
             <div class="fg"><label for="nombre">Nombre</label><input type="text" id="nombre" autocomplete="name" placeholder="Tu nombre" required><span class="err" role="alert" id="e-nombre">Falta el nombre</span></div>
@@ -1748,7 +805,7 @@ h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
             <span id="consent-txt">Acepto recibir respuestas por WhatsApp sobre mi consulta</span>
           </label>
           <p class="aviso-priv">Al enviar aceptás nuestra <a href="https://levelup-legal.vercel.app/privacidad-web" target="_blank" rel="noopener">política de privacidad</a>. Usamos tus datos solo para contactarte; no los compartimos con terceros.</p>
-          <button type="submit" class="send" id="send">Pedí tu Evaluación</button>
+          <button type="submit" class="send button button--primary" id="send">Pedí tu Evaluación</button>
           <p class="fine">Te respondemos por WhatsApp antes de 24 horas. Sin venta disfrazada.</p>
           <div class="fallo" id="fallo">No pudimos enviar el formulario — puede ser la conexión.
             Probá de nuevo, o escribinos por <a href="https://www.instagram.com/levelup.aima/" target="_blank" rel="noopener">Instagram</a> y lo resolvemos ahí.</div>
@@ -1763,52 +820,39 @@ h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
   </div>
 </section>
 
-<!-- QUIÉNES SOMOS -->
-<section class="sec quienes" id="nosotros">
-  <div class="rv q-row">
-    <div>
-      <h2 class="h-q">¿Quiénes somos?</h2>
-      <p class="lead">Eso no se cuenta en una página. <b>Se ve trabajando.</b> En nuestro Instagram mostramos lo que construimos cada semana — y lo que sale mal, también.</p>
-    </div>
-    <a class="g-cta" href="https://instagram.com/levelup.aima" target="_blank" rel="noopener">Vernos trabajar</a>
-  </div>
-</section>
-
 </main>
 
 <footer class="foot">
-  <div class="fg-top">
-    <div>
-      <span class="mark">LEVEL UP<sup>™</sup> | AIMA</span>
-      <p class="desc">IA para negocios. Construimos con IA lo que tu negocio necesita.</p>
+  <div class="wrap">
+    <div class="fg-top">
+      <div>
+        <a class="mark" href="#inicio">LEVEL UP<sup>™</sup> <span class="bar-m">|</span> AIMA</a>
+        <p class="desc">Primero el negocio. Después la IA.</p>
+      </div>
+      <div>
+        <h4>La página</h4>
+        <a class="l" href="#proyectos">Qué construimos</a>
+        <a class="l" href="#el-sistema">El Sistema</a>
+        <a class="l" href="#quien">Para quién es el Sistema</a>
+        <a class="l" href="#como-trabajamos">Cómo trabajamos</a>
+        <a class="l" href="#preguntas">Preguntas</a>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <a class="l" href="https://wa.me/5493482583784?text=Quiero%20mi%20Evaluaci%C3%B3n" target="_blank" rel="noopener">WhatsApp ↗</a>
+        <a class="l" href="https://www.instagram.com/levelup.aima/" target="_blank" rel="noopener">Instagram ↗</a>
+        <p class="desc" style="margin-top:6px">Reconquista, Santa Fe</p>
+      </div>
     </div>
-    <div>
-      <h4>La página</h4>
-      <a class="l" href="#construimos">Qué construimos</a>
-      <a class="l" href="#metodo">Cómo trabajamos</a>
-      <a class="l" href="#el-sistema">El Sistema</a>
-      <a class="l" href="#quien">Para quién es</a>
-      <a class="l" href="#soluciones">Hecho para tu negocio</a>
+    <div class="fg-bot">
+      <span>© 2026 Level Up™ | AIMA</span>
+      <a href="https://levelup-legal.vercel.app/privacidad-web" target="_blank" rel="noopener" class="legal-l">Política de privacidad ↗</a>
     </div>
-    <div>
-      <h4>Contacto</h4>
-      <a class="l" href="#sesion" data-go="sesion">Pedí tu Evaluación</a>
-      <a class="l" href="https://www.instagram.com/levelup.aima/" target="_blank" rel="noopener">Instagram ↗</a>
-      <p class="desc" style="margin-top:6px">Reconquista, Santa Fe</p>
-    </div>
+    <!-- Razón social textual: NO se abrevia ni se reformula. Tiene que coincidir con la
+         constancia de ARCA — es lo que conecta la marca con la persona ante Meta. -->
+    <p class="razon">Level Up™ | AIMA es la marca comercial de Nicolás Óscar Escobar · Reconquista, Santa Fe, Argentina</p>
   </div>
-  <div class="fg-bot">
-    <span>© 2026 Level Up™ | AIMA</span>
-    <a href="https://levelup-legal.vercel.app/privacidad-web" target="_blank" rel="noopener" class="legal-l">Política de privacidad ↗</a>
-    <span>IA para negocios</span>
-  </div>
-  <!-- Razón social textual: NO se abrevia ni se reformula. Tiene que coincidir con la
-       constancia de ARCA — es lo que conecta la marca con la persona ante Meta. -->
-  <p class="razon">Level Up™ | AIMA es la marca comercial de Nicolás Óscar Escobar · Reconquista, Santa Fe, Argentina</p>
-  <div class="foot-big" aria-hidden="true">LEVEL UP</div>
 </footer>
-
-</div>
 
 <!-- Arranca oculto a propósito: si no hay número cargado, no aparece. Mejor sin botón
      que con un link roto. Lo prende el JS de abajo (buscar NUMERO_WA). -->
@@ -1831,19 +875,6 @@ h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
   function C(c,a){return 'rgba('+c[0]+','+c[1]+','+c[2]+','+a+')';}
   var ACC=rgb('--hot','#f26a1f'), TRZ=rgb('--trace','#e6e2db'), TXT=rgb('--ink','#f2f0ec');
 
-  /* ── ir a una sección ── */
-  /* Las tres pasadas del pulso se cuentan desde que la franja entra en pantalla, no
-     desde que carga la pagina: si no, se gastan antes de que alguien las vea. */
-  (function(){
-    if(reduce) return;
-    var franja=document.querySelector('.puerta');
-    if(!franja) return;
-    if(!('IntersectionObserver' in window)){ franja.classList.add('gira'); return; }
-    var io=new IntersectionObserver(function(es){
-      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('gira'); io.unobserve(e.target); } });
-    },{rootMargin:'80px'});
-    io.observe(franja);
-  })();
 
   /* LA CUENTA. Aritmetica pura y a la vista: horas x 52 semanas, y esas horas
      divididas en jornadas de 8. El resultado es SIEMPRE tiempo — una cifra de plata
@@ -1911,7 +942,7 @@ h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
   var rvs=[].slice.call(document.querySelectorAll('.rv,.stg,.enc'));
   if(!reduce && 'IntersectionObserver' in window){
     document.documentElement.classList.add('js-rv');
-    document.querySelectorAll('.rv').forEach(function(el){el.style.opacity='0';el.style.transform='translateY(28px)';});
+    document.querySelectorAll('.rv').forEach(function(el){el.style.opacity='0';el.style.transform='translateY(10px)';});
     var red=setTimeout(function(){rvs.forEach(function(el){el.style.opacity='';el.style.transform='';el.classList.add('in');});},2600);
     var io=new IntersectionObserver(function(es){
       es.forEach(function(e){
@@ -1978,214 +1009,6 @@ h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
     matchMedia('(min-width:821px)').addEventListener('change',function(m){ if(m.matches&&abierto) cerrar(); });
   })();
 
-  /* ══ EL RECORRIDO ══ */
-  var ETAPAS=[{n:'Entra'},{n:'Responde'},{n:'Deriva'},{n:'Seguimiento'},{n:'Cierre',propia:true}];
-  (function(){
-    var cv=document.getElementById('via'); if(!cv) return;
-    var ctx=cv.getContext('2d'); if(!ctx) return;
-    var caps=document.getElementById('caps');
-    var W=0,H=0,dpr=Math.min(window.devicePixelRatio||1,2),ex=[],trazos=[],capEls=[],visible=true;
-    var Y0=.34,Y1=.60;
-    function FRAC(i){return .10+i*(.80/(ETAPAS.length-1));}
-
-    ETAPAS.forEach(function(e,i){
-      var d=document.createElement('div');
-      d.className='cap'+(e.propia?' own':'');
-      d.innerHTML='<b>'+e.n+'</b>';
-      d.style.left=(FRAC(i)*100).toFixed(2)+'%';
-      caps.appendChild(d);capEls.push(d);
-    });
-
-    function nuevo(fila,total,arranque){
-      var y=H*(Y0+(fila+.5)*((Y1-Y0)/total));
-      var pierde=Math.random()<.17;
-      return {y:y+(Math.random()-.5)*8, x:(arranque!==undefined?arranque:-40),
-              vel:26+Math.random()*22, pierde:pierde,
-              finX:pierde?(W*FRAC(1+Math.floor(Math.random()*3))+Math.random()*W*.05):W*FRAC(4),
-              vida:1, tocada:-1};
-    }
-    function build(){
-      ex=ETAPAS.map(function(e,i){return {x:W*FRAC(i),propia:!!e.propia,luz:0};});
-      var N=7; trazos=[];
-      for(var i=0;i<N;i++){
-        var arr=W*(.02+(i/N)*.92)-(i%2?W*.05:0);
-        var t=nuevo(i,N,arr);
-        for(var s=0;s<ex.length;s++){ if(arr>=ex[s].x) t.tocada=s; }
-        trazos.push(t);
-      }
-    }
-    function size(){
-      W=cv.clientWidth||600;H=cv.clientHeight||800;
-      cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);build();
-    }
-    window.addEventListener('resize',size,{passive:true});
-    if(window.ResizeObserver){try{new ResizeObserver(size).observe(cv);}catch(e){}}
-    size();
-
-    // no se dibuja cuando el hero salió de pantalla
-    if('IntersectionObserver' in window){
-      new IntersectionObserver(function(es){es.forEach(function(e){visible=e.isIntersecting;});},{threshold:0})
-        .observe(document.getElementById('inicio'));
-    }
-
-    var last=Date.now(), pulsos=[];
-    function frame(){
-      var now=Date.now(), dt=Math.min(now-last,50); last=now;
-      if(!visible||!ex.length){requestAnimationFrame(frame);return;}
-      ctx.clearRect(0,0,W,H);
-
-      ex.forEach(function(s,i){
-        s.luz+=(0-s.luz)*Math.min(dt/520,1);   // se apaga más lento: el toque se ve
-        var y0=H*(Y0-.03), alto=H*((Y1-Y0)+.06);
-        ctx.strokeStyle=C(TXT,(.075+s.luz*.55).toFixed(3));
-        ctx.lineWidth=1;
-        ctx.beginPath();ctx.moveTo(s.x,y0);ctx.lineTo(s.x,y0+alto);ctx.stroke();
-        capEls[i].classList.toggle('on',s.luz>.16);
-        if(s.propia){
-          ctx.strokeStyle=C(ACC,(.30+s.luz*.6).toFixed(3));
-          ctx.lineWidth=1.4;
-          ctx.beginPath();ctx.arc(s.x,y0+alto/2,9,0,6.283);ctx.stroke();
-        }
-      });
-
-      trazos.forEach(function(t,idx){
-        t.x+=t.vel*dt/1000*(W/900);
-        for(var i=0;i<ex.length;i++){
-          if(i>t.tocada && t.x>=ex[i].x && (!t.pierde||ex[i].x<=t.finX)){
-            t.tocada=i; ex[i].luz=1;
-            pulsos.push({x:ex[i].x,y:t.y,r:0,a:1});   // destello del contacto
-          }
-        }
-        var cabeza=Math.min(t.x,t.finX);
-        var largo=Math.min(cabeza+40,W*.30);
-        var x0=Math.max(cabeza-largo,-40);
-        if(t.x>t.finX) t.vida-=dt*(t.pierde?.0016:.0011);
-        if(t.vida<=0||cabeza>W*1.05){ trazos[idx]=nuevo(idx,trazos.length); return; }
-
-        var a=t.vida;
-        var g=ctx.createLinearGradient(x0,0,cabeza,0);
-        if(t.pierde){ g.addColorStop(0,C(ACC,0)); g.addColorStop(1,C(ACC,(a*.34).toFixed(3))); }
-        else{ g.addColorStop(0,C(TRZ,0)); g.addColorStop(.7,C(TRZ,(a*.20).toFixed(3))); g.addColorStop(1,C(ACC,(a*.70).toFixed(3))); }
-        ctx.strokeStyle=g;ctx.lineWidth=1.35;ctx.lineCap='round';
-        ctx.beginPath();ctx.moveTo(x0,t.y);ctx.lineTo(cabeza,t.y);ctx.stroke();
-        ctx.fillStyle=C(ACC,(a*(t.pierde?.5:.95)).toFixed(3));
-        ctx.beginPath();ctx.arc(cabeza,t.y,t.pierde?1.6:2.1,0,6.283);ctx.fill();
-      });
-
-      for(var p=pulsos.length-1;p>=0;p--){
-        var q=pulsos[p]; q.r+=dt*.075; q.a-=dt*.0020;
-        if(q.a<=0){pulsos.splice(p,1);continue;}
-        // anillo que se abre
-        ctx.strokeStyle=C(ACC,(q.a*.85).toFixed(3));
-        ctx.lineWidth=1.5;
-        ctx.beginPath();ctx.arc(q.x,q.y,3+q.r,0,6.283);ctx.stroke();
-        // chispa en el punto exacto del contacto: breve y brillante
-        var chispa=Math.max(0,q.a-.45)*1.8;
-        if(chispa>0){
-          ctx.fillStyle=C(TXT,(chispa*.9).toFixed(3));
-          ctx.beginPath();ctx.arc(q.x,q.y,2.4*chispa+1,0,6.283);ctx.fill();
-        }
-      }
-      requestAnimationFrame(frame);
-    }
-    if(!reduce) frame();
-  })();
-
-  /* ══ EL TITULAR ══ */
-  var h1=document.getElementById('h1'), chars=[];
-  if(h1 && !reduce){
-    document.documentElement.classList.add('js');
-    [].forEach.call(h1.querySelectorAll('.ln'),function(ln){
-      (function walk(node){
-        [].slice.call(node.childNodes).forEach(function(nd){
-          if(nd.nodeType===3){
-            var frag=document.createDocumentFragment();
-            nd.nodeValue.split(/(\s+)/).forEach(function(tok){
-              if(!tok)return;
-              if(/^\s+$/.test(tok)){frag.appendChild(document.createTextNode(' '));return;}
-              var w=document.createElement('span');w.className='wd';
-              tok.split('').forEach(function(c){
-                var s=document.createElement('span');s.className='ch';s.textContent=c;
-                w.appendChild(s);chars.push(s);
-              });
-              frag.appendChild(w);
-            });
-            node.replaceChild(frag,nd);
-          }else if(nd.nodeType===1){walk(nd);}
-        });
-      })(ln);
-    });
-  }
-  chars.forEach(function(s,i){
-    var dx=(Math.random()-.5)*90, dy=(Math.random()-.5)*120, rot=(Math.random()-.5)*38;
-    s.style.transform='translate('+dx+'px,'+dy+'px) rotate('+rot+'deg) scale(.86)';
-    s.style.filter='blur(7px)';
-    setTimeout(function(){
-      // misma ley que el resto de la página: antes opacidad y desenfoque usaban 'ease'
-      s.style.transition='transform .52s var(--ley), opacity .34s var(--ley), filter .38s var(--ley)';
-      s.style.transform='none';s.style.opacity='1';s.style.filter='none';
-    },60+i*13);
-  });
-
-  var raf=false,mx=0,my=0,listo=false;
-  setTimeout(function(){listo=true;},60+chars.length*13+600);
-  /* pointermove filtrado por tipo, no mousemove: al tocar la pantalla el navegador
-     emite un mousemove sintetico por compatibilidad, asi que en celular el titular
-     se sacudia con cada toque. Con el mouse real el efecto queda igual que siempre. */
-  window.addEventListener('pointermove',function(e){
-    if(e.pointerType!=='mouse')return;
-    mx=e.clientX;my=e.clientY;
-    if(!raf&&listo&&!reduce){raf=true;requestAnimationFrame(push);}
-  },{passive:true});
-  function push(){
-    raf=false;var R=118;
-    for(var i=0;i<chars.length;i++){
-      var s=chars[i],r=s.getBoundingClientRect();
-      var dx=(r.left+r.width/2)-mx, dy=(r.top+r.height/2)-my, d=Math.sqrt(dx*dx+dy*dy);
-      if(d<R&&d>0){var f=(1-d/R),k=f*f*26;
-        s.style.transition='transform .28s cubic-bezier(.16,1,.3,1)';
-        s.style.transform='translate('+(dx/d*k).toFixed(2)+'px,'+(dy/d*k).toFixed(2)+'px)';
-      }else if(s.style.transform&&s.style.transform!=='none'){s.style.transform='none';}
-    }
-  }
-
-  /* La versión anterior dejaba la palabra en gris a media transición: usaba estilos
-     inline y dependía de requestAnimationFrame, que NO corre con la pestaña oculta,
-     así que el estado final (opacidad 1) nunca llegaba. Ahora el reposo lo define el
-     CSS, el JS solo agrega una clase pasajera, y hay reloj de guardia por las dudas. */
-  var swap=document.getElementById('swap');
-  if(swap && !reduce){
-    var words=['responsable','hora de respuesta','próximo paso'],k=0,tCambio=null,tCiclo=null;
-    var i=swap.querySelector('i');
-
-    function reposo(){ clearTimeout(tCambio); clearTimeout(tCiclo); swap.className='swap'; }
-
-    /* Encadenado con setTimeout, no setInterval: con la pestaña de fondo los timers se
-       estrangulan y dos giros se pisaban, dejando la palabra a media transición. Así
-       nunca hay más de un giro en vuelo, y en segundo plano directamente no se anima. */
-    function gira(){
-      if(document.hidden){ reposo(); return; }
-      swap.classList.add('sale');
-      tCambio=setTimeout(function(){
-        k=(k+1)%words.length;
-        i.textContent=words[k];
-        swap.classList.remove('sale'); swap.classList.add('entra');
-        void swap.offsetWidth;                    // reflow forzado en vez de rAF
-        swap.classList.remove('entra');
-        tCiclo=setTimeout(gira,2500);
-      },320);
-    }
-
-    function arranca(){ if(document.hidden) return; reposo(); tCiclo=setTimeout(gira,2500); }
-    function frena(){ reposo(); }
-
-    document.addEventListener('visibilitychange',function(){
-      if(document.hidden) frena(); else arranca();
-    });
-    window.addEventListener('pageshow',arranca);
-    if(!document.hidden) arranca();
-  }
-
   /* ══ WHATSAPP ══
      ▸▸ PONER EL NÚMERO ACÁ. Código de país incluido, sin +, sin espacios ni guiones.
         Formato: 549 + característica sin el 0 + número sin el 15.
@@ -2206,26 +1029,6 @@ h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
     mostrar();
     addEventListener('scroll',mostrar,{passive:true});
     addEventListener('resize',mostrar,{passive:true});
-  })();
-
-  /* ══ HILO DE AVANCE ══
-     Sin requestAnimationFrame a propósito: con la pestaña de fondo no corre, y el
-     cerrojo de "ya pedí un cuadro" quedaba trabado en true para siempre — la barra
-     se congelaba. El alto se mide aparte, así el scroll solo escribe un transform
-     y nunca obliga al navegador a recalcular la página. */
-  (function(){
-    var barra=document.getElementById('prog'); if(!barra) return;
-    var alto=0;
-    function pintar(){
-      var p=alto>0 ? Math.min(Math.max((window.scrollY||0)/alto,0),1) : 0;
-      barra.style.transform='scaleX('+p+')';
-    }
-    function medir(){ alto=document.documentElement.scrollHeight-window.innerHeight; pintar(); }
-    addEventListener('scroll',pintar,{passive:true});
-    addEventListener('resize',medir,{passive:true});
-    addEventListener('load',medir);
-    document.addEventListener('visibilitychange',function(){ if(!document.hidden) medir(); });
-    medir();
   })();
 
   /* ══ FORMULARIO ══ */
@@ -2267,7 +1070,7 @@ h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
       ? resumenCalc+'\n\n'+datos.problema
       : resumenCalc;
 
-    /* Metadatos de origen para el CRM. Son campos ADITIVOS: el webhook de n8n sigue
+    /* Metadatos de origen para el sistema de gestión. Son campos ADITIVOS: el webhook de n8n sigue
        recibiendo los cinco de siempre, así que el flujo actual no se entera. Sin esto
        no hay forma de saber de qué anuncio vino cada consulta ni de medir costo por consulta. */
     var qs=new URLSearchParams(location.search);
@@ -2342,187 +1145,99 @@ h2{font-size:clamp(34px,4.5vw,66px);letter-spacing:-.038em;line-height:1.02}
     window.addEventListener('hashchange',function(){abrir(location.hash.slice(1));});
     if(location.hash) abrir(location.hash.slice(1));
   })();
-
-  /* EL PLANO NARANJA: se abre en círculo al llegar, y las motas pasan de un enredo
-     que gira a filas ordenadas a medida que se baja. Canvas 2D, se pausa fuera de pantalla. */
-  (function(){
-    var sec=document.getElementById('corte'); if(!sec) return;
-    var cv=sec.querySelector('.motas'), ctx=cv.getContext('2d');
-    var quieto=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var W,H,dpr,P=[],prog=quieto?1:0,visible=false,raf=0,t0=performance.now();
-    function arma(){
-      dpr=Math.min(2,window.devicePixelRatio||1);
-      W=sec.clientWidth;H=sec.clientHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
-      var n=W<720?120:240, filas=W<720?8:10, porFila=Math.ceil(n/filas);
-      var mx=W*.08, my=H*.14, gx=(W-2*mx)/(porFila-1), gy=(H-2*my)/(filas-1);
-      P=[];
-      for(var i=0;i<n;i++){
-        var f=i%filas, c=Math.floor(i/filas);
-        P.push({ox:mx+c*gx, oy:my+f*gy,
-          a:1+Math.random()*2.2, b:1+Math.random()*2.2, fa:Math.random()*6.28, fb:Math.random()*6.28,
-          rx:W*(.18+Math.random()*.3), ry:H*(.16+Math.random()*.26), v:.15+Math.random()*.25,
-          r:1.4+Math.random()*1.8});
-      }
-    }
-    function dibuja(now){
-      var t=(now-t0)/1000; ctx.clearRect(0,0,W,H);
-      var p=prog*prog*(3-2*prog), filas=W<720?8:10, x0=W*.08, span=W*.84;
-      // carriles: líneas finas que se encienden cuando las motas llegan, con un claro detrás del texto
-      if(p>.25){
-        for(var f=0;f<filas;f++){
-          var y=P[f].oy, g=ctx.createLinearGradient(x0,0,x0+span,0), a=(p-.25)*.5;
-          g.addColorStop(0,'rgba(23,14,8,0)');g.addColorStop(.12,'rgba(23,14,8,'+a+')');
-          g.addColorStop(.3,'rgba(23,14,8,'+(a*.15)+')');g.addColorStop(.7,'rgba(23,14,8,'+(a*.15)+')');
-          g.addColorStop(.88,'rgba(23,14,8,'+a+')');g.addColorStop(1,'rgba(23,14,8,0)');
-          ctx.strokeStyle=g;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x0,y);ctx.lineTo(x0+span,y);ctx.stroke();
-        }
-      }
-      ctx.fillStyle='#170e08';
-      for(var i=0;i<P.length;i++){
-        var q=P[i], k=t*q.v, fila=i%filas, dir=fila%2?-1:1, vel=26+ (fila*7)%23;
-        var ex=W/2+q.rx*Math.sin(q.a*k+q.fa), ey=H/2+q.ry*Math.sin(q.b*k+q.fb);
-        // ya ordenadas no se quedan quietas: corren por su carril, cada fila a su ritmo
-        var ox=x0+(((q.ox-x0)+dir*t*vel)%span+span)%span;
-        var x=ex+(ox-ex)*p, y=ey+(q.oy-ey)*p;
-        var borde=Math.min(1,Math.min(ox-x0,x0+span-ox)/(W*.05));
-        var dy=Math.abs(y-H/2)/(H*.3), dx=Math.abs(x-W/2)/(W*.34), lejos=Math.min(1,Math.max(dx,dy));
-        ctx.globalAlpha=(.24+.24*p)*(.08+.92*lejos)*(p>.5?(.3+.7*borde):1);
-        ctx.beginPath();ctx.arc(x,y,q.r*(1+.25*p),0,6.283);ctx.fill();
-      }
-      ctx.globalAlpha=1;
-      if(visible&&!quieto) raf=requestAnimationFrame(dibuja);
-    }
-    function scroll(){
-      var r=sec.getBoundingClientRect(), vh=window.innerHeight;
-      var entra=Math.min(1,Math.max(0,(vh-r.top)/(vh*.75)));
-      sec.style.setProperty('--abre',quieto?'150%':(6+entra*144).toFixed(1)+'%');
-      if(!quieto) prog=Math.min(1,Math.max(0,(vh*.55-r.top)/(r.height*.7)));
-      if(entra>.85) sec.classList.add('ve');
-    }
-    arma(); scroll();
-    if(quieto){ dibuja(performance.now()); }
-    else{
-      new IntersectionObserver(function(es){
-        visible=es[0].isIntersecting; cancelAnimationFrame(raf); if(visible) raf=requestAnimationFrame(dibuja);
-      }).observe(sec);
-      window.addEventListener('scroll',scroll,{passive:true});
-    }
-    window.addEventListener('resize',function(){arma();scroll();if(quieto)dibuja(performance.now());});
-  })();
-
-  /* DETALLES: títulos palabra por palabra, píldora del menú, captura que se endereza,
-     botones que se acercan al cursor */
-  (function(){
-    var quieto=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if(!quieto){
-      document.querySelectorAll('main h2').forEach(function(h){
-        var n=0;
-        (function parte(el){
-          [].slice.call(el.childNodes).forEach(function(nd){
-            if(nd.nodeType===3){
-              var frag=document.createDocumentFragment();
-              nd.textContent.split(/(\s+)/).forEach(function(w){
-                if(!w) return;
-                if(/^\s+$/.test(w)){frag.appendChild(document.createTextNode(w));return;}
-                var o=document.createElement('span');o.className='w';
-                var i=document.createElement('span');i.className='wi';i.textContent=w;
-                i.style.transitionDelay=(n++*0.045).toFixed(3)+'s';o.appendChild(i);frag.appendChild(o);
-              });
-              el.replaceChild(frag,nd);
-            } else if(nd.nodeType===1) parte(nd);
-          });
-        })(h);
-        h.setAttribute('aria-label',h.textContent.replace(/\s+/g,' ').trim());
-      });
-    }
-    // píldora del menú
-    var pill=document.querySelector('.nav-pill'), links=[].slice.call(document.querySelectorAll('.nav-r a[href^="#"]:not(.nav-cta)'));
-    function marca(a){
-      links.forEach(function(l){l.classList.toggle('on',l===a);});
-      if(!pill) return;
-      if(!a){pill.style.opacity='0';return;}
-      pill.style.width=a.offsetWidth+'px';pill.style.transform='translateX('+a.offsetLeft+'px)';pill.style.opacity='1';
-    }
-    if('IntersectionObserver' in window && links.length){
-      var mapa={}; links.forEach(function(l){mapa[l.getAttribute('href').slice(1)]=l;});
-      var vis={};
-      var io=new IntersectionObserver(function(es){
-        es.forEach(function(e){vis[e.target.id]=e.isIntersecting?e.intersectionRatio:0;});
-        var mejor=null,m=0; for(var k in vis){if(vis[k]>m){m=vis[k];mejor=k;}}
-        marca(mejor&&m>0?mapa[mejor]:null);
-      },{threshold:[0,.15,.3,.5],rootMargin:'-30% 0px -40% 0px'});
-      Object.keys(mapa).forEach(function(id){var el=document.getElementById(id); if(el) io.observe(el);});
-    }
-    // la captura de Alia: entra inclinada y se endereza a medida que sube
-    var mc=document.getElementById('marco');
-    if(mc&&!quieto){
-      var pend=false;
-      function inclina(){pend=false;var r=mc.getBoundingClientRect(),vh=window.innerHeight;
-        var k=Math.min(1,Math.max(0,(vh-r.top)/(vh*.8)));
-        mc.style.setProperty('--tilt',(18*(1-k)).toFixed(2)+'deg');mc.style.setProperty('--sc',(.92+.08*k).toFixed(3));}
-      window.addEventListener('scroll',function(){if(!pend){pend=true;requestAnimationFrame(inclina);}},{passive:true});
-      inclina();
-    }
-    // botones magnéticos
-    if(!quieto && window.matchMedia('(hover:hover) and (pointer:fine)').matches){
-      document.querySelectorAll('.btn,.g-cta,.nav-r a.nav-cta,.send').forEach(function(b){
-        b.classList.add('mag');
-        b.addEventListener('pointermove',function(e){var r=b.getBoundingClientRect();
-          b.style.transform='translate('+((e.clientX-r.left-r.width/2)*.18).toFixed(1)+'px,'+((e.clientY-r.top-r.height/2)*.28).toFixed(1)+'px)';});
-        b.addEventListener('pointerleave',function(){b.style.transform='';});
-      });
-    }
-  })();
-
-  /* los números de "Tu mes" cuentan desde cero cuando la pantalla aparece */
-  (function(){
-    var v=document.querySelector('.vitrina'); if(!v||!('IntersectionObserver' in window)) return;
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var bs=[].slice.call(v.querySelectorAll('.stat b'));
-    var io=new IntersectionObserver(function(es){
-      if(!es[0].isIntersecting) return; io.disconnect();
-      bs.forEach(function(b){
-        var fin=+b.textContent, t0=performance.now();
-        (function paso(now){var k=Math.min(1,(now-t0)/1400); k=1-Math.pow(1-k,3);
-          b.textContent=Math.round(fin*k); if(k<1) requestAnimationFrame(paso);})(t0);
-      });
-    },{threshold:.4});
-    io.observe(v);
-  })();
 </script>
 <script>
-/* VIDEO DEL HERO. Elige el archivo horizontal o el vertical según el ancho (y lo
-   cambia si se achica la ventana), se frena fuera de pantalla y deja un botón de
-   pausa: un video que se mueve solo más de 5 segundos tiene que poder detenerse
-   (WCAG 2.2.2). Si la persona pidió menos movimiento, tiene ahorro de datos o una
-   conexión lenta, no se descarga nada y queda la portada. */
+/* EL VIDEO DEL HERO. Se reproduce una vez al entrar en pantalla, sin audio y sin loop
+   (el final no coincide con el comienzo). Al terminar queda el último cuadro. Con
+   "reducir movimiento" o ahorro de datos no se descarga: queda la imagen final y el
+   botón deja verlo a pedido. Sin JS, se ve la imagen y todo el texto. */
 (function(){
-  var v=document.querySelector('.hero-video'), btn=document.querySelector('.vid-toggle');
-  if(!v) return;
-  var c=navigator.connection||{}, mq=window.matchMedia('(max-width:1000px)');
-  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
-  if(c.saveData || /(^|-)2g$/.test(c.effectiveType||'') || c.effectiveType==='3g') return;
-  var actual='', detenido=false;
-  function jugar(){ var p=v.play(); if(p&&p.catch) p.catch(function(){}); }
-  function cargar(){
-    var f=mq.matches ? v.getAttribute('data-mob') : v.getAttribute('data-desk');
-    if(f===actual) return; actual=f;
-    v.classList.remove('on'); v.src=f; v.load(); if(!detenido) jugar();
+  var video=document.querySelector('[data-hero-video]');
+  var button=document.querySelector('[data-hero-control]');
+  var fallback=document.querySelector('[data-hero-fallback]');
+  var media=document.querySelector('[data-hero-media]');
+  if(!video||!button||!media) return;
+
+  var reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+  var connection=navigator.connection;
+  var started=false, failed=false, finished=false, manuallyPaused=false, userRequested=false, inView=false;
+  var SRC='/media/hero/level-up-hero.mp4';
+  var POSTER='/media/hero/level-up-hero-poster.jpg', POSTER_FIN='/media/hero/level-up-hero-poster-final.jpg';
+
+  video.muted=true; video.defaultMuted=true; video.hidden=true;
+  function lento(){ return !!(connection && (connection.saveData || /2g/.test(connection.effectiveType||''))); }
+  function canAutoplay(){ return !reduced.matches && !lento(); }
+  if(fallback) fallback.src=canAutoplay()?POSTER:POSTER_FIN;
+  button.hidden=false;
+
+  function updateControl(){
+    if(failed){ button.hidden=true; return; }
+    button.textContent = finished ? 'Ver de nuevo'
+      : !video.paused ? 'Pausar animación'
+      : started ? 'Reanudar animación' : 'Ver animación';
   }
-  v.addEventListener('playing',function(){ v.classList.add('on'); if(btn) btn.classList.add('on'); });
-  if(mq.addEventListener) mq.addEventListener('change',cargar);
+  function ensureSource(){
+    if(video.getAttribute('src')) return;
+    video.src=SRC; video.preload='auto'; video.load();
+  }
+  function play(){
+    if(failed) return;
+    ensureSource();
+    var p=video.play();
+    if(p && p.catch) p.catch(function(){ updateControl(); }); // autoplay bloqueado: queda el botón
+  }
+
+  video.addEventListener('playing',function(){
+    started=true; finished=false; video.hidden=false;
+    if(fallback) fallback.hidden=true;
+    updateControl();
+  });
+  video.addEventListener('pause',updateControl);
+  video.addEventListener('ended',function(){ finished=true; updateControl(); });
+  video.addEventListener('error',function(){
+    failed=true; video.hidden=true;
+    if(fallback){ fallback.src=POSTER_FIN; fallback.hidden=false; }
+    updateControl();
+  });
+
+  button.addEventListener('click',function(){
+    userRequested=true;
+    if(!video.paused){ manuallyPaused=true; video.pause(); return; }
+    manuallyPaused=false;
+    if(finished){ video.currentTime=0; finished=false; }
+    play();
+  });
+
+  function maybePlay(){
+    if(!inView || document.hidden || failed || finished || manuallyPaused) return;
+    if(userRequested || canAutoplay()) play();
+  }
+
   if('IntersectionObserver' in window){
     new IntersectionObserver(function(es){
-      es.forEach(function(e){ if(detenido) return; if(e.isIntersecting) jugar(); else v.pause(); });
-    },{threshold:.05}).observe(v.parentNode);
+      inView=es[0].isIntersecting && es[0].intersectionRatio>=.35;
+      if(!inView){ if(!video.paused) video.pause(); }
+      else maybePlay();
+    },{threshold:[0,.35]}).observe(media);
   }
-  if(btn) btn.addEventListener('click',function(){
-    detenido=!detenido;
-    btn.setAttribute('aria-pressed',detenido?'true':'false');
-    btn.setAttribute('aria-label',detenido?'Reanudar video de fondo':'Pausar video de fondo');
-    if(detenido) v.pause(); else jugar();
+
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){ if(!video.paused) video.pause(); }
+    else maybePlay();
   });
-  cargar();
+
+  function cambioMovimiento(){
+    if(reduced.matches){
+      userRequested=false; manuallyPaused=true; video.pause(); video.hidden=true;
+      if(fallback){ fallback.src=POSTER_FIN; fallback.hidden=false; }
+      updateControl();
+    } else { manuallyPaused=false; maybePlay(); }
+  }
+  if(reduced.addEventListener) reduced.addEventListener('change',cambioMovimiento);
+  else if(reduced.addListener) reduced.addListener(cambioMovimiento);
+
+  updateControl();
+  maybePlay();
 })();
 </script>
 </body>
