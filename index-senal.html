@@ -786,6 +786,12 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
   .hero__lead{margin-top:14px;font-size:16px}
   .hero__actions{margin-top:20px}
 }
+
+/* escritorio: la portada respira un poco más hacia abajo */
+@media(min-width:901px){
+  .hero{display:flex;align-items:center;min-height:clamp(620px,88vh,900px);padding-bottom:clamp(48px,5vw,88px)}
+  .hero>.wrap{flex:0 0 auto}
+}
 </style>
 </head>
 <body>
