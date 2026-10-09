@@ -744,6 +744,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 .ev-paso figcaption{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:600;color:var(--ink);margin:0 0 10px}
 .ev-n{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--ink);color:var(--bg);font-size:13px;font-weight:700;flex-shrink:0}
 .zoom{display:block;cursor:zoom-in}
+.zoom picture{display:block}
 .ev-swap{position:relative}
 .ev-swap .ev-b{position:absolute;inset:0;opacity:0;transition:opacity .5s var(--suave)}
 .ev-swap.ok .ev-b{opacity:1}
@@ -928,39 +929,36 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
     <!-- Alia -->
     <article class="proy proy--inv prof" id="alia">
       <div class="proy-tx">
-        <span class="estado estado--prod">Producto en uso</span>
+        <span class="estado estado--prod">En uso en nuestro propio negocio</span>
         <h3>Alia: las consultas, con seguimiento y trazabilidad.</h3>
         <dl class="proy-dl">
           <dt>El problema</dt>
           <dd>Cuando la información queda repartida, cuesta ver qué se respondió y qué sigue pendiente.</dd>
           <dt>Qué construimos</dt>
-          <dd>Una plataforma donde cada consulta queda con su responsable, su último contacto y su próximo paso.</dd>
+          <dd>Una plataforma donde cada consulta queda con su responsable, su etapa y todo lo que se habló, y cada día muestra qué falta responder.</dd>
         </dl>
         <div class="proy-cta">
           <a class="link link-arrow" href="#el-sistema">Se contrata como El Sistema</a>
         </div>
       </div>
       <div class="shots">
-        <span class="demo-tag">Pantalla de ejemplo · datos de ejemplo</span>
-        <div class="ui ui-lista">
-          <div class="ui-bar" aria-hidden="true"><i></i><i></i><i></i><span>Alia · Consultas</span></div>
-          <div class="ui-tabs" aria-hidden="true"><span class="on">Todas</span><span>Sin responder <b>1</b></span><span>Mías</span></div>
-          <ul class="consultas">
-            <li>
-              <p class="c-q">Camioneta 0km <small>Instagram</small></p>
-              <dl><dt>Responsable</dt><dd>Sofía</dd><dt>Último contacto</dt><dd>hace 2 h</dd><dt>Próximo paso</dt><dd class="c-next">Llamar · mar 21</dd></dl>
-            </li>
-            <li>
-              <p class="c-q">Usado con permuta <small>WhatsApp</small></p>
-              <dl><dt>Responsable</dt><dd>Martín</dd><dt>Último contacto</dt><dd>ayer</dd><dt>Próximo paso</dt><dd class="c-next">Enviar presupuesto</dd></dl>
-            </li>
-            <li class="c-pend">
-              <p class="c-q">Plan de ahorro <small>Facebook</small> <span class="c-tag">Sin responder</span></p>
-              <dl><dt>Responsable</dt><dd>Sin asignar</dd><dt>Último contacto</dt><dd>—</dd><dt>Próximo paso</dt><dd class="c-next">Responder</dd></dl>
-            </li>
-          </ul>
+        <span class="demo-tag">Demo · datos de ejemplo</span>
+        <div class="ev-demo">
+          <figure class="ev-paso">
+            <figcaption><span class="ev-n">1</span>Cada consulta en su etapa, con su responsable y hace cuánto se habló.</figcaption>
+            <a class="zoom" href="/media/alia/etapas.png" target="_blank" rel="noopener" aria-label="Ampliar la captura de las etapas">
+              <picture><source media="(max-width:600px)" srcset="/media/alia/etapas-m.png" width="600" height="960">
+              <img class="shot" src="/media/alia/etapas.png" width="1200" height="706" loading="lazy"
+                alt="Alia: las consultas ordenadas en las etapas Calificado, Presupuesto y Seguimiento, cada una con las iniciales de su responsable y el tiempo desde el último contacto."></picture></a>
+          </figure>
+          <figure class="ev-paso">
+            <figcaption><span class="ev-n">2</span>La charla completa y lo que contó el cliente, en su ficha.</figcaption>
+            <a class="zoom" href="/media/alia/ficha.png" target="_blank" rel="noopener" aria-label="Ampliar la captura de la ficha">
+              <picture><source media="(max-width:600px)" srcset="/media/alia/ficha-m.png" width="600" height="1236">
+              <img class="shot" src="/media/alia/ficha.png" width="1400" height="1132" loading="lazy"
+                alt="Alia: la ficha de un contacto con la conversación con fecha y hora, su etapa, su responsable y los datos que contó: modelo, usado que entrega, forma de pago y para cuándo."></picture></a>
+          </figure>
         </div>
-        <p class="shots-nota">Cada consulta con su responsable, su último contacto y lo que falta hacer. Las que nadie respondió quedan aparte.</p>
       </div>
     </article>
 
