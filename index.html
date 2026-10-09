@@ -716,7 +716,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
   /* el agente ocupa la mitad de arriba del cuadro: el degradado arranca debajo de la mano */
   .hero__media::after{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;box-shadow:none;
     background:linear-gradient(180deg,rgba(237,235,220,0) 0%,rgba(237,235,220,0) 36%,#edebdc 52%)}
-  .hero__copy{position:relative;z-index:2;padding:0 20px;margin-top:calc(60px + 100vw * 16 / 9 * .355)}
+  .hero__copy{position:relative;z-index:2;padding:0 20px;--mt:calc(60px + 100vw * 16 / 9 * .355);margin-top:var(--mt)}
   .hero__playback{position:absolute;top:76px;right:12px;margin:0;z-index:3;min-height:40px;padding:6px 12px;font-size:13px;
     background:rgba(237,235,220,.7);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
   .hero__visual{animation:none}
@@ -782,7 +782,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 /* celulares bajos: el video un poco más chico para que el botón entre en la primera pantalla */
 @media(max-width:760px) and (max-height:700px){
   .hero__visual{left:6%;right:6%;top:58px}
-  .hero__copy{margin-top:calc(58px + 88vw * 16 / 9 * .41)}
+  .hero__copy{--mt:calc(58px + 88vw * 16 / 9 * .41);margin-top:var(--mt)}
   .hero__eyebrow{margin-bottom:12px}
   .hero h1{font-size:1.95rem}
   .hero__lead{margin-top:14px;font-size:16px}
@@ -862,6 +862,14 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
   .hero__eyebrow{padding:7px 14px 7px 12px;border-radius:999px;background:rgba(241,237,226,.88);
     border:1px solid rgba(255,255,255,.7);box-shadow:0 6px 18px -10px rgba(36,37,34,.35);
     -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+}
+
+/* celular: la frase va arriba, chica, antes del agente: frase → agente → título */
+@media(max-width:760px){
+  .hero__copy>.hero__eyebrow{position:absolute;top:calc(80px - var(--mt));left:20px;z-index:3;margin:0;
+    font-size:12.5px;padding:5px 12px 5px 10px;gap:8px}
+  .hero__eyebrow::before{width:8px;height:8px}
+  .hero__copy>h1{padding-top:40px}
 }
 </style>
 </head>
