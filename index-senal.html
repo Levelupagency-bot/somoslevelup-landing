@@ -875,6 +875,15 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 @media(max-width:760px){
   .hero__copy>.hero__eyebrow{background:none;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0;left:22px;top:calc(88px - var(--mt))}
 }
+
+/* celular: la frase es el rótulo de la escena, centrado, con líneas finas a los costados */
+@media(max-width:760px){
+  .hero__copy>.hero__eyebrow{left:20px;right:20px;top:calc(90px - var(--mt));justify-content:center;gap:12px;
+    font-size:11px;font-weight:650;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2)}
+  .hero__copy>.hero__eyebrow::before,.hero__copy>.hero__eyebrow::after{content:'';flex:1;max-width:46px;height:1px;width:auto;
+    border-radius:0;background:linear-gradient(90deg,transparent,var(--accent))}
+  .hero__copy>.hero__eyebrow::after{background:linear-gradient(90deg,var(--accent),transparent)}
+}
 </style>
 </head>
 <body>
