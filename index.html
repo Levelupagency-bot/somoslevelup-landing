@@ -689,11 +689,11 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 /* ══════════ SEGUNDA MEJORA (09/10) ══════════ */
 /* menú: los textos se iluminan apenas al pasar */
 .nav-r a:not(.button){position:relative;padding:0 12px;border-radius:12px;background-image:none!important;
-  transition:color .4s var(--suave),text-shadow .4s var(--suave)}
+  transition:color .4s var(--suave),text-shadow .4s var(--suave),transform .45s var(--suave)}
 .nav-r{gap:clamp(4px,1vw,12px)}
 @media(hover:hover) and (pointer:fine){
   /* neón: la letra toma el naranja y el trazo brilla apenas (pedido de Nico 09/10) */
-  .nav-r a:not(.button):hover{color:#c4520f;
+  .nav-r a:not(.button):hover{color:#c4520f;transform:scale(1.07);
     text-shadow:0 0 1px rgba(255,170,110,.9),0 0 6px rgba(233,106,34,.55),0 0 14px rgba(233,106,34,.35)}
 }
 
@@ -791,7 +791,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 
 /* escritorio: la portada respira un poco más hacia abajo */
 @media(min-width:901px){
-  .hero{display:flex;align-items:center;min-height:clamp(680px,97vh,1000px);padding-bottom:clamp(56px,6vw,104px)}
+  .hero{display:flex;align-items:center;min-height:max(720px,100vh);min-height:max(720px,100svh);padding-bottom:clamp(64px,7vw,120px)}
   .hero>.wrap{flex:0 0 auto}
 }
 </style>
