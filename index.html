@@ -804,6 +804,13 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 .ev-paso figcaption{font-size:15px}
 @media(max-width:1000px){.ev-demo{max-width:460px}}
 @media(max-width:600px){.ev-demo .zoom{max-width:78%}}
+
+/* Alia: un mensaje y una imagen, sin estructura de ficha */
+.proy--simple h3{font-size:clamp(26px,2.4vw,34px)}
+.proy-p{margin-top:14px;font-size:17px;line-height:1.6;color:var(--ink-2);max-width:48ch}
+.shot-uno{max-width:440px;justify-self:center;width:100%}
+.shot-uno figcaption{margin-top:10px;font-size:14.5px;color:var(--ink-2)}
+@media(max-width:600px){.shot-uno .zoom{max-width:none}}
 </style>
 </head>
 <body>
@@ -938,39 +945,23 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 
 
     <!-- Alia -->
-    <article class="proy proy--inv prof" id="alia">
+    <article class="proy proy--inv prof proy--simple" id="alia">
       <div class="proy-tx">
         <span class="estado estado--prod">En uso en nuestro propio negocio</span>
-        <h3>Alia: las consultas, con seguimiento y trazabilidad.</h3>
-        <dl class="proy-dl">
-          <dt>El problema</dt>
-          <dd>Cuando la información queda repartida, cuesta ver qué se respondió y qué sigue pendiente.</dd>
-          <dt>Qué construimos</dt>
-          <dd>Una plataforma donde cada consulta queda con su responsable, su etapa y todo lo que se habló, y cada día muestra qué falta responder.</dd>
-        </dl>
+        <h3>Alia: ninguna consulta queda sin respuesta.</h3>
+        <p class="proy-p">El cliente escribe un sábado a la tarde, o mientras tu equipo atiende a otro, y nadie lo ve. Para cuando alguien contesta, ya le compró a otro.</p>
+        <p class="proy-p">Con Alia, cada consulta queda con su responsable y todo lo que se habló. Si activás LIA, además se contesta al instante, se califica y pasa al vendedor con lo que contó el cliente.</p>
         <div class="proy-cta">
           <a class="link link-arrow" href="#el-sistema">Se contrata como El Sistema</a>
         </div>
       </div>
-      <div class="shots">
+      <figure class="shots shot-uno">
         <span class="demo-tag">Demo · datos de ejemplo</span>
-        <div class="ev-demo">
-          <figure class="ev-paso">
-            <figcaption><span class="ev-n">1</span>Cada consulta en su etapa, con su responsable y hace cuánto se habló.</figcaption>
-            <a class="zoom" href="/media/alia/etapas.png" target="_blank" rel="noopener" aria-label="Ampliar la captura de las etapas">
-              <picture><source media="(max-width:600px)" srcset="/media/alia/etapas-m.png" width="600" height="960">
-              <img class="shot" src="/media/alia/etapas.png" width="1200" height="706" loading="lazy"
-                alt="Alia: las consultas ordenadas en las etapas Calificado, Presupuesto y Seguimiento, cada una con las iniciales de su responsable y el tiempo desde el último contacto."></picture></a>
-          </figure>
-          <figure class="ev-paso">
-            <figcaption><span class="ev-n">2</span>La charla completa y lo que contó el cliente, en su ficha.</figcaption>
-            <a class="zoom" href="/media/alia/ficha.png" target="_blank" rel="noopener" aria-label="Ampliar la captura de la ficha">
-              <picture><source media="(max-width:600px)" srcset="/media/alia/ficha-m.png" width="600" height="1236">
-              <img class="shot" src="/media/alia/ficha.png" width="1400" height="1132" loading="lazy"
-                alt="Alia: la ficha de un contacto con la conversación con fecha y hora, su etapa, su responsable y los datos que contó: modelo, usado que entrega, forma de pago y para cuándo."></picture></a>
-          </figure>
-        </div>
-      </div>
+        <a class="zoom" href="/media/alia/charla.png" target="_blank" rel="noopener" aria-label="Ampliar la captura de la conversación">
+          <img class="shot" src="/media/alia/charla.png" width="900" height="780" loading="lazy"
+            alt="Alia: una consulta por WhatsApp que llega a las 9:20 y se responde a las 9:21; LIA pregunta, califica y la pasa a Diego, el vendedor."></a>
+        <figcaption>Llegó a las 9:20. A las 9:21 ya tenía respuesta, y a las 9:28 la tenía el vendedor.</figcaption>
+      </figure>
     </article>
 
   </div>
