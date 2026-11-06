@@ -627,7 +627,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
   .shots--ev figure .shot,.ui{animation:none}
 }
 
-@media(max-width:1060px){
+@media(max-width:1180px){
   .nav-r a:not(.button){display:none}
   .hamb{display:flex}
   .menu{inset:80px 0 auto 0}
@@ -1107,6 +1107,11 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 @media(max-width:1000px){.areas{grid-template-columns:repeat(2,minmax(0,1fr))}.ar:nth-child(3) .ar-pie{min-height:0}.ficha-banda{grid-template-columns:1fr}.ficha-banda .ficha{justify-self:start}.ficha-banda-tx h3{max-width:none}}
 @media(max-width:640px){.ficha-banda{padding:22px 12px;gap:22px}.ficha-banda-tx{padding:0 8px}.areas{grid-template-columns:1fr}.ar:nth-child(-n+3) .ar-pie{min-height:0}.ar-pie:empty{display:none}}
 @media(prefers-reduced-motion:reduce){.ar{transition:none}.ar:hover{transform:none}}
+
+/* sección activa en el menú */
+.nav-r a[aria-current],.menu a[aria-current]{color:#c4520f}
+.nav-r a:not(.button)[aria-current]::after{content:'';position:absolute;left:12px;right:12px;bottom:8px;height:2px;border-radius:2px;background:var(--accent)}
+.menu a[aria-current]:not(.menu-cta){box-shadow:inset 3px 0 0 var(--accent);padding-left:12px}
 </style>
 </head>
 <body>
@@ -1120,9 +1125,10 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
     <nav class="nav-r" aria-label="Principal">
       <a href="#que-construimos">Qué construimos</a>
       <a href="#el-sistema">El Sistema</a>
+      <a href="#consultorio">Consultorios</a>
       <a href="#como-trabajamos">Cómo trabajamos</a>
       <a href="#nosotros">Nosotros</a>
-      <a class="button button--primary button--sm" href="https://wa.me/5493482583784?text=Quiero%20mi%20Evaluaci%C3%B3n%20(vengo%20de%20la%20web)" target="_blank" rel="noopener">Pedí tu Evaluación</a>
+      <a class="button button--primary button--sm" href="#sesion" data-go="sesion">Contanos qué necesitás</a>
       <button class="hamb" id="hamb" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
         <span></span><span></span><span></span>
       </button>
@@ -1133,10 +1139,11 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 <div class="menu" id="menu" hidden>
   <a href="#que-construimos" data-go="que-construimos">Qué construimos</a>
   <a href="#el-sistema" data-go="el-sistema">El Sistema</a>
+  <a href="#consultorio" data-go="consultorio">Consultorios</a>
   <a href="#como-trabajamos" data-go="como-trabajamos">Cómo trabajamos</a>
   <a href="#nosotros" data-go="nosotros">Nosotros</a>
   <a href="#preguntas" data-go="preguntas">Preguntas</a>
-  <a href="https://wa.me/5493482583784?text=Quiero%20mi%20Evaluaci%C3%B3n%20(vengo%20de%20la%20web)" target="_blank" rel="noopener" class="menu-cta">Pedí tu Evaluación</a>
+  <a href="#sesion" data-go="sesion" class="menu-cta">Contanos qué necesitás</a>
 </div>
 
 <main id="contenido">
@@ -1175,7 +1182,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
     <div class="rv">
       <span class="k">Empleados digitales</span>
       <h2>¿Qué le dejarías a cargo?</h2>
-      <p class="lead">Cualquier proceso que hoy dependa de una persona, de planillas o de acordarse.</p>
+      <p class="lead">Los procesos que hoy dependen de una persona, de planillas o de acordarse.</p>
     </div>
     <div class="areas stg">
       <article class="ar">
@@ -1318,7 +1325,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
         <dl class="proy-dl">
           <div>
             <dt>Qué es</dt>
-            <dd>Un sistema armado desde cero para cómo trabaja tu negocio. Cuando el proceso lo pide, puede llevarlo un equipo de empleados digitales, cada uno con su puesto, coordinados y supervisados. Se arma por piezas: la primera ya funciona.</dd>
+            <dd>Un sistema armado desde cero para cómo trabaja tu negocio. Cuando el proceso lo pide, puede llevarlo un equipo de empleados digitales, cada uno con su puesto, coordinados y supervisados. Se arma por piezas: la primera pieza ya entra en funcionamiento.</dd>
           </div>
           <div>
             <dt>Para quién</dt>
@@ -1769,8 +1776,9 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
         <h4>La página</h4>
         <a class="l" href="#que-construimos">Qué construimos</a>
         <a class="l" href="#el-sistema">El Sistema</a>
-        <a class="l" href="#quien">Para quién es el Sistema</a>
+        <a class="l" href="#consultorio">Consultorios</a>
         <a class="l" href="#como-trabajamos">Cómo trabajamos</a>
+        <a class="l" href="#nosotros">Nosotros</a>
         <a class="l" href="#preguntas">Preguntas</a>
       </div>
       <div>
@@ -1911,6 +1919,22 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       });
     },{threshold:.6});
     filas.forEach(function(f){io.observe(f);});
+  })();
+
+
+  /* ══ SECCIÓN ACTIVA EN EL MENÚ ══ */
+  (function(){
+    var enlaces=[].slice.call(document.querySelectorAll('.nav-r a[href^="#"]:not(.button),.menu a[href^="#"]:not(.menu-cta),.foot a.l[href^="#"]'))
+      .filter(function(a){return !a.closest('.foot');});
+    var ids=['que-construimos','el-sistema','consultorio','como-trabajamos','nosotros','preguntas'], pend=false;
+    function marca(){
+      pend=false; var act=null;
+      ids.forEach(function(i){var e=document.getElementById(i); if(e&&e.getBoundingClientRect().top<=innerHeight*.35) act=i;});
+      var f=document.getElementById('sesion'); if(f&&f.getBoundingClientRect().top<=innerHeight*.35) act=null;
+      enlaces.forEach(function(a){ if(a.getAttribute('href')==='#'+act) a.setAttribute('aria-current','true'); else a.removeAttribute('aria-current'); });
+    }
+    addEventListener('scroll',function(){ if(!pend){pend=true;requestAnimationFrame(marca);} },{passive:true});
+    addEventListener('resize',marca); marca();
   })();
 
   /* ══ MENÚ DE CELULAR ══ */
