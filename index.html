@@ -996,6 +996,104 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 .cargo-wrap .cargo{grid-template-columns:1fr;margin-top:0}
 .cargo-wrap .ficha{justify-self:end;width:100%}
 @media(max-width:1000px){.cargo-wrap{grid-template-columns:1fr}.cargo-wrap .ficha{justify-self:start}}
+
+/* ══════════ PASADA DE DISEÑO ══════════ */
+:root{
+  /* sombras de elevación en capas, neutras: un borde de luz arriba, una sombra de contacto y una larga y suave */
+  --sombra-1:0 1px 0 rgba(255,255,255,.8) inset,0 1px 2px rgba(36,37,34,.06),0 6px 14px -6px rgba(36,37,34,.12),0 22px 40px -22px rgba(36,37,34,.24);
+  --sombra-2:0 1px 0 rgba(255,255,255,.85) inset,0 2px 4px rgba(36,37,34,.07),0 14px 28px -10px rgba(36,37,34,.16),0 40px 64px -28px rgba(36,37,34,.34);
+  --sombra-osc:0 1px 0 rgba(255,255,255,.9) inset,0 2px 4px rgba(0,0,0,.18),0 18px 34px -12px rgba(0,0,0,.45),0 44px 70px -30px rgba(0,0,0,.7);
+}
+
+/* tipografía: titulares grandes con jerarquía fuerte, y más aire entre ideas */
+.sec h2{font-size:clamp(2.05rem,4.7vw,4.1rem);line-height:1.03;letter-spacing:-.042em;max-width:19ch}
+.sec .k{font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+.sec .lead{font-size:clamp(17px,1.45vw,21px);max-width:52ch}
+.sec{padding-block:clamp(72px,8.6vw,132px)}
+.sec .k{margin-bottom:clamp(16px,2vw,24px)}
+
+/* oscuras: las tarjetas flotan, claras, sobre el grafito */
+.sec--dark .k{color:rgba(245,242,234,.72)}
+.sec--dark .estado{background:rgba(245,242,234,.08);border-color:var(--line);color:var(--ink-2)}
+.sec--dark .demo-tag{background:rgba(245,242,234,.08);border-color:var(--line);color:var(--ink-2)}
+.sec--dark .lead{color:var(--ink-2)}
+
+/* tarjetas «Qué construimos» */
+#que-construimos .catalogo{gap:clamp(16px,2vw,28px);margin-top:clamp(36px,4.4vw,64px)}
+.cat-card{--ink:#242522;--ink-2:#3a3b37;--muted:#5d5e58;--line:#d7d2c7;--line-2:#e4e0d6;--card:#fbf9f4;--accent-ink:#a8460f;--ok:#2f7a4f;--no:#b4432c;
+  color:var(--ink);background:#fbf9f4;border:1px solid rgba(255,255,255,.65);border-radius:22px;
+  box-shadow:var(--sombra-osc);
+  transition:transform .55s cubic-bezier(.16,1,.3,1),box-shadow .55s cubic-bezier(.16,1,.3,1)}
+.cat-card .link:hover{color:var(--accent-ink)}
+.cat-card h3{font-size:clamp(26px,2.5vw,36px);letter-spacing:-.03em}
+.cat-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:clamp(20px,2.2vw,30px)}
+.cat-ico{display:grid;place-items:center;flex:0 0 auto;width:3.5rem;height:3.5rem;border-radius:1.05rem;background:var(--c,#e96a22);color:#1c1b19;
+  box-shadow:0 1px 0 rgba(255,255,255,.45) inset,0 6px 12px -6px rgba(36,37,34,.35);
+  transition:transform .55s cubic-bezier(.16,1,.3,1)}
+.cat-ico svg{width:1.9rem;height:1.9rem}
+.cat-ico--solo{margin-bottom:clamp(18px,2vw,26px)}
+.cat-card .estado{background:var(--bg);border-color:var(--line);color:var(--ink-2)}
+@media(hover:hover) and (pointer:fine){
+  .cat-card:hover{transform:translateY(-6px);box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 3px 6px rgba(0,0,0,.2),0 26px 44px -14px rgba(0,0,0,.5),0 60px 90px -34px rgba(0,0,0,.75)}
+  .cat-card:hover .cat-ico{transform:rotate(-7deg) scale(1.07)}
+}
+.cat-card--ancha{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(28px,4vw,64px);align-items:center}
+.cat-card--ancha .proy-dl{grid-template-columns:1fr;gap:18px;margin-top:20px}
+.cat-main{min-width:0}
+
+/* el proceso completo, llevado por un equipo (diagrama de ejemplo) */
+.flujo{margin:0;padding:clamp(20px,2.4vw,30px);background:var(--bg);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sombra-1)}
+.flujo-cab{display:flex;justify-content:flex-end}
+.flujo-pasos{list-style:none;position:relative;margin:6px 0 0;padding:0}
+.flujo-pasos::before{content:'';position:absolute;left:1.15rem;top:1.4rem;bottom:1.4rem;width:2px;margin-left:-1px;background:var(--line);transform-origin:top;transition:transform 1.4s cubic-bezier(.16,1,.3,1) .2s}
+.flujo-pasos li{position:relative;display:grid;grid-template-columns:2.3rem minmax(0,1fr);gap:1rem;align-items:center;padding:.7rem 0;
+  transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1);transition-delay:calc(var(--i) * .22s + .3s)}
+.f-nodo{position:relative;z-index:1;display:block;width:2.3rem;height:2.3rem;border-radius:.7rem}
+.f-nodo--in{border:2px dashed var(--muted);background:var(--bg);border-radius:50%}
+.f-nodo--emp{background:var(--c,#e96a22);box-shadow:0 1px 0 rgba(255,255,255,.45) inset,0 4px 8px -4px rgba(36,37,34,.4)}
+.f-nodo--emp::after{content:'';position:absolute;top:.38rem;right:.38rem;width:.5rem;height:.5rem;border-radius:50%;background:#2f7a4f;border:2px solid #fbf9f4;box-sizing:content-box}
+.f-nodo--vos{background:#242522;border-radius:50%}
+.f-nodo--vos::after{content:'';position:absolute;left:.78rem;top:.62rem;width:.4rem;height:.8rem;border:solid #f5f2ea;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.f-tx{display:flex;flex-direction:column;line-height:1.25}
+.f-tx b{font-size:1.06rem;font-weight:700;letter-spacing:-.01em}
+.f-tx small{font-size:.8rem;color:var(--muted);font-weight:500}
+.flujo-pie{margin:.9rem 0 0;padding-top:.9rem;border-top:1px solid var(--line);font-size:.95rem;color:var(--ink-2)}
+.js-rv .flujo:not(.in) .flujo-pasos li{opacity:0;transform:translateX(-10px)}
+.js-rv .flujo:not(.in) .flujo-pasos::before{transform:scaleY(0)}
+
+/* ficha, tarjetas de proyectos y formulario: la misma elevación */
+.proy,.cargo-col,.mapa>div,.ordenar li{box-shadow:var(--sombra-1)}
+.proy{border-color:rgba(255,255,255,.7)}
+@media(hover:hover) and (pointer:fine){.proy:hover{box-shadow:var(--sombra-2)}}
+.ficha{box-shadow:var(--sombra-2)}
+.cargo-col{border-color:rgba(255,255,255,.7)}
+
+/* formulario sobre oscuro: la tarjeta es clara y mantiene sus colores */
+.sec--dark .form-card{--ink:#242522;--ink-2:#3a3b37;--muted:#5d5e58;--line:#d7d2c7;--line-2:#e4e0d6;--card:#fbf9f4;--accent-ink:#a8460f;--ok:#2f7a4f;--no:#b4432c;
+  color:var(--ink);background:#fbf9f4;border-color:rgba(255,255,255,.65);box-shadow:var(--sombra-osc)}
+.sec--dark .form-card .button--primary{color:#242522}
+.sec--dark .form-card :focus-visible{outline-color:#242522}
+
+/* pie oscuro */
+.foot--dark{--ink:#f5f2ea;--ink-2:rgba(245,242,234,.86);--muted:rgba(245,242,234,.7);--line:rgba(245,242,234,.2);--line-2:rgba(245,242,234,.11);
+  --card:rgba(245,242,234,.05);--accent-ink:#f59a62;background:#242522;color:var(--ink);border-top:0;
+  margin-inline:clamp(8px,1.4vw,20px);margin-top:clamp(8px,1.4vw,20px);border-radius:clamp(20px,2.4vw,32px) clamp(20px,2.4vw,32px) 0 0}
+.foot--dark :focus-visible{outline-color:var(--ink)}
+
+/* mapa del puesto: de «hace hoy» a «queda afuera» */
+.mapa>div{position:relative;padding-top:2.6rem}
+.mapa>div::before{content:'';position:absolute;top:1.1rem;left:16px;width:.9rem;height:.9rem;border-radius:50%}
+.mapa>div:nth-child(1)::before{background:var(--accent)}
+.mapa>div:nth-child(2)::before{border:2px dashed var(--accent-ink)}
+.mapa>div:nth-child(3)::before{content:'✕';width:auto;height:auto;border-radius:0;top:.95rem;font-size:1rem;line-height:1;font-weight:800;color:var(--no)}
+
+@media(max-width:1000px){
+  .cat-card--ancha{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  .cat-card,.cat-ico,.flujo-pasos li,.flujo-pasos::before{transition:none}
+  .cat-card:hover,.cat-card:hover .cat-ico{transform:none}
+}
 </style>
 </head>
 <body>
@@ -1175,7 +1273,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 </section>
 
 <!-- QUÉ CONSTRUIMOS: cinco tarjetas -->
-<section class="sec" id="que-construimos">
+<section class="sec sec--alt sec--dark" id="que-construimos">
   <div class="wrap">
     <div class="rv">
       <span class="k">Qué construimos</span>
@@ -1185,8 +1283,10 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 
     <div class="catalogo stg">
 
-      <article class="cat-card cat-card--ancha" id="card-medida">
-        <h3>Sistemas a medida</h3>
+      <article class="cat-card cat-card--ancha" id="card-medida" style="--c:#e96a22">
+        <div class="cat-main">
+          <div class="cat-top"><span class="cat-ico"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="10" height="10" rx="2"/><rect x="18" y="4" width="10" height="10" rx="2"/><rect x="4" y="18" width="10" height="10" rx="2"/><path d="M23 18v10M18 23h10"/></svg></span></div>
+          <h3>Sistemas a medida</h3>
         <dl class="proy-dl">
           <div>
             <dt>Qué es</dt>
@@ -1202,9 +1302,22 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
             <a class="link link-arrow" href="#sesion" data-go="sesion">Contanos qué necesitás</a>
           </div>
         </dl>
+        </div>
+        <figure class="flujo rv" aria-label="Ejemplo de un proceso completo llevado por un equipo de empleados digitales">
+          <div class="flujo-cab"><span class="demo-tag">Ejemplo</span></div>
+          <ol class="flujo-pasos">
+            <li style="--i:0"><span class="f-nodo f-nodo--in" aria-hidden="true"></span><span class="f-tx"><b>Consulta</b></span></li>
+            <li style="--i:1"><span class="f-nodo f-nodo--emp" aria-hidden="true"></span><span class="f-tx"><b>Atiende</b><small>Empleado digital</small></span></li>
+            <li style="--i:2"><span class="f-nodo f-nodo--emp" aria-hidden="true"></span><span class="f-tx"><b>Presupuesto</b><small>Empleado digital</small></span></li>
+            <li style="--i:3"><span class="f-nodo f-nodo--vos" aria-hidden="true"></span><span class="f-tx"><b>Lo aprobás vos</b><small>Vos</small></span></li>
+            <li style="--i:4"><span class="f-nodo f-nodo--emp" aria-hidden="true"></span><span class="f-tx"><b>Seguimiento</b><small>Empleado digital</small></span></li>
+          </ol>
+          <p class="flujo-pie">Cada uno con su puesto, coordinados y supervisados.</p>
+        </figure>
       </article>
 
-      <article class="cat-card" id="card-sistema">
+      <article class="cat-card" id="card-sistema" style="--c:#d9b98a">
+        <div class="cat-top"><span class="cat-ico"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="16" r="3"/><circle cx="16" cy="16" r="3"/><circle cx="26" cy="16" r="3"/><path d="M9 16h4M19 16h4M16 6v7M16 19v7"/></svg></span></div>
         <h3>El Sistema</h3>
         <dl class="proy-dl">
           <dt>Qué es</dt>
@@ -1216,8 +1329,8 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
         </dl>
       </article>
 
-      <article class="cat-card" id="card-alia">
-        <span class="estado estado--prod">En uso en nuestro propio negocio</span>
+      <article class="cat-card" id="card-alia" style="--c:#8fb89f">
+        <div class="cat-top"><span class="cat-ico"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6h22a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H14l-6 5v-5H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/><path d="M11 14l3 3 7-7"/></svg></span><span class="estado estado--prod">En uso en nuestro propio negocio</span></div>
         <h3>Alia</h3>
         <dl class="proy-dl">
           <dt>Qué es</dt>
@@ -1229,7 +1342,8 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
         </dl>
       </article>
 
-      <article class="cat-card" id="card-eventria">
+      <article class="cat-card" id="card-eventria" style="--c:#d49aa8">
+        <div class="cat-top"><span class="cat-ico"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="6"/><circle cx="16" cy="5" r="2"/><circle cx="16" cy="27" r="2"/><circle cx="5" cy="16" r="2"/><circle cx="27" cy="16" r="2"/></svg></span></div>
         <h3>Eventria</h3>
         <dl class="proy-dl">
           <dt>Qué es</dt>
@@ -1241,7 +1355,8 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
         </dl>
       </article>
 
-      <article class="cat-card" id="card-consultorio">
+      <article class="cat-card" id="card-consultorio" style="--c:#8fa9bd">
+        <div class="cat-top"><span class="cat-ico"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="24" height="22" rx="3"/><path d="M4 12h24M10 3v6M22 3v6"/><path d="M16 17v7M12.5 20.5h7"/></svg></span></div>
         <h3>Consultorios</h3>
         <dl class="proy-dl">
           <dt>Qué es</dt>
@@ -1453,9 +1568,10 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 </section>
 
 <!-- CONSULTORIO -->
-<section class="sec sec--alt" id="consultorio">
+<section class="sec sec--alt sec--dark" id="consultorio">
   <div class="wrap consul rv">
     <div>
+      <span class="cat-ico cat-ico--solo" style="--c:#8fa9bd"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="24" height="22" rx="3"/><path d="M4 12h24M10 3v6M22 3v6"/><path d="M16 17v7M12.5 20.5h7"/></svg></span>
       <span class="k">Consultorios</span>
       <h2>Sistema para consultorios.</h2>
       <p class="lead">Agenda en más de un lugar, seguimiento de controles y cobros, armado según cómo trabaja cada consultorio.</p>
@@ -1556,16 +1672,16 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 </section>
 
 <!-- EVALUACIÓN -->
-<section class="sec sec--alt" id="sesion">
+<section class="sec sec--alt sec--dark" id="sesion">
   <div class="wrap eva">
     <div class="rv">
       <span class="k">La Evaluación</span>
       <h2>Contanos qué te frena.</h2>
       <p class="lead">Vemos juntos qué se puede construir para tu negocio.</p>
       <ol class="eva-pasos">
-        <li>Nos contás tu caso por WhatsApp.</li>
-        <li>Te respondemos dentro de las 24 hs hábiles. Con lo que nos cuentes, <span data-plazo>en 48 hs hábiles</span> tenés la propuesta.</li>
-        <li>Si preferís hablar, coordinamos una llamada. La propuesta no tiene costo ni compromiso; el precio del trabajo llega con el alcance.</li>
+        <li><span>Nos contás tu caso por WhatsApp.</span></li>
+        <li><span>Te respondemos dentro de las 24 hs hábiles. Con lo que nos cuentes, <span data-plazo>en 48 hs hábiles</span> tenés la propuesta.</span></li>
+        <li><span>Si preferís hablar, coordinamos una llamada. La propuesta no tiene costo ni compromiso; el precio del trabajo llega con el alcance.</span></li>
       </ol>
       <div class="eva-cta">
         <a class="button button--primary" href="https://wa.me/5493482583784?text=Quiero%20mi%20Evaluaci%C3%B3n%20(vengo%20de%20la%20web)" target="_blank" rel="noopener">Pedí tu Evaluación por WhatsApp</a>
@@ -1614,7 +1730,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 
 </main>
 
-<footer class="foot">
+<footer class="foot foot--dark">
   <div class="wrap">
     <div class="fg-top">
       <div>
