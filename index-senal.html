@@ -940,6 +940,62 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 @media(min-width:901px){.hero h1{font-size:clamp(2.3rem,3.3vw,3.3rem)}}
 
 .ayuda{display:block;font-size:13.5px;line-height:1.4;color:var(--muted)}
+
+/* ══ FICHA DEL PUESTO · pieza autónoma ══
+   Todo en em: para otra escala (la placa de Instagram) basta cambiar el font-size de .ficha.
+   Usa los colores del sitio si existen y trae los suyos si se la saca de acá. */
+.ficha{--fi-ink:var(--ink,#242522);--fi-mut:var(--muted,#5d5e58);--fi-line:var(--line,#d7d2c7);--fi-card:var(--card,#fbf9f4);
+  --fi-acc:var(--accent,#e96a22);--fi-acc-ink:var(--accent-ink,#a8460f);--fi-ok:#2f7a4f;--fi-no:#b4432c;
+  position:relative;margin:0;max-width:30em;font-family:var(--f,'Archivo',system-ui,sans-serif);font-size:16px;line-height:1.4;
+  color:var(--fi-ink);background:var(--fi-card);border:1px solid var(--fi-line);border-radius:1.5em;overflow:hidden;
+  box-shadow:0 1.6em 3em -2em rgba(36,37,34,.35)}
+.ficha-cab{position:relative;display:flex;align-items:center;gap:.95em;padding:2.9em 1.3em 1.3em;background:#242522;color:#f5f2ea}
+.ficha-cab::before{content:'';position:absolute;top:.8em;left:50%;width:3.4em;height:.6em;margin-left:-1.7em;border-radius:1em;background:rgba(245,242,234,.2)}
+.ficha-estado{position:absolute;top:.45em;right:.8em;display:inline-flex;align-items:center;gap:.5em;padding:.3em .75em;border-radius:2em;
+  background:rgba(245,242,234,.12);font-size:.74em;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+.ficha-dot{position:relative;display:block;width:.7em;height:.7em;border-radius:50%;background:#5fc489}
+.ficha-dot::after{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid #5fc489;animation:fichaPulso 2.6s ease-out infinite}
+@keyframes fichaPulso{from{transform:scale(1);opacity:.9}to{transform:scale(2.7);opacity:0}}
+.ficha-id{flex:0 0 auto;display:grid;place-items:center;width:3.3em;height:3.3em;border-radius:50%;background:var(--fi-acc);color:#242522}
+.ficha-id svg{width:1.8em;height:1.8em}
+.ficha-cab-tx{min-width:0}
+.ficha-tag{display:block;font-size:.72em;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--fi-acc)}
+.ficha-t{margin:.2em 0 0;font-size:1.5em;font-weight:800;letter-spacing:-.03em;line-height:1.08}
+.ficha-s{margin:0;padding:1em 1.3em 0;color:var(--fi-mut)}
+.ficha-bloques{display:grid;gap:.8em;padding:1em 1.3em 0}
+.ficha-b{padding:1em 1.1em 1em;border-radius:1em}
+.ficha-b--hace{background:#edf4ef}
+.ficha-b--no{background:#f9eeea}
+.ficha-bh{display:flex;align-items:center;gap:.55em;margin:0;font-size:.8em;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+.ficha-bh svg{width:1.8em;height:1.8em;flex:0 0 auto}
+.ficha-b--hace .ficha-bh{color:var(--fi-ok)}
+.ficha-b--no .ficha-bh{color:var(--fi-no)}
+.ficha-b ul{list-style:none;margin:.65em 0 0;padding:0}
+.ficha-b li{display:flex;align-items:flex-start;gap:.7em;padding:.45em 0;font-size:1.02em;line-height:1.38;font-weight:500}
+.ficha-b li::before{flex:0 0 auto;display:grid;place-items:center;width:1.6em;height:1.6em;margin-top:.02em;border-radius:50%;
+  color:#fff;font-size:.82em;font-weight:800}
+.ficha-b--hace li::before{content:'✓';background:var(--fi-ok)}
+.ficha-b--no li::before{content:'✕';background:var(--fi-no)}
+.ficha-reg{margin:.8em 1.3em 1.3em;padding:1em 1.1em 1.1em;border:1px dashed var(--fi-line);border-radius:1em;background:#fffdfa}
+.ficha-reg-cab{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.4em .7em}
+.ficha-bh--reg{color:var(--fi-acc-ink)}
+.ficha-ej{padding:.25em .65em;border:1px solid var(--fi-line);border-radius:2em;background:var(--fi-card);font-size:.74em;font-weight:700;color:var(--fi-mut)}
+.ficha-reg-s{margin:.55em 0 0;font-size:.95em;color:var(--fi-mut)}
+.ficha-log{position:relative;list-style:none;margin:.8em 0 0;padding:0 0 0 1.4em}
+.ficha-log::before{content:'';position:absolute;left:.33em;top:.9em;bottom:.9em;width:2px;background:var(--fi-line)}
+.ficha-log li{position:relative;display:grid;grid-template-columns:3.4em minmax(0,1fr);gap:.6em;padding:.42em 0;font-size:.98em;
+  transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1);transition-delay:calc(var(--i) * .45s + .5s)}
+.ficha-log li::before{content:'';position:absolute;left:-1.4em;top:.85em;width:.72em;height:.72em;border-radius:50%;background:#fff;border:2px solid var(--fi-acc)}
+.ficha-log time{font-weight:800;font-variant-numeric:tabular-nums}
+/* el registro se escribe de a una línea al entrar en pantalla (sin JS o con movimiento reducido queda todo visible) */
+.js-rv .ficha:not(.in) .ficha-log li{opacity:0;transform:translateY(.6em)}
+@media(prefers-reduced-motion:reduce){.ficha-dot::after{animation:none;display:none}.ficha-log li{transition:none}}
+
+/* ubicación: al lado de las dos listas */
+.cargo-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);gap:clamp(24px,4vw,64px);align-items:start;margin-top:clamp(28px,3.4vw,44px)}
+.cargo-wrap .cargo{grid-template-columns:1fr;margin-top:0}
+.cargo-wrap .ficha{justify-self:end;width:100%}
+@media(max-width:1000px){.cargo-wrap{grid-template-columns:1fr}.cargo-wrap .ficha{justify-self:start}}
 </style>
 </head>
 <body>
@@ -1009,6 +1065,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       <span class="k">Empleados digitales</span>
       <h2>¿Qué le dejarías a cargo?</h2>
     </div>
+    <div class="cargo-wrap">
     <div class="cargo stg">
       <div class="cargo-col cargo-col--hoy">
         <h3>Lo que ya hace hoy</h3>
@@ -1029,6 +1086,48 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
         </ul>
         <p class="small">Se evalúan caso por caso.</p>
       </div>
+    </div>
+      <figure class="ficha rv" aria-label="Ejemplo de ficha de un puesto: el que atiende las consultas">
+        <header class="ficha-cab">
+          <span class="ficha-estado"><i class="ficha-dot" aria-hidden="true"></i>En servicio</span>
+          <span class="ficha-id"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 5.5h15a1.5 1.5 0 0 1 1.5 1.5v8.5a1.5 1.5 0 0 1-1.5 1.5H10l-4.2 3.3V17H4.5A1.5 1.5 0 0 1 3 15.5V7a1.5 1.5 0 0 1 1.5-1.5z"/><path d="M8 10.2h8M8 13.2h5"/></svg></span>
+          <div class="ficha-cab-tx">
+            <span class="ficha-tag">Ficha del puesto</span>
+            <p class="ficha-t">El que atiende las consultas.</p>
+          </div>
+        </header>
+        <p class="ficha-s">Un empleado digital. Empieza por una tarea y crece.</p>
+        <div class="ficha-bloques">
+          <section class="ficha-b ficha-b--hace">
+            <p class="ficha-bh"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M8 12.6l2.8 2.8L16.2 9.6"/></svg>Hace</p>
+            <ul>
+              <li>Contesta cuando vos no podés, por los canales que usás.</li>
+              <li>Pregunta qué busca y lo deja anotado.</li>
+              <li>Si no sabe o nadie responde, avisa a tu equipo y se lo pasa.</li>
+            </ul>
+          </section>
+          <section class="ficha-b ficha-b--no">
+            <p class="ficha-bh"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M9 9l6 6M15 9l-6 6"/></svg>No hace</p>
+            <ul>
+              <li>Cerrar la venta: eso lo hace tu gente.</li>
+              <li>Inventar respuestas: si no sabe, pasa la consulta.</li>
+              <li>Prometer un precio que vos no le diste.</li>
+            </ul>
+          </section>
+        </div>
+        <section class="ficha-reg">
+          <div class="ficha-reg-cab">
+            <p class="ficha-bh ficha-bh--reg">Queda escrito</p>
+            <span class="ficha-ej">Ejemplo con datos de ejemplo</span>
+          </div>
+          <p class="ficha-reg-s">Quién consultó, por qué y en qué etapa está. A la vista.</p>
+          <ol class="ficha-log">
+            <li style="--i:0"><time>23:10</time><span>Consulta recibida</span></li>
+            <li style="--i:1"><time>23:10</time><span>Preguntó qué busca y lo anotó</span></li>
+            <li style="--i:2"><time>08:30</time><span>Avisó a tu equipo</span></li>
+          </ol>
+        </section>
+      </figure>
     </div>
     <div class="ordenar-cierre rv">
       <p>No hace falta que sepas qué herramienta necesitás. Contanos qué está pasando.</p>
