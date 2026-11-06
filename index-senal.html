@@ -892,7 +892,6 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 /* ══════════ FASE 1 · EMPLEADOS DIGITALES (previa) ══════════ */
 .hero__oferta{margin-top:22px;max-width:46ch;font-size:clamp(17px,1.35vw,20px);line-height:1.45;font-weight:650;color:var(--ink)}
 .hero__oferta+.hero__actions{margin-top:16px}
-.h-linea{font-size:clamp(24px,2.7vw,36px);line-height:1.18;max-width:34ch;letter-spacing:-.025em}
 
 .cargo{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2.2vw,28px);margin-top:clamp(28px,3.4vw,44px)}
 .cargo-col{padding:clamp(22px,2.6vw,34px);border:1px solid var(--line);border-radius:16px;background:var(--card)}
@@ -987,7 +986,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
         <a class="button button--primary" href="#sesion" data-go="sesion">Contanos qué necesitás</a>
         <a class="link link-arrow" href="#que-construimos" data-go="que-construimos">Mirá lo que construimos</a>
       </div>
-      <p class="hero__note"><span data-plazo>48 hs hábiles</span> desde que recibimos tu mensaje. Si no encaja, te lo decimos.</p>
+      <p class="hero__note"><span data-plazo>48 hs hábiles</span> desde que recibimos tu mensaje. Si no encaja, te lo decimos. La propuesta no tiene costo ni compromiso.</p>
     </div>
     <div class="hero__visual">
       <div class="hero__media" data-hero-media>
@@ -1082,7 +1081,8 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
   <div class="wrap">
     <div class="rv">
       <span class="k">Qué construimos</span>
-      <h2 class="h-linea">Y si lo que tu negocio necesita es otra cosa, lo desarrollamos: sistemas a medida, el Sistema comercial, Alia y Eventria.</h2>
+      <h2>Lo que desarrollamos para tu negocio</h2>
+      <p class="lead">Empezamos por lo que necesitás. Si es otra cosa, también lo armamos.</p>
     </div>
 
     <div class="catalogo stg">
@@ -1092,7 +1092,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
         <dl class="proy-dl">
           <div>
             <dt>Qué es</dt>
-            <dd>Un sistema armado desde cero para cómo trabaja tu negocio: cada pantalla existe porque tu negocio la necesita. Se arma por piezas: la primera ya trabaja sola y las siguientes se suman cuando hacen falta.</dd>
+            <dd>Un sistema armado desde cero para cómo trabaja tu negocio: cada pantalla existe porque tu negocio la necesita. Se arma por piezas: la primera ya funciona y las siguientes se suman cuando hacen falta.</dd>
           </div>
           <div>
             <dt>Para quién</dt>
@@ -1436,7 +1436,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       <details class="plie"><summary><span>¿Reemplaza a mi gente?</span><i class="mas" aria-hidden="true"></i></summary>
         <div class="plie-in"><p>No: saca la tarea repetitiva y lo importante lo aprobás vos.</p></div></details>
       <details class="plie"><summary><span>¿Qué pasa cuando pido una Evaluación?</span><i class="mas" aria-hidden="true"></i></summary>
-        <div class="plie-in"><p>Nos escribís por WhatsApp y te responde primero nuestro propio sistema, el mismo que instalamos: te pregunta qué querés resolver.</p><p>Si es un caso para nosotros, te ofrecemos una llamada de 45 minutos con el equipo. Si no, te respondemos por escrito si se puede hacer y cómo. La Evaluación no tiene costo; el alcance y la inversión se definen a partir de tu caso.</p></div></details>
+        <div class="plie-in"><p>Nos escribís por WhatsApp y te responde primero nuestro propio sistema, el mismo que instalamos: te pregunta qué querés resolver.</p><p>Te respondemos dentro de las 24 hs hábiles. Con lo que nos cuentes, <span data-plazo>en 48 hs hábiles</span> tenés la propuesta. Si preferís hablar, coordinamos una llamada. La propuesta no tiene costo ni compromiso; el alcance y la inversión se definen a partir de tu caso.</p></div></details>
       <details class="plie"><summary><span>¿Tengo que reemplazar lo que ya uso?</span><i class="mas" aria-hidden="true"></i></summary>
         <div class="plie-in"><p>Primero revisamos las herramientas y la información que ya tenés. Según el proyecto, podemos trabajar con eso o definir qué hace falta cambiar.</p></div></details>
       <details class="plie"><summary><span>¿Construyen solo agentes de atención?</span><i class="mas" aria-hidden="true"></i></summary>
@@ -1466,8 +1466,8 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       <p class="lead">Vemos juntos qué se puede construir para tu negocio.</p>
       <ol class="eva-pasos">
         <li>Nos contás tu caso por WhatsApp.</li>
-        <li>Si es un caso para nosotros, te ofrecemos una llamada de 45 minutos con el equipo. Si no, te respondemos por escrito si se puede hacer y cómo.</li>
-        <li>La Evaluación no tiene costo. El precio del trabajo llega con el alcance.</li>
+        <li>Te respondemos dentro de las 24 hs hábiles. Con lo que nos cuentes, <span data-plazo>en 48 hs hábiles</span> tenés la propuesta.</li>
+        <li>Si preferís hablar, coordinamos una llamada. La propuesta no tiene costo ni compromiso; el precio del trabajo llega con el alcance.</li>
       </ol>
       <div class="eva-cta">
         <a class="button button--primary" href="https://wa.me/5493482583784?text=Quiero%20mi%20Evaluaci%C3%B3n%20(vengo%20de%20la%20web)" target="_blank" rel="noopener">Pedí tu Evaluación por WhatsApp</a>
@@ -1500,14 +1500,14 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
           </label>
           <p class="aviso-priv">Al enviar aceptás nuestra <a href="https://levelup-legal.vercel.app/privacidad-web" target="_blank" rel="noopener">política de privacidad</a>. Usamos tus datos solo para contactarte; no los compartimos con terceros.</p>
           <button type="submit" class="send button button--primary" id="send">Pedí tu Evaluación</button>
-          <p class="fine">Te respondemos por WhatsApp antes de 24 horas.</p>
+          <p class="fine">Te respondemos dentro de las 24 hs hábiles. Con lo que nos cuentes, <span data-plazo>en 48 hs hábiles</span> tenés la propuesta. Si preferís hablar, coordinamos una llamada.</p>
           <div class="fallo" id="fallo">No pudimos enviar el formulario — puede ser la conexión.
             Probá de nuevo, o escribinos por <a href="https://www.instagram.com/levelup.aima/" target="_blank" rel="noopener">Instagram</a> y lo resolvemos ahí.</div>
         </form>
       </div>
       <div class="done" id="done">
         <h3>Recibido.</h3>
-        <p>Te escribimos por WhatsApp antes de 24 horas para coordinar.<br>
+        <p>Te respondemos por WhatsApp dentro de las 24 hs hábiles. Con lo que nos cuentes, <span data-plazo>en 48 hs hábiles</span> tenés la propuesta. Si preferís hablar, coordinamos una llamada.<br>
         Mientras tanto, así pensamos: <a href="https://www.instagram.com/levelup.aima/" target="_blank" rel="noopener">Instagram</a>.</p>
       </div>
     </div>
