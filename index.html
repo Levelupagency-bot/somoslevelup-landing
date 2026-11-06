@@ -910,26 +910,9 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 .cat-card .estado{align-self:flex-start;margin-bottom:14px}
 .cat-card .estado+h3{margin-top:0}
 .cat-card .proy-dl{margin-top:18px}
-.cat-card--eje{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(24px,3.6vw,56px);align-items:center}
-.cat-card--eje .proy-cta{margin-top:22px}
-
-/* ficha del puesto: la placa de Instagram hecha texto de la página */
-.ficha{margin:0}
-.ficha .demo-tag{margin-bottom:10px}
-.ficha-in{padding:clamp(20px,2.4vw,30px);background:var(--bg);border:1px solid var(--line);border-radius:18px}
-.ficha-t{font-size:clamp(24px,2.4vw,34px);font-weight:800;letter-spacing:-.03em;line-height:1.05}
-.ficha-s{margin-top:8px;font-size:16px;color:var(--muted)}
-.ficha-b{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
-.ficha-b b{display:block;font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
-.ficha-b--hace b{color:var(--ok)}
-.ficha-b--no b{color:var(--no)}
-.ficha-b--escrito b{color:var(--accent-ink)}
-.ficha-b ul{list-style:none;margin-top:6px}
-.ficha-b li{position:relative;padding:5px 0 5px 28px;font-size:16.5px;line-height:1.4}
-.ficha-b li::before{position:absolute;left:0;top:5px;font-weight:800}
-.ficha-b--hace li::before{content:'✓';color:var(--ok)}
-.ficha-b--no li::before{content:'✕';color:var(--no)}
-.ficha-b--escrito p{margin-top:6px;font-size:16.5px}
+.cat-card--ancha{grid-column:1/-1}
+.cat-card--ancha .proy-dl{grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,3vw,44px);margin-top:20px}
+.cat-card--ancha .proy-dl a{display:inline-block;margin-top:12px}
 
 /* consultorio */
 .consul{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr);gap:clamp(24px,4vw,64px);align-items:end}
@@ -945,11 +928,11 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 .mapa p{margin-top:6px;font-size:15.5px;line-height:1.45;color:var(--ink-2)}
 
 @media(max-width:1000px){
-  .cat-card--eje{grid-template-columns:1fr}
   .trabajo-extra{grid-template-columns:1fr}
 }
 @media(max-width:760px){
   .cargo,.catalogo,.consul{grid-template-columns:1fr}
+  .cat-card--ancha .proy-dl{grid-template-columns:1fr}
   .consul-cta{justify-self:start}
   .mapa{grid-template-columns:1fr}
 }
@@ -1104,48 +1087,23 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 
     <div class="catalogo stg">
 
-      <article class="cat-card cat-card--eje" id="card-empleados">
-        <div class="cat-tx">
-          <h3>Empleados digitales</h3>
-          <dl class="proy-dl">
+      <article class="cat-card cat-card--ancha" id="card-medida">
+        <h3>Sistemas a medida</h3>
+        <dl class="proy-dl">
+          <div>
             <dt>Qué es</dt>
-            <dd>Un empleado nuevo para un puesto de tu negocio. Empieza por una tarea y crece. Trabaja con tus reglas, deja todo registrado, lo importante lo aprobás vos y lo pausás cuando quieras.</dd>
+            <dd>Un sistema armado desde cero para cómo trabaja tu negocio: cada pantalla existe porque tu negocio la necesita. Se arma por piezas: la primera ya trabaja sola y las siguientes se suman cuando hacen falta.</dd>
+          </div>
+          <div>
             <dt>Para quién</dt>
-            <dd>Negocios con tareas repetidas que hoy te sacan tiempo: consultas, presupuestos, pedidos, seguimiento. Se evalúa caso por caso.</dd>
+            <dd>Negocios con una forma de trabajar propia, donde las herramientas que existen no alcanzan: planillas, tareas a mano, procesos que dependen de una sola persona.</dd>
+          </div>
+          <div>
             <dt>Cómo se pide</dt>
             <dd>Contanos qué necesitás y <span data-plazo>en 48 hs</span> te proponemos una solución.</dd>
-          </dl>
-          <div class="proy-cta">
-            <a class="button button--primary" href="#sesion" data-go="sesion">Contanos qué necesitás</a>
+            <a class="link link-arrow" href="#sesion" data-go="sesion">Contanos qué necesitás</a>
           </div>
-        </div>
-        <figure class="ficha" aria-label="Ejemplo de ficha del puesto: el que atiende las consultas">
-          <span class="demo-tag">Ejemplo de ficha del puesto</span>
-          <div class="ficha-in">
-            <p class="ficha-t">El que atiende las consultas.</p>
-            <p class="ficha-s">Un empleado digital: una tarea, tus reglas, todo a la vista.</p>
-            <div class="ficha-b ficha-b--hace">
-              <b>Hace</b>
-              <ul>
-                <li>Contesta las 24 horas, por todos tus canales.</li>
-                <li>Pregunta qué busca y lo deja anotado.</li>
-                <li>Si nadie responde, avisa a tu equipo.</li>
-              </ul>
-            </div>
-            <div class="ficha-b ficha-b--no">
-              <b>No hace</b>
-              <ul>
-                <li>Cerrar la venta: eso lo hace tu gente.</li>
-                <li>Facturar por vos.</li>
-                <li>Publicar tu stock en portales.</li>
-              </ul>
-            </div>
-            <div class="ficha-b ficha-b--escrito">
-              <b>Queda escrito</b>
-              <p>Contacto, motivo, etapa y visita. A la vista.</p>
-            </div>
-          </div>
-        </figure>
+        </dl>
       </article>
 
       <article class="cat-card" id="card-sistema">
