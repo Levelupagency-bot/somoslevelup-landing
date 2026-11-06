@@ -893,15 +893,6 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 .hero__oferta{margin-top:22px;max-width:46ch;font-size:clamp(17px,1.35vw,20px);line-height:1.45;font-weight:650;color:var(--ink)}
 .hero__oferta+.hero__actions{margin-top:16px}
 
-.cargo{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2.2vw,28px);margin-top:clamp(28px,3.4vw,44px)}
-.cargo-col{padding:clamp(22px,2.6vw,34px);border:1px solid var(--line);border-radius:16px;background:var(--card)}
-.cargo-col h3{font-size:clamp(19px,1.6vw,23px)}
-.cargo-col ul{list-style:none;margin-top:14px;border-top:1px solid var(--line)}
-.cargo-col li{position:relative;padding:12px 0 12px 28px;border-bottom:1px solid var(--line-2);font-size:17px;line-height:1.45}
-.cargo-col li::before{position:absolute;left:2px;top:12px;font-weight:800}
-.cargo-col--hoy li::before{content:'✓';color:var(--ok)}
-.cargo-col--podemos li::before{content:'+';color:var(--accent-ink)}
-.cargo-col .small{margin-top:12px}
 
 .catalogo{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,24px);margin-top:clamp(30px,3.6vw,48px)}
 .cat-card{display:flex;flex-direction:column;padding:clamp(24px,2.8vw,38px);background:var(--card);border:1px solid var(--line);border-radius:16px}
@@ -992,10 +983,6 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 @media(prefers-reduced-motion:reduce){.ficha-dot::after{animation:none;display:none}.ficha-log li{transition:none}}
 
 /* ubicación: al lado de las dos listas */
-.cargo-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);gap:clamp(24px,4vw,64px);align-items:start;margin-top:clamp(28px,3.4vw,44px)}
-.cargo-wrap .cargo{grid-template-columns:1fr;margin-top:0}
-.cargo-wrap .ficha{justify-self:end;width:100%}
-@media(max-width:1000px){.cargo-wrap{grid-template-columns:1fr}.cargo-wrap .ficha{justify-self:start}}
 
 /* ══════════ PASADA DE DISEÑO ══════════ */
 :root{
@@ -1066,7 +1053,6 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 .proy{border-color:rgba(255,255,255,.7)}
 @media(hover:hover) and (pointer:fine){.proy:hover{box-shadow:var(--sombra-2)}}
 .ficha{box-shadow:var(--sombra-2)}
-.cargo-col{border-color:rgba(255,255,255,.7)}
 
 /* formulario sobre oscuro: la tarjeta es clara y mantiene sus colores */
 .sec--dark .form-card{--ink:#242522;--ink-2:#3a3b37;--muted:#5d5e58;--line:#d7d2c7;--line-2:#e4e0d6;--card:#fbf9f4;--accent-ink:#a8460f;--ok:#2f7a4f;--no:#b4432c;
@@ -1094,6 +1080,33 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
   .cat-card,.cat-ico,.flujo-pasos li,.flujo-pasos::before{transition:none}
   .cat-card:hover,.cat-card:hover .cat-ico{transform:none}
 }
+
+/* ¿Qué le dejarías a cargo?: seis áreas iguales + banda de la ficha */
+.areas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,1.8vw,24px);align-items:stretch;margin-top:clamp(28px,3.4vw,48px)}
+.ar{display:flex;flex-direction:column;padding:clamp(22px,2.2vw,30px);background:var(--card);border:1px solid rgba(255,255,255,.7);border-radius:22px;box-shadow:var(--sombra-1);
+  transition:transform .5s var(--suave),box-shadow .5s var(--suave)}
+@media(hover:hover) and (pointer:fine){.ar:hover{transform:translateY(-5px);box-shadow:var(--sombra-2)}.ar:hover .cat-ico{transform:rotate(-7deg) scale(1.07)}}
+.ar-top{display:flex;align-items:center;gap:14px;min-height:3.5rem}
+.ar-top h3{font-size:clamp(20px,1.7vw,24px);letter-spacing:-.025em;line-height:1.1}
+.ar-ico{width:3.2rem;height:3.2rem;border-radius:1rem}
+.ar-ico svg{width:1.75rem;height:1.75rem}
+.ar ul{list-style:none;margin:18px 0 0;border-top:1px solid var(--line);flex:1}
+.ar li{position:relative;padding:12px 0 12px 22px;border-bottom:1px solid var(--line-2);font-size:17px;line-height:1.4}
+.ar li::before{content:'';position:absolute;left:2px;top:1.15em;width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.ar li:last-child{border-bottom:0}
+.ar-pie{margin-top:14px;display:flex;align-items:flex-end}
+.ar:nth-child(-n+3) .ar-pie{min-height:2.9em}
+.ar-chip{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:#e8f1ea;color:#276744;font-size:13.5px;font-weight:700;line-height:1.25}
+.ar-chip::before{content:'';flex:0 0 auto;width:8px;height:8px;border-radius:50%;background:#2f7a4f}
+.areas-nota{margin-top:clamp(18px,2vw,26px);font-size:15px;color:var(--muted);max-width:56ch}
+.ficha-banda{margin-top:clamp(36px,5vw,72px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:center;
+  padding:clamp(26px,4.5vw,64px);border-radius:clamp(20px,2.4vw,32px);background:#242522;color:#f5f2ea;box-shadow:var(--sombra-2)}
+.ficha-banda-tx h3{font-size:clamp(1.7rem,3.2vw,2.9rem);line-height:1.04;letter-spacing:-.035em;font-weight:800;margin-bottom:clamp(22px,2.6vw,34px);max-width:16ch}
+.ficha-banda-nota{margin-top:16px;font-size:16px;color:rgba(245,242,234,.72);max-width:34ch}
+.ficha-banda .ficha{justify-self:end;width:100%;max-width:30em;--fi-ink:#242522;--fi-mut:#5d5e58;--fi-line:#d7d2c7;--fi-card:#fbf9f4;--fi-acc:#e96a22;--fi-acc-ink:#a8460f;box-shadow:0 2px 0 rgba(255,255,255,.08) inset,0 40px 70px -30px rgba(0,0,0,.6)}
+@media(max-width:1000px){.areas{grid-template-columns:repeat(2,minmax(0,1fr))}.ar:nth-child(3) .ar-pie{min-height:0}.ficha-banda{grid-template-columns:1fr}.ficha-banda .ficha{justify-self:start}.ficha-banda-tx h3{max-width:none}}
+@media(max-width:640px){.ficha-banda{padding:22px 12px;gap:22px}.ficha-banda-tx{padding:0 8px}.areas{grid-template-columns:1fr}.ar:nth-child(-n+3) .ar-pie{min-height:0}.ar-pie:empty{display:none}}
+@media(prefers-reduced-motion:reduce){.ar{transition:none}.ar:hover{transform:none}}
 </style>
 </head>
 <body>
@@ -1162,28 +1175,47 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
     <div class="rv">
       <span class="k">Empleados digitales</span>
       <h2>¿Qué le dejarías a cargo?</h2>
+      <p class="lead">Cualquier proceso que hoy dependa de una persona, de planillas o de acordarse.</p>
     </div>
-    <div class="cargo-wrap">
-    <div class="cargo stg">
-      <div class="cargo-col cargo-col--hoy">
-        <h3>Lo que ya hace hoy</h3>
-        <ul>
-          <li>De la consulta al seguimiento: atiende, anota, avisa y retoma.</li>
-          <li>Avisar cuando una consulta está lista para avanzar.</li>
-          <li>Recordar turnos.</li>
-        </ul>
-      </div>
-      <div class="cargo-col cargo-col--podemos">
-        <h3>Lo que podemos construir si encaja</h3>
-        <ul>
-          <li>De la consulta al presupuesto.</li>
-          <li>Del pedido a la entrega.</li>
-          <li>Del reclamo a la resolución.</li>
-          <li>El seguimiento de un cliente, de la primera consulta a la posventa.</li>
-        </ul>
-        <p class="small">Empieza por una tarea; según el caso, suma otras del mismo puesto. Se evalúa caso por caso.</p>
-      </div>
+    <div class="areas stg">
+      <article class="ar">
+        <div class="ar-top"><span class="cat-ico ar-ico" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6h22a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H14l-6 5v-5H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/><path d="M10 12h12M10 16h7"/></svg></span><h3>Ventas y consultas</h3></div>
+        <ul><li>De la consulta al presupuesto.</li><li>El seguimiento de cada oportunidad.</li><li>Retomar a los clientes que quedaron en el aire.</li></ul>
+        <div class="ar-pie"><span class="ar-chip">Ya funciona: atender, anotar, avisar y retomar</span></div>
+      </article>
+      <article class="ar">
+        <div class="ar-top"><span class="cat-ico ar-ico" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 28s-10-6.2-10-14a6 6 0 0 1 10-4.4A6 6 0 0 1 26 14c0 7.8-10 14-10 14z"/></svg></span><h3>Atención y posventa</h3></div>
+        <ul><li>Del reclamo a la resolución.</li><li>Turnos y recordatorios.</li><li>El seguimiento después de la compra.</li></ul>
+        <div class="ar-pie"><span class="ar-chip">Ya funciona: recordar turnos</span></div>
+      </article>
+      <article class="ar">
+        <div class="ar-top"><span class="cat-ico ar-ico" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9l12-5 12 5-12 5z"/><path d="M4 9v13l12 6V14M28 9v13l-12 6"/></svg></span><h3>Operaciones</h3></div>
+        <ul><li>Del pedido a la entrega.</li><li>Avisos de estado al cliente.</li><li>Coordinación entre áreas.</li></ul>
+        <div class="ar-pie"></div>
+      </article>
+      <article class="ar">
+        <div class="ar-top"><span class="cat-ico ar-ico" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h17v14H3zM20 13h5l4 4v5H20z"/><circle cx="9" cy="24" r="2.5"/><circle cx="24" cy="24" r="2.5"/></svg></span><h3>Compras y proveedores</h3></div>
+        <ul><li>Pedidos a proveedores.</li><li>Seguimiento de entregas.</li><li>Reclamos por demoras.</li></ul>
+        <div class="ar-pie"></div>
+      </article>
+      <article class="ar">
+        <div class="ar-top"><span class="cat-ico ar-ico" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="20" height="24" rx="2"/><path d="M11 10h10M11 15h10M11 20h6"/></svg></span><h3>Administración</h3></div>
+        <ul><li>Pagos pendientes y vencimientos.</li><li>Documentación que falta.</li><li>Un resumen diario para el dueño.</li></ul>
+        <div class="ar-pie"></div>
+      </article>
+      <article class="ar">
+        <div class="ar-top"><span class="cat-ico ar-ico" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="4"/><circle cx="22" cy="12" r="3.2"/><path d="M3 27c0-4.5 3.6-8 8-8s8 3.5 8 8M20 20.5c4.2-.6 8 2 9 6.5"/></svg></span><h3>Equipo</h3></div>
+        <ul><li>Quién hace qué.</li><li>Qué está trabado.</li><li>Qué vence.</li></ul>
+        <div class="ar-pie"></div>
+      </article>
     </div>
+    <p class="areas-nota rv">Lo que ya funciona hoy está marcado. El resto lo armamos según el caso y se evalúa caso por caso.</p>
+    <div class="ficha-banda rv">
+      <div class="ficha-banda-tx">
+        <h3>Así se ve un puesto: qué hace, qué no hace y qué queda escrito.</h3>
+        <a class="button button--primary" href="#sesion" data-go="sesion">Contanos qué necesitás</a>
+        <p class="ficha-banda-nota">No hace falta que sepas qué herramienta necesitás. Contanos qué está pasando.</p>
+      </div>
       <figure class="ficha rv" aria-label="Ejemplo de ficha de un puesto: el que atiende las consultas">
         <header class="ficha-cab">
           <span class="ficha-estado"><i class="ficha-dot" aria-hidden="true"></i>En servicio</span>
@@ -1225,10 +1257,6 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
           </ol>
         </section>
       </figure>
-    </div>
-    <div class="ordenar-cierre rv">
-      <p>No hace falta que sepas qué herramienta necesitás. Contanos qué está pasando.</p>
-      <a class="button button--primary" href="#sesion" data-go="sesion">Contanos qué necesitás</a>
     </div>
     <div class="pliegues calc-wrap rv">
       <details class="plie">
@@ -1360,9 +1388,9 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
         <h3>Consultorios</h3>
         <dl class="proy-dl">
           <dt>Qué es</dt>
-          <dd>Sistema para consultorios: agenda en más de un lugar, seguimiento de controles y cobros.</dd>
+          <dd>Sistema para consultorios: agenda en varios lugares de atención, recordatorios de turnos, pacientes para volver a citar, estadísticas y control de cobros a obras sociales.</dd>
           <dt>Para quién</dt>
-          <dd>Consultorios que hoy llevan la agenda, los controles y los cobros en varios lugares.</dd>
+          <dd>Consultorios que atienden en más de un lugar y hoy llevan agenda, controles y obras sociales por separado.</dd>
           <dt>Cómo se pide</dt>
           <dd><a class="link link-arrow" href="#consultorio" data-go="consultorio">Ver más</a></dd>
         </dl>
@@ -1574,7 +1602,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       <span class="cat-ico cat-ico--solo" style="--c:#8fa9bd"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="24" height="22" rx="3"/><path d="M4 12h24M10 3v6M22 3v6"/><path d="M16 17v7M12.5 20.5h7"/></svg></span>
       <span class="k">Consultorios</span>
       <h2>Sistema para consultorios.</h2>
-      <p class="lead">Agenda en más de un lugar, seguimiento de controles y cobros, armado según cómo trabaja cada consultorio.</p>
+      <p class="lead">Agenda en varios lugares de atención, recordatorios de turnos por WhatsApp, pacientes para volver a citar, estadísticas y control de cobros a obras sociales: qué presentaste, qué cobraste y qué te debitaron. <b>Es un registro: no procesa pagos.</b> Armado según cómo trabaja cada consultorio.</p>
       <p class="lead">Si lo necesitás, lo armamos con vos. Escribinos y vemos tu caso.</p>
     </div>
     <div class="consul-cta">
