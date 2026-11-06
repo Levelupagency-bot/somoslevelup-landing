@@ -956,6 +956,8 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 
 /* el título nuevo es más largo: un poco más chico para que siga en tres renglones */
 @media(min-width:901px){.hero h1{font-size:clamp(2.3rem,3.3vw,3.3rem)}}
+
+.ayuda{display:block;font-size:13.5px;line-height:1.4;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -1529,7 +1531,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
             <div class="fg"><label for="whatsapp">WhatsApp</label><input type="tel" id="whatsapp" autocomplete="tel" placeholder="+54 9 ..." required><span class="err" role="alert" id="e-whatsapp">Falta el WhatsApp</span></div>
             <div class="fg"><label for="rubro">Rubro</label><input type="text" id="rubro" placeholder="Concesionaria, maquinaria…" required><span class="err" role="alert" id="e-rubro">Falta el rubro</span></div>
           </div>
-          <div class="fg"><label for="problema">Si sumaras a alguien al equipo para sacarte de encima lo repetitivo, ¿qué le dejarías a cargo?</label><textarea id="problema" placeholder="Contalo con tus palabras." required></textarea><span class="err" role="alert" id="e-problema">Contanos aunque sea una línea</span></div>
+          <div class="fg"><label for="problema">Si sumaras a alguien al equipo para sacarte de encima lo repetitivo, ¿qué le dejarías a cargo?</label><textarea id="problema" placeholder="Contalo con tus palabras." aria-describedby="ayuda-problema" data-ayuda="ayuda-problema" required></textarea><span class="ayuda" id="ayuda-problema">Sin datos de tus clientes.</span><span class="err" role="alert" id="e-problema">Contanos aunque sea una línea</span></div>
           <!-- Consentimiento para escribir primero por WhatsApp. Va DESMARCADA de fábrica:
                una casilla premarcada no es consentimiento y Meta la trata como inválida.
                No bloquea el envío. El enlace va fuera del <label> a propósito: adentro,
@@ -1787,7 +1789,14 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       el.setAttribute('aria-invalid',mal?'true':'false');
       /* El mensaje se asocia SOLO mientras hay error: aria-describedby lee el texto
          aunque esté oculto, y un campo bien completo diría igual "Falta el nombre". */
-      if(err){ if(mal) el.setAttribute('aria-describedby',err.id); else el.removeAttribute('aria-describedby'); }
+      /* Si el campo tiene una aclaración fija (data-ayuda) se conserva siempre; el error
+         se le suma solo mientras existe. */
+      var ayuda=el.getAttribute('data-ayuda')||'';
+      if(err){
+        if(mal) el.setAttribute('aria-describedby',(err.id+' '+ayuda).trim());
+        else if(ayuda) el.setAttribute('aria-describedby',ayuda);
+        else el.removeAttribute('aria-describedby');
+      }
       if(mal){ok=false;if(!primero)primero=el;}
     });
     if(!ok){ if(primero)primero.focus(); return; }
