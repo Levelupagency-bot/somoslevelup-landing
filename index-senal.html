@@ -1948,7 +1948,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 
     <div class="form-card prof">
       <h3>¿Preferís dejarnos tus datos?</h3>
-      <p class="small">Te escribimos nosotros.</p>
+      <p class="small">Te respondemos nosotros.</p>
 <div id="formView">
         <form id="form" data-form-id="sesion" novalidate>
           <div class="frow">
@@ -1977,7 +1977,9 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       </div>
       <div class="done" id="done">
         <h3>Recibido.</h3>
-        <p>Te respondemos por WhatsApp dentro de las 24 hs hábiles y <span data-plazo>en 48 hs hábiles</span> tenés la propuesta. Si preferís hablar, coordinamos una llamada.<br>
+        <p id="done-wa">Te respondemos por WhatsApp dentro de las 24 hs hábiles y <span data-plazo>en 48 hs hábiles</span> tenés la propuesta. Si preferís hablar, coordinamos una llamada.</p>
+        <p id="done-mail" hidden>Recibimos tu mensaje. Te respondemos por email dentro de las 24 hs hábiles; la propuesta, en 48 hs hábiles. No te escribimos por WhatsApp porque no marcaste esa opción.</p>
+        <p>
         Mientras tanto, así pensamos: <a href="https://www.instagram.com/levelup.aima/" target="_blank" rel="noopener">Instagram</a>.</p>
       </div>
     </div>
@@ -2354,6 +2356,10 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       if(!r.ok) throw new Error('HTTP '+r.status);
       // solo acá se da por recibido
       view.style.display='none';
+      /* El texto de agradecimiento depende del consentimiento: sin la casilla marcada no
+         se promete WhatsApp. Lee el mismo dato que viajó en el payload (datos.consent). */
+      var dw=document.getElementById('done-wa'), dm=document.getElementById('done-mail');
+      if(dw&&dm){ dw.hidden=!datos.consent; dm.hidden=!!datos.consent; }
       done.classList.add('on');
       done.setAttribute('tabindex','-1');done.focus();
     }).catch(function(){
