@@ -1113,6 +1113,13 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 .nav-r a:not(.button)[aria-current]::after{content:'';position:absolute;left:12px;right:12px;bottom:8px;height:2px;border-radius:2px;background:var(--accent)}
 .menu a[aria-current]:not(.menu-cta){box-shadow:inset 3px 0 0 var(--accent);padding-left:12px}
 
+/* ── pasada móvil: botón de WhatsApp, portada y control de animación ── */
+@media(max-width:760px){
+  .hero__copy{opacity:1!important;transform:none!important;will-change:auto}
+  .wa.asoma.wa--baja,.wa.asoma.wa--form{opacity:0;transform:translateY(14px) scale(.92);pointer-events:none}
+  .hero__playback:focus-visible{min-height:44px;min-width:44px}
+}
+
 /* ── pasada móvil, ajustes de la crítica: zonas táctiles, letra chica, preguntas ── */
 .faq-mas{display:none}
 @media(max-width:640px){
@@ -1559,7 +1566,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
           <li><b>Nos juntamos una vez por mes</b> a mirar los números.</li>
         </ul>
         <div class="sis-cta">
-          <a class="button button--primary" href="https://wa.me/5493482583784?text=Quiero%20mi%20Evaluaci%C3%B3n%20(vengo%20de%20la%20web)" target="_blank" rel="noopener">Pedí tu Evaluación</a>
+          <a class="button button--primary" href="#sesion" data-go="sesion">Contanos qué necesitás</a>
           <a class="link link-ext" href="https://wa.me/5493482583784?text=Hola%2C%20vengo%20de%20la%20web%20y%20quiero%20probar%20el%20sistema." target="_blank" rel="noopener">Probalo por WhatsApp</a>
         </div>
         <p class="small sis-nota">Te contesta el mismo sistema que instalamos, andando en nuestro propio negocio.</p>
@@ -1810,7 +1817,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
         <li><span>Si preferís hablar, coordinamos una llamada. No tiene costo ni compromiso.</span></li>
       </ol>
       <div class="eva-cta">
-        <a class="button button--primary" href="https://wa.me/5493482583784?text=Quiero%20mi%20Evaluaci%C3%B3n%20(vengo%20de%20la%20web)" target="_blank" rel="noopener">Pedí tu Evaluación por WhatsApp</a>
+        <a class="button button--primary" href="https://wa.me/5493482583784?text=Quiero%20mi%20Evaluaci%C3%B3n%20(vengo%20de%20la%20web)" target="_blank" rel="noopener">Contanos qué necesitás por WhatsApp</a>
       </div>
       <p class="small" style="margin-top:10px">Con que nos cuentes qué está pasando, alcanza para empezar.</p>
       <p class="viable">Si no es viable o no te conviene, también te lo decimos.</p>
@@ -1839,7 +1846,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
             <span id="consent-txt">Acepto recibir respuestas por WhatsApp sobre mi consulta</span>
           </label>
           <p class="aviso-priv">Al enviar aceptás nuestra <a href="https://levelup-legal.vercel.app/privacidad-web" target="_blank" rel="noopener">política de privacidad</a>. Usamos tus datos solo para contactarte; no los compartimos con terceros.</p>
-          <button type="submit" class="send button button--primary" id="send">Pedí tu Evaluación</button>
+          <button type="submit" class="send button button--primary" id="send">Contanos qué necesitás</button>
           <p class="fine">Te respondemos dentro de las 24 hs hábiles y <span data-plazo>en 48 hs hábiles</span> tenés la propuesta. Si preferís hablar, coordinamos una llamada.</p>
           <div class="fallo" id="fallo">No pudimos enviar el formulario — puede ser la conexión.
             Probá de nuevo, o escribinos por <a href="https://www.instagram.com/levelup.aima/" target="_blank" rel="noopener">Instagram</a> y lo resolvemos ahí.</div>
@@ -2101,7 +2108,21 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
     wa.classList.add('on');
     // aparece pasado el hero: en la primera pantalla el botón sobra y tapa el canvas
     var umbral=function(){return (window.innerHeight||700)*.55;};
-    var mostrar=function(){ wa.classList.toggle('asoma', (window.scrollY||0) > umbral()); };
+    var ultimo=window.scrollY||0, sesion=document.getElementById('sesion'), enForm=false;
+    var movil=function(){return window.matchMedia&&matchMedia('(max-width:760px)').matches;};
+    var mostrar=function(){
+      var y=window.scrollY||0;
+      wa.classList.toggle('asoma', y > umbral());
+      /* móvil: no tapa lo que se lee (se esconde al bajar, vuelve al subir) ni el botón de enviar (se esconde con el formulario a la vista) */
+      if(movil()){
+        if(y>ultimo+4) wa.classList.add('wa--baja'); else if(y<ultimo-4) wa.classList.remove('wa--baja');
+        wa.classList.toggle('wa--form',enForm);
+      } else wa.classList.remove('wa--baja','wa--form');
+      ultimo=y;
+    };
+    if(sesion&&'IntersectionObserver' in window){
+      new IntersectionObserver(function(es){enForm=es[0].isIntersecting;mostrar();},{threshold:0}).observe(sesion);
+    }
     mostrar();
     addEventListener('scroll',mostrar,{passive:true});
     addEventListener('resize',mostrar,{passive:true});
