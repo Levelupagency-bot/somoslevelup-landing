@@ -1112,6 +1112,66 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 .nav-r a[aria-current],.menu a[aria-current]{color:#c4520f}
 .nav-r a:not(.button)[aria-current]::after{content:'';position:absolute;left:12px;right:12px;bottom:8px;height:2px;border-radius:2px;background:var(--accent)}
 .menu a[aria-current]:not(.menu-cta){box-shadow:inset 3px 0 0 var(--accent);padding-left:12px}
+
+/* ══ PASADA MÓVIL: una idea por pantalla, el detalle detrás de "Ver…" (el texto completo sigue en escritorio y al expandir) ══ */
+.m-only,.ar-ver,.cat-mas,.map-ver{display:none}
+@media(max-width:640px){
+  .d-only{display:none!important}
+  p.m-only{display:block}
+  /* inicio: título, una línea, botón y la letra chica */
+  .hero__lead{margin-top:14px;font-size:18px;line-height:1.5}
+  .hero__actions{margin-top:20px;gap:12px}
+  .hero__note{margin-top:12px;font-size:13.5px}
+  .hero .link-arrow{font-size:16px}
+  /* ¿Qué le dejarías a cargo? → seis filas plegadas */
+  #a-cargo .lead{font-size:17px}
+  .areas{gap:12px;margin-top:22px}
+  .ar{padding:16px 16px 12px;border-radius:18px}
+  .ar-top{min-height:0;gap:12px}
+  .ar-ico{width:2.6rem;height:2.6rem;border-radius:.85rem}
+  .ar-ico svg{width:1.4rem;height:1.4rem}
+  .ar-top h3{font-size:19px}
+  .ar-top{order:1}.ar-pie{order:2;margin-top:10px}.ar-ver{order:3}.ar ul{order:4}
+  .js-rv .ar-ver{display:flex;align-items:center;gap:8px;align-self:flex-start;margin-top:6px;min-height:44px;padding:0;border:0;background:none;
+    font:inherit;font-size:15px;font-weight:650;color:var(--accent-ink);cursor:pointer}
+  .js-rv .ar-ver::after{content:'';width:8px;height:8px;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg) translateY(-2px);transition:transform .25s}
+  .js-rv .ar.open .ar-ver::after{transform:rotate(-135deg) translateY(-2px)}
+  .js-rv .ar:not(.open) ul{display:none}
+  .ar ul{margin-top:6px;flex:0 0 auto}
+  .ar li{font-size:16px;padding:10px 0 10px 22px}
+  .ar-chip{font-size:12.5px;padding:5px 10px}
+  .areas-nota{font-size:14px}
+  .ficha-banda-tx h3{font-size:1.55rem;margin-bottom:18px}
+  /* Qué construimos → tarjetas plegadas */
+  #que-construimos .catalogo{gap:14px;margin-top:26px}
+  .cat-card{padding:20px 18px}
+  .cat-top{margin-bottom:14px}
+  .cat-card h3{font-size:26px}
+  .cat-card .proy-dl,.cat-card--ancha .proy-dl{margin-top:12px;gap:10px}
+  .proy-dl dd{font-size:16px;line-height:1.5}
+  .cat-card--ancha{gap:0}
+  .js-rv .cat-card:not(.open) .m-resto{display:none}
+  .js-rv .cat-card:not(.open) .proy-dl>dt,.js-rv .cat-card:not(.open) .proy-dl>div:nth-child(2),
+  .js-rv .cat-card:not(.open) .proy-dl>div:nth-child(3) dt,.js-rv .cat-card:not(.open) .proy-dl>div:nth-child(3) dd:not(:has(a)){display:none}
+  .js-rv .cat-card:not(.open) .proy-dl>dd:nth-of-type(2){display:none}
+  .js-rv .cat-card:not(.open) .flujo{display:none}
+  .js-rv .cat-card.open .flujo{margin-top:18px}
+  .js-rv .cat-mas{display:flex;align-items:center;gap:8px;margin-top:6px;min-height:44px;padding:0;border:0;background:none;font:inherit;font-size:15px;font-weight:650;color:var(--ink-2);cursor:pointer}
+  .js-rv .cat-mas::after{content:'';width:8px;height:8px;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg) translateY(-2px);transition:transform .25s}
+  .js-rv .cat-card.open .cat-mas::after{transform:rotate(-135deg) translateY(-2px)}
+  /* Cómo trabajamos → compacto */
+  .pasos.linea4 li{padding:0 0 16px 44px}
+  .pasos.linea4 h3{font-size:18px}
+  .pasos.linea4 p{font-size:15px;margin-top:4px}
+  .nota-ia--banda{padding:18px 18px;font-size:15.5px}
+  .trabajo-extra{gap:28px;margin-top:28px}
+  .nots div{padding:10px 0;font-size:15.5px}
+  .mapa>div{padding:12px 14px}
+  .js-rv .map-ver{display:flex;align-items:center;gap:8px;margin-top:2px;min-height:44px;padding:0;border:0;background:none;font:inherit;font-size:15px;font-weight:650;color:var(--accent-ink);cursor:pointer}
+  .js-rv .map-ver::after{content:'';width:8px;height:8px;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg) translateY(-2px);transition:transform .25s}
+  .js-rv .map-open .map-ver::after{transform:rotate(-135deg) translateY(-2px)}
+  .js-rv .trabajo-extra>div:nth-child(2):not(.map-open) :is(.small,.mapa){display:none}
+}
 </style>
 </head>
 <body>
@@ -1154,13 +1214,14 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
     <div class="hero__copy">
       <p class="hero__eyebrow">Primero el negocio. Después la IA.</p>
       <h1 id="h1">Sumá a tu equipo a alguien que se hace cargo de un proceso.</h1>
-      <p class="hero__lead">Empleados digitales: empiezan por una tarea y crecen, según el caso, hasta llevar procesos completos de tu negocio. Trabajan con tus reglas, dejan todo registrado y los precios, los descuentos y el cierre de la venta los decidís vos.</p>
-      <p class="hero__oferta">Contanos qué necesitás y <span data-plazo>en 48 hs hábiles</span> te proponemos una solución.</p>
+      <p class="hero__lead">Empleados digitales: empiezan por una tarea y crecen, según el caso<span class="d-only">, hasta llevar procesos completos de tu negocio. Trabajan con tus reglas, dejan todo registrado y los precios, los descuentos y el cierre de la venta los decidís vos</span>.</p>
+      <p class="hero__oferta d-only">Contanos qué necesitás y <span data-plazo>en 48 hs hábiles</span> te proponemos una solución.</p>
       <div class="hero__actions">
         <a class="button button--primary" href="#sesion" data-go="sesion">Contanos qué necesitás</a>
         <a class="link link-arrow" href="#que-construimos" data-go="que-construimos">Mirá lo que construimos</a>
       </div>
-      <p class="hero__note"><span data-plazo>48 hs hábiles</span> desde que recibimos tu mensaje. Si no encaja, te lo decimos. La propuesta no tiene costo ni compromiso.</p>
+      <p class="hero__note d-only"><span data-plazo>48 hs hábiles</span> desde que recibimos tu mensaje. Si no encaja, te lo decimos. La propuesta no tiene costo ni compromiso.</p>
+      <p class="hero__note m-only">Propuesta en <span data-plazo>48 hs hábiles</span> desde tu mensaje. Sin costo ni compromiso.</p>
     </div>
     <div class="hero__visual">
       <div class="hero__media" data-hero-media>
@@ -1187,31 +1248,37 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
     <div class="areas stg">
       <article class="ar">
         <div class="ar-top"><span class="cat-ico ar-ico" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6h22a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H14l-6 5v-5H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/><path d="M10 12h12M10 16h7"/></svg></span><h3>Ventas y consultas</h3></div>
+        <button type="button" class="ar-ver" aria-expanded="false">Ver procesos</button>
         <ul><li>De la consulta al presupuesto.</li><li>El seguimiento de cada oportunidad.</li><li>Retomar a los clientes que quedaron en el aire.</li></ul>
         <div class="ar-pie"><span class="ar-chip">Ya funciona: atender, anotar, avisar y retomar</span></div>
       </article>
       <article class="ar">
         <div class="ar-top"><span class="cat-ico ar-ico" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 28s-10-6.2-10-14a6 6 0 0 1 10-4.4A6 6 0 0 1 26 14c0 7.8-10 14-10 14z"/></svg></span><h3>Atención y posventa</h3></div>
+        <button type="button" class="ar-ver" aria-expanded="false">Ver procesos</button>
         <ul><li>Del reclamo a la resolución.</li><li>Turnos y recordatorios.</li><li>El seguimiento después de la compra.</li></ul>
         <div class="ar-pie"><span class="ar-chip">Ya funciona: recordar turnos</span></div>
       </article>
       <article class="ar">
         <div class="ar-top"><span class="cat-ico ar-ico" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9l12-5 12 5-12 5z"/><path d="M4 9v13l12 6V14M28 9v13l-12 6"/></svg></span><h3>Operaciones</h3></div>
+        <button type="button" class="ar-ver" aria-expanded="false">Ver procesos</button>
         <ul><li>Del pedido a la entrega.</li><li>Avisos de estado al cliente.</li><li>Coordinación entre áreas.</li></ul>
         <div class="ar-pie"></div>
       </article>
       <article class="ar">
         <div class="ar-top"><span class="cat-ico ar-ico" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h17v14H3zM20 13h5l4 4v5H20z"/><circle cx="9" cy="24" r="2.5"/><circle cx="24" cy="24" r="2.5"/></svg></span><h3>Compras y proveedores</h3></div>
+        <button type="button" class="ar-ver" aria-expanded="false">Ver procesos</button>
         <ul><li>Pedidos a proveedores.</li><li>Seguimiento de entregas.</li><li>Reclamos por demoras.</li></ul>
         <div class="ar-pie"></div>
       </article>
       <article class="ar">
         <div class="ar-top"><span class="cat-ico ar-ico" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="20" height="24" rx="2"/><path d="M11 10h10M11 15h10M11 20h6"/></svg></span><h3>Administración</h3></div>
+        <button type="button" class="ar-ver" aria-expanded="false">Ver procesos</button>
         <ul><li>Pagos pendientes y vencimientos.</li><li>Documentación que falta.</li><li>Un resumen diario para el dueño.</li></ul>
         <div class="ar-pie"></div>
       </article>
       <article class="ar">
         <div class="ar-top"><span class="cat-ico ar-ico" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="4"/><circle cx="22" cy="12" r="3.2"/><path d="M3 27c0-4.5 3.6-8 8-8s8 3.5 8 8M20 20.5c4.2-.6 8 2 9 6.5"/></svg></span><h3>Equipo</h3></div>
+        <button type="button" class="ar-ver" aria-expanded="false">Ver procesos</button>
         <ul><li>Quién hace qué.</li><li>Qué está trabado.</li><li>Qué vence.</li></ul>
         <div class="ar-pie"></div>
       </article>
@@ -1325,7 +1392,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
         <dl class="proy-dl">
           <div>
             <dt>Qué es</dt>
-            <dd>Un sistema armado desde cero para cómo trabaja tu negocio. Cuando el proceso lo pide, puede llevarlo un equipo de empleados digitales, cada uno con su puesto, coordinados y supervisados. Se arma por piezas: la primera pieza ya entra en funcionamiento.</dd>
+            <dd>Un sistema armado desde cero para cómo trabaja tu negocio.<span class="m-resto"> Cuando el proceso lo pide, puede llevarlo un equipo de empleados digitales, cada uno con su puesto, coordinados y supervisados. Se arma por piezas: la primera pieza ya entra en funcionamiento.</span></dd>
           </div>
           <div>
             <dt>Para quién</dt>
@@ -1337,6 +1404,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
             <a class="link link-arrow" href="#sesion" data-go="sesion">Contanos qué necesitás</a>
           </div>
         </dl>
+        <button type="button" class="cat-mas" aria-expanded="false">Ver detalle</button>
         </div>
         <figure class="flujo rv" aria-label="Ejemplo de un proceso completo llevado por un equipo de empleados digitales">
           <div class="flujo-cab"><span class="demo-tag">Ejemplo</span></div>
@@ -1356,12 +1424,13 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
         <h3>El Sistema</h3>
         <dl class="proy-dl">
           <dt>Qué es</dt>
-          <dd>Conectamos la publicidad con el trabajo comercial de tu negocio. Desde que alguien consulta hasta que tu equipo sabe qué hacer, ves cómo avanza cada oportunidad.</dd>
+          <dd>Conectamos la publicidad con el trabajo comercial de tu negocio.<span class="m-resto"> Desde que alguien consulta hasta que tu equipo sabe qué hacer, ves cómo avanza cada oportunidad.</span></dd>
           <dt>Para quién</dt>
           <dd>Negocios donde cada venta vale: concesionarias, energía solar, maquinaria agrícola e industrial, inmobiliarias.</dd>
           <dt>Cómo se pide</dt>
           <dd><a class="link link-arrow" href="#el-sistema" data-go="el-sistema">Ver qué incluye</a></dd>
         </dl>
+        <button type="button" class="cat-mas" aria-expanded="false">Ver detalle</button>
       </article>
 
       <article class="cat-card" id="card-alia" style="--c:#8fb89f">
@@ -1369,12 +1438,13 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
         <h3>Alia</h3>
         <dl class="proy-dl">
           <dt>Qué es</dt>
-          <dd>Cada consulta tiene responsable y la charla completa. Las que nadie respondió quedan aparte, a la vista.</dd>
+          <dd>Cada consulta tiene responsable y la charla completa.<span class="m-resto"> Las que nadie respondió quedan aparte, a la vista.</span></dd>
           <dt>Para quién</dt>
           <dd>Negocios que ya reciben consultas y necesitan ordenarlas.</dd>
           <dt>Cómo se pide</dt>
           <dd><a class="link link-ext" href="https://alialvl.com" target="_blank" rel="noopener">Conocé Alia</a></dd>
         </dl>
+        <button type="button" class="cat-mas" aria-expanded="false">Ver detalle</button>
       </article>
 
       <article class="cat-card" id="card-eventria" style="--c:#d49aa8">
@@ -1382,12 +1452,13 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
         <h3>Eventria</h3>
         <dl class="proy-dl">
           <dt>Qué es</dt>
-          <dd>La familia carga todo. Vos lo aprobás. Cada fiesta, en un solo lugar.</dd>
+          <dd>La familia carga todo. Vos lo aprobás.<span class="m-resto"> Cada fiesta, en un solo lugar.</span></dd>
           <dt>Para quién</dt>
           <dd>Organizadoras de fiestas y salones: 15 años, casamientos, cumpleaños.</dd>
           <dt>Cómo se pide</dt>
           <dd><a class="link link-ext" href="https://eventria.com.ar" target="_blank" rel="noopener">Conocé Eventria</a></dd>
         </dl>
+        <button type="button" class="cat-mas" aria-expanded="false">Ver detalle</button>
       </article>
 
       <article class="cat-card" id="card-consultorio" style="--c:#8fa9bd">
@@ -1395,12 +1466,13 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
         <h3>Consultorios</h3>
         <dl class="proy-dl">
           <dt>Qué es</dt>
-          <dd>Sistema para consultorios: agenda en varios lugares de atención, recordatorios de turnos, pacientes para volver a citar, estadísticas y control de cobros a obras sociales.</dd>
+          <dd>Sistema para consultorios: agenda en varios lugares de atención<span class="m-resto">, recordatorios de turnos, pacientes para volver a citar, estadísticas y control de cobros a obras sociales</span>.</dd>
           <dt>Para quién</dt>
           <dd>Consultorios que atienden en más de un lugar y hoy llevan agenda, controles y obras sociales por separado.</dd>
           <dt>Cómo se pide</dt>
           <dd><a class="link link-arrow" href="#consultorio" data-go="consultorio">Ver más</a></dd>
         </dl>
+        <button type="button" class="cat-mas" aria-expanded="false">Ver detalle</button>
       </article>
 
     </div>
@@ -1645,6 +1717,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       </div>
       <div class="rv">
         <h3>El mapa del puesto</h3>
+        <button type="button" class="map-ver" aria-expanded="false">Ver el mapa</button>
         <p class="small">Cada propuesta trae el suyo.</p>
         <div class="mapa">
           <div><b>Hace hoy</b><p>La tarea con la que empezamos, con tus reglas.</p></div>
@@ -1921,6 +1994,23 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
     filas.forEach(function(f){io.observe(f);});
   })();
 
+
+
+  /* ══ MÓVIL: PLEGAR / DESPLEGAR ══ */
+  (function(){
+    function alternar(btn,caja,clase,on,off){
+      var abierto=!caja.classList.contains(clase);
+      caja.classList.toggle(clase,abierto);
+      btn.setAttribute('aria-expanded',abierto?'true':'false');
+      btn.textContent=abierto?off:on;
+    }
+    document.addEventListener('click',function(e){
+      var b=e.target.closest&&e.target.closest('.ar-ver,.cat-mas,.map-ver'); if(!b) return;
+      if(b.classList.contains('ar-ver')) alternar(b,b.closest('.ar'),'open','Ver procesos','Ocultar');
+      else if(b.classList.contains('cat-mas')) alternar(b,b.closest('.cat-card'),'open','Ver detalle','Ver menos');
+      else alternar(b,b.parentNode,'map-open','Ver el mapa','Ocultar el mapa');
+    });
+  })();
 
   /* ══ SECCIÓN ACTIVA EN EL MENÚ ══ */
   (function(){
