@@ -1236,14 +1236,18 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 #que-construimos .flujo *{color:inherit}
 @media(max-width:640px){
   #que-construimos::before{width:78vw;height:78vw;right:-30vw;top:-18vw}
-  #que-construimos .catalogo{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin-inline:calc(var(--pad)*-1);padding:6px var(--pad) 10px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-  #que-construimos .catalogo::-webkit-scrollbar{display:none}
-  #que-construimos .cat-card{flex:0 0 84%;scroll-snap-align:center;min-height:430px;padding:26px 22px}
+  #que-construimos .catalogo{gap:14px}
+  .js-rv #que-construimos .catalogo{position:relative;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin-inline:calc(var(--pad)*-1);padding:6px var(--pad) 10px;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain}
+  .js-rv #que-construimos .catalogo::-webkit-scrollbar{display:none}
+  .js-rv #que-construimos .catalogo:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;border-radius:22px}
+  .js-rv #que-construimos .cat-card{flex:0 0 84%;scroll-snap-align:center;min-height:430px;padding:26px 22px}
+  #que-construimos .cat-card{min-height:0;padding:26px 22px}
   #que-construimos .cat-card--ancha{display:flex}
-  #que-construimos .cat-card--ancha .flujo{display:none}
-  #que-construimos .cat-card h3{margin-top:auto;font-size:40px;padding-top:56px}
+  .js-rv #que-construimos .cat-card h3{margin-top:auto;padding-top:56px}
+  #que-construimos .cat-card h3{font-size:40px}
   #que-construimos .cat-top{margin-bottom:0}
   #que-construimos .cat-card .proy-dl{margin-top:12px}
+}
 }
 
 #que-construimos .cat-card--ancha::after{display:none}
@@ -1254,6 +1258,60 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 #que-construimos .cat-card .link{background:none;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:6px}
 
 #que-construimos .cat-card::after{top:auto;bottom:clamp(10px,1.6vw,22px)}
+
+/* ══ ESCENARIO · extensión a Alia, Eventria, El Sistema y Consultorios ══ */
+.car-ind{display:none}
+@media(max-width:640px){
+  .js-rv .car-ind{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+  .car-pos{font-size:15px;font-weight:700;letter-spacing:.08em;color:var(--ink-2);font-variant-numeric:tabular-nums}
+  .car-dots{display:flex}
+  .car-dots button{position:relative;width:30px;height:44px;border:0;background:none;cursor:pointer;padding:0}
+  .car-dots button::before{content:'';position:absolute;left:50%;top:50%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:rgba(245,242,234,.3);transition:background .25s,transform .25s}
+  .car-dots button.on::before{background:var(--accent);transform:scale(1.5)}
+}
+@keyframes esfera{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@media(prefers-reduced-motion:no-preference){#que-construimos::before,#el-sistema::before,#consultorio::before{animation:esfera 9s ease-in-out infinite}}
+
+/* escenas: Alia y Eventria como un escenario oscuro con la demo de protagonista */
+#proyectos .proy,#otros-proyectos .proy{--ink:#f5f2ea;--ink-2:rgba(245,242,234,.84);--muted:rgba(245,242,234,.64);--line:rgba(245,242,234,.16);--accent-ink:#f08a4b;
+  position:relative;overflow:hidden;background:linear-gradient(160deg,#2a2926 0,#1c1b19 70%);border:1px solid rgba(245,242,234,.08);border-radius:26px;
+  box-shadow:0 40px 80px -50px rgba(0,0,0,.6);padding:clamp(28px,4vw,64px);color:var(--ink)}
+#proyectos .proy{--c:#8fb89f}#otros-proyectos .proy{--c:#d49aa8}
+#proyectos .proy::before,#otros-proyectos .proy::before{content:'';position:absolute;right:-90px;top:-90px;width:380px;height:380px;border-radius:50%;
+  background:radial-gradient(circle,var(--c) 0,transparent 66%);opacity:.2;pointer-events:none}
+#proyectos .proy h3,#otros-proyectos .proy h3{font-size:clamp(30px,4vw,56px);letter-spacing:-.04em;line-height:1.04;color:var(--ink);max-width:16ch}
+#proyectos .proy .estado{background:rgba(245,242,234,.08);border-color:var(--line);color:var(--ink-2)}
+#proyectos .proy .dolores b,#otros-proyectos .proy b{color:var(--ink)}
+#proyectos .proy .link,#otros-proyectos .proy .link{background:none;color:var(--ink);text-decoration:underline;text-decoration-color:var(--c);text-decoration-thickness:2px;text-underline-offset:6px}
+#proyectos .demo-tag,#otros-proyectos .demo-tag{background:rgba(245,242,234,.08);border-color:var(--line);color:var(--ink-2)}
+#otros-proyectos .ev-n{background:var(--c);color:#1c1b19}
+#otros-proyectos .ev-btn{border-color:rgba(245,242,234,.5);color:var(--ink)}
+#otros-proyectos .ev-btn:hover,#otros-proyectos .ev-btn[aria-pressed="true"]{background:var(--ink);color:#1c1b19}
+#otros-proyectos h2,#consultorio h2,#el-sistema h2{font-size:clamp(2.2rem,5vw,4.2rem);letter-spacing:-.04em;line-height:1.04}
+#proyectos .pliegues,#otros-proyectos .proy .ev-func li{color:var(--ink-2)}
+@media(max-width:640px){
+  /* móvil: título, demo y enlace; el detalle al tocar */
+  #proyectos .proy,#otros-proyectos .proy{display:flex;flex-direction:column;align-items:stretch;padding:26px 20px 22px;border-radius:22px}
+  #proyectos .proy .proy-cta,#otros-proyectos .proy .proy-cta{justify-content:flex-start}
+  #proyectos .proy .pl-ver,#otros-proyectos .proy .pl-ver{align-self:flex-start}
+  .js-rv .proy.pl .proy-tx{display:contents}
+  .js-rv .proy.pl .estado{order:1;align-self:flex-start}
+  .js-rv .proy.pl h3{order:2}
+  .js-rv .proy.pl .shots{order:3;display:block!important;margin-top:14px}
+  .js-rv .proy.pl .proy-cta{order:4;margin-top:6px}
+  .js-rv .proy.pl .collage{padding-block:6px 2px}
+  .js-rv .proy.pl .pl-ver{order:5;color:var(--c)}
+  .js-rv .proy.pl .dolores,.js-rv .proy.pl .proy-dl,.js-rv .proy.pl .ev-func{order:6}
+  .js-rv .proy.pl:not(.open) .ev-paso:nth-child(2){display:none}
+}
+/* El Sistema y Consultorios: grafito con brillo propio */
+#el-sistema,#consultorio{position:relative;overflow:hidden;background:#1b1a18}
+#el-sistema::before,#consultorio::before{content:'';position:absolute;pointer-events:none;border-radius:50%;opacity:.5;
+  background:radial-gradient(circle at 35% 30%,#4a4843 0,#1b1a18 40%,#000 72%);width:min(44vw,520px);height:min(44vw,520px);right:-10vw;bottom:-12vw}
+#consultorio::before{background:radial-gradient(circle,#8fa9bd 0,transparent 68%);opacity:.18;width:520px;height:520px;right:-120px;top:-120px;bottom:auto}
+#el-sistema .wrap,#consultorio .wrap{position:relative}
+#el-sistema .sis-def{font-size:clamp(22px,2.2vw,30px);letter-spacing:-.025em}
+#el-sistema .rubros li{background:rgba(245,242,234,.06);border-color:rgba(245,242,234,.2)}
 </style>
 </head>
 <body>
@@ -1558,6 +1616,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       </article>
 
     </div>
+    <div class="car-ind"><span class="car-pos" aria-live="polite">01 / 05</span><div class="car-dots"></div></div>
   </div>
 </section>
 
@@ -2101,6 +2160,22 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
     });
   })();
 
+
+
+  /* ══ CARRUSEL MÓVIL «QUÉ CONSTRUIMOS»: posición, puntos y teclado ══ */
+  (function(){
+    var c=document.querySelector('#que-construimos .catalogo'),ind=document.querySelector('.car-ind'); if(!c||!ind) return;
+    var cards=[].slice.call(c.children),pos=ind.querySelector('.car-pos'),dots=ind.querySelector('.car-dots');
+    c.setAttribute('role','region'); c.setAttribute('aria-label','Qué construimos: deslizá para ver cada opción'); c.tabIndex=0;
+    function reducido(){return window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;}
+    function cur(){var w=c.getBoundingClientRect(),m=w.left+w.width/2,best=0,d=1e9;cards.forEach(function(k,i){var r=k.getBoundingClientRect(),dd=Math.abs(r.left+r.width/2-m);if(dd<d){d=dd;best=i;}});return best;}
+    function upd(){var i=cur();pos.textContent=('0'+(i+1)).slice(-2)+' / 0'+cards.length;[].forEach.call(dots.children,function(b,j){b.classList.toggle('on',j===i);b.setAttribute('aria-current',j===i?'true':'false');});}
+    function go(i){i=Math.max(0,Math.min(cards.length-1,i));var k=cards[i];c.scrollTo({left:k.offsetLeft-(c.clientWidth-k.offsetWidth)/2,behavior:reducido()?'auto':'smooth'});}
+    cards.forEach(function(card,i){var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Ir a '+card.querySelector('h3').textContent);b.addEventListener('click',function(){go(i);});dots.appendChild(b);});
+    c.addEventListener('scroll',function(){requestAnimationFrame(upd);},{passive:true});
+    c.addEventListener('keydown',function(e){if(e.target!==c) return;if(e.key==='ArrowRight'){e.preventDefault();go(cur()+1);}else if(e.key==='ArrowLeft'){e.preventDefault();go(cur()-1);}});
+    upd();
+  })();
 
   /* ══ MÓVIL: MÁS PREGUNTAS ══ */
   (function(){
