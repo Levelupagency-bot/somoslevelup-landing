@@ -1134,7 +1134,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
   .js-rv .faq-mas::after{content:'';width:8px;height:8px;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg) translateY(-2px);transition:transform .25s}
   .js-rv .faq-mas[aria-expanded=true]::after{transform:rotate(-135deg) translateY(-2px)}
   /* las respuestas de costo, "¿y si no me sirve?" y datos van primero */
-  .faq .plie:nth-child(7){order:-3}.faq .plie:nth-child(8){order:-2}.faq .plie:nth-child(11){order:-1}
+  .faq .plie:nth-child(7){order:-3}.faq .plie:nth-child(8){order:-2}.faq .plie:nth-child(10),.faq .plie:nth-child(11){order:-1}
 }
 
 /* ══ PASADA MÓVIL: una idea por pantalla, el detalle detrás de "Ver…" (el texto completo sigue en escritorio y al expandir) ══ */
@@ -1721,7 +1721,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       <span class="cat-ico cat-ico--solo" style="--c:#8fa9bd"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="24" height="22" rx="3"/><path d="M4 12h24M10 3v6M22 3v6"/><path d="M16 17v7M12.5 20.5h7"/></svg></span>
       <span class="k">Consultorios</span>
       <h2>Sistema para consultorios.</h2>
-      <p class="lead pl-l0">Agenda en varios lugares de atención, recordatorios de turnos y seguimiento de pacientes.</p>
+      <p class="lead pl-l0">Agenda en varios lugares de atención, recordatorios de turnos y pacientes para volver a citar.</p>
       <p class="lead pl-l1">Agenda en varios lugares de atención, recordatorios de turnos por WhatsApp, pacientes para volver a citar, estadísticas y control de cobros a obras sociales: qué presentaste, qué cobraste y qué te debitaron. <b>Es un registro: no procesa pagos.</b> Armado según cómo trabaja cada consultorio.</p>
       <p class="lead pl-l2">Si lo necesitás, lo armamos con vos. Escribinos y vemos tu caso.</p>
       <button type="button" class="pl-ver" aria-expanded="false">Ver qué incluye</button>
@@ -1813,7 +1813,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
         <div class="plie-in"><p>Sin permanencia, con aviso de 30 días.</p></div></details>
       <details class="plie plie--mas"><summary><span>En el Sistema, ¿hay permanencia?</span><i class="mas" aria-hidden="true"></i></summary>
         <div class="plie-in"><p>En el Sistema no hay permanencia: te vas avisando con 30 días. Tus datos quedan aislados de los de otros negocios y, si te vas, te llevás tu base.</p></div></details>
-      <details class="plie plie--mas"><summary><span>¿Qué pasa con mis datos?</span><i class="mas" aria-hidden="true"></i></summary>
+      <details class="plie"><summary><span>¿Qué pasa con mis datos?</span><i class="mas" aria-hidden="true"></i></summary>
         <div class="plie-in"><p>Las demos usan datos de ejemplo; tus datos son tuyos y te los llevás.</p></div></details>
       <details class="plie"><summary><span>¿Qué información necesita la IA?</span><i class="mas" aria-hidden="true"></i></summary>
         <div class="plie-in"><p>Definimos qué información hace falta y cómo se usa, antes de construir.</p></div></details>
