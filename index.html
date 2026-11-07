@@ -1113,6 +1113,23 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 .nav-r a:not(.button)[aria-current]::after{content:'';position:absolute;left:12px;right:12px;bottom:8px;height:2px;border-radius:2px;background:var(--accent)}
 .menu a[aria-current]:not(.menu-cta){box-shadow:inset 3px 0 0 var(--accent);padding-left:12px}
 
+/* ── pasada móvil, ajustes de la crítica: zonas táctiles, letra chica, preguntas ── */
+.faq-mas{display:none}
+@media(max-width:640px){
+  .hero__eyebrow{font-size:12px}
+  .hero__note{color:var(--ink-2)}
+  .hero .link-arrow,.cat-card .link{display:inline-flex;align-items:center;min-height:44px}
+  .js-rv .ar-ver,.js-rv .cat-mas,.js-rv .map-ver{min-height:44px;height:44px}
+  .ficha-tag{font-size:.8em}.ficha-ej{font-size:.8em}.ficha-estado{font-size:.8em}
+  .faq{display:flex;flex-direction:column}
+  .js-rv .faq:not(.abierto) .plie--mas{display:none}
+  .js-rv .faq-mas{display:flex;align-items:center;gap:8px;margin-top:10px;min-height:44px;padding:0;border:0;background:none;font:inherit;font-size:15px;font-weight:650;color:var(--accent-ink);cursor:pointer}
+  .js-rv .faq-mas::after{content:'';width:8px;height:8px;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg) translateY(-2px);transition:transform .25s}
+  .js-rv .faq-mas[aria-expanded=true]::after{transform:rotate(-135deg) translateY(-2px)}
+  /* las respuestas de costo, "¿y si no me sirve?" y datos van primero */
+  .faq .plie:nth-child(7){order:-3}.faq .plie:nth-child(8){order:-2}.faq .plie:nth-child(10){order:-1}
+}
+
 /* ══ PASADA MÓVIL: una idea por pantalla, el detalle detrás de "Ver…" (el texto completo sigue en escritorio y al expandir) ══ */
 .m-only,.ar-ver,.cat-mas,.map-ver{display:none}
 @media(max-width:640px){
@@ -1757,25 +1774,26 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
         <div class="plie-in"><p>No. Empezamos por lo que te frena y cómo trabajás hoy: quién atiende, dónde se anota cada cosa y dónde se traba. Con eso definimos qué conviene: un sistema completo, un agente o ordenar lo que ya tenés.</p></div></details>
       <details class="plie"><summary><span>¿Qué pasa con mi gente?</span><i class="mas" aria-hidden="true"></i></summary>
         <div class="plie-in"><p>Se hace cargo de tareas y procesos, según el caso. Lo que pide criterio sigue siendo de tu gente, y los precios, los descuentos y el cierre de la venta los decidís vos.</p></div></details>
-      <details class="plie"><summary><span>¿Qué pasa cuando pido una Evaluación?</span><i class="mas" aria-hidden="true"></i></summary>
+      <details class="plie plie--mas"><summary><span>¿Qué pasa cuando pido una Evaluación?</span><i class="mas" aria-hidden="true"></i></summary>
         <div class="plie-in"><p>Nos escribís por WhatsApp y te responde primero nuestro sistema: te pregunta qué querés resolver.</p><p>Te respondemos dentro de las 24 hs hábiles y <span data-plazo>en 48 hs hábiles</span> tenés la propuesta. Si preferís hablar, coordinamos una llamada. No tiene costo ni compromiso.</p></div></details>
-      <details class="plie"><summary><span>¿Tengo que reemplazar lo que ya uso?</span><i class="mas" aria-hidden="true"></i></summary>
+      <details class="plie plie--mas"><summary><span>¿Tengo que reemplazar lo que ya uso?</span><i class="mas" aria-hidden="true"></i></summary>
         <div class="plie-in"><p>Primero revisamos las herramientas y la información que ya tenés, y definimos si sirven o qué hay que cambiar.</p></div></details>
-      <details class="plie"><summary><span>¿Construyen solo agentes de atención?</span><i class="mas" aria-hidden="true"></i></summary>
+      <details class="plie plie--mas"><summary><span>¿Construyen solo agentes de atención?</span><i class="mas" aria-hidden="true"></i></summary>
         <div class="plie-in"><p>No. Alia ordena consultas y seguimiento; Eventria es una app para que la familia y la organizadora (o el salón) armen una fiesta juntas. Construimos sistemas, herramientas y agentes según cada negocio.</p></div></details>
-      <details class="plie"><summary><span>En el Sistema, ¿la IA cierra las ventas?</span><i class="mas" aria-hidden="true"></i></summary>
+      <details class="plie plie--mas"><summary><span>En el Sistema, ¿la IA cierra las ventas?</span><i class="mas" aria-hidden="true"></i></summary>
         <div class="plie-in"><p>No. LIA, nuestro agente, atiende, indaga, califica y agenda, y le pasa la conversación a tu equipo con un resumen. El cierre es de tu equipo.</p><p>Viene incluida y se activa solo si la querés; sin ella, el Sistema funciona igual.</p></div></details>
       <details class="plie"><summary><span>¿Cuánto cuesta y cuánto tarda?</span><i class="mas" aria-hidden="true"></i></summary>
         <div class="plie-in"><p>Se define con el alcance, por escrito y antes de pagar.</p><p>En el Sistema, la puesta en marcha tiene un tope de 21 días hábiles: si no queda funcionando según lo que firmamos, se devuelve el 100% de la implementación.</p></div></details>
       <details class="plie"><summary><span>¿Y si no me sirve?</span><i class="mas" aria-hidden="true"></i></summary>
         <div class="plie-in"><p>Sin permanencia, con aviso de 30 días.</p></div></details>
-      <details class="plie"><summary><span>En el Sistema, ¿hay permanencia?</span><i class="mas" aria-hidden="true"></i></summary>
+      <details class="plie plie--mas"><summary><span>En el Sistema, ¿hay permanencia?</span><i class="mas" aria-hidden="true"></i></summary>
         <div class="plie-in"><p>En el Sistema no hay permanencia: te vas avisando con 30 días. Tus datos quedan aislados de los de otros negocios y, si te vas, te llevás tu base.</p></div></details>
       <details class="plie"><summary><span>¿Qué pasa con mis datos?</span><i class="mas" aria-hidden="true"></i></summary>
         <div class="plie-in"><p>Las demos usan datos de ejemplo; tus datos son tuyos y te los llevás.</p></div></details>
-      <details class="plie"><summary><span>¿Qué información necesita la IA?</span><i class="mas" aria-hidden="true"></i></summary>
+      <details class="plie plie--mas"><summary><span>¿Qué información necesita la IA?</span><i class="mas" aria-hidden="true"></i></summary>
         <div class="plie-in"><p>Definimos qué información hace falta y cómo se usa, antes de construir.</p></div></details>
     </div>
+    <button type="button" class="faq-mas" aria-expanded="false">Más preguntas</button>
   </div>
 </section>
 
@@ -2010,6 +2028,13 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       else if(b.classList.contains('cat-mas')) alternar(b,b.closest('.cat-card'),'open','Ver detalle','Ver menos');
       else alternar(b,b.parentNode,'map-open','Ver el mapa','Ocultar el mapa');
     });
+  })();
+
+
+  /* ══ MÓVIL: MÁS PREGUNTAS ══ */
+  (function(){
+    var b=document.querySelector('.faq-mas'),f=document.querySelector('.faq'); if(!b||!f) return;
+    b.addEventListener('click',function(){var on=f.classList.toggle('abierto');b.setAttribute('aria-expanded',on?'true':'false');b.textContent=on?'Menos preguntas':'Más preguntas';});
   })();
 
   /* ══ SECCIÓN ACTIVA EN EL MENÚ ══ */
