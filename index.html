@@ -1198,7 +1198,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 }
 
 /* ══ MÓVIL: Alia / Eventria / Consultorios plegados (título + frase + salida visibles; lo demás al tocar; sin JS todo expandido) ══ */
-.pl-ver{display:none}
+.pl-ver,.pl-l0{display:none}
 @media(max-width:640px){
   .js-rv .pl:not(.open) :is(.dolores,.proy-dl,.ev-func){display:none}
   .js-rv .pl:not(.open) ~ .shots,.js-rv .proy.pl:not(.open) .shots{display:none}
@@ -1206,8 +1206,9 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
   .js-rv .pl-ver::after{content:'';width:8px;height:8px;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg) translateY(-2px);transition:transform .25s}
   .js-rv .pl.open .pl-ver::after{transform:rotate(-135deg) translateY(-2px)}
   .js-rv .consul>div.pl{display:flex;flex-direction:column;align-items:flex-start}
-  .js-rv .consul .pl-l1{order:1}.js-rv .consul .pl-l2{order:2}.js-rv .consul .pl-ver{order:3}
+  .js-rv .consul .pl-l0{order:1}.js-rv .consul .pl-l1{order:2}.js-rv .consul .pl-l2{order:3}.js-rv .consul .pl-ver{order:4}
   .js-rv .consul .pl:not(.open) .pl-l1{display:none}
+  .js-rv .consul .pl-l0{display:block}.js-rv .consul .pl.open .pl-l0{display:none}
 }
 </style>
 </head>
@@ -1720,6 +1721,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       <span class="cat-ico cat-ico--solo" style="--c:#8fa9bd"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="24" height="22" rx="3"/><path d="M4 12h24M10 3v6M22 3v6"/><path d="M16 17v7M12.5 20.5h7"/></svg></span>
       <span class="k">Consultorios</span>
       <h2>Sistema para consultorios.</h2>
+      <p class="lead pl-l0">Agenda en varios lugares de atención, recordatorios de turnos y seguimiento de pacientes.</p>
       <p class="lead pl-l1">Agenda en varios lugares de atención, recordatorios de turnos por WhatsApp, pacientes para volver a citar, estadísticas y control de cobros a obras sociales: qué presentaste, qué cobraste y qué te debitaron. <b>Es un registro: no procesa pagos.</b> Armado según cómo trabaja cada consultorio.</p>
       <p class="lead pl-l2">Si lo necesitás, lo armamos con vos. Escribinos y vemos tu caso.</p>
       <button type="button" class="pl-ver" aria-expanded="false">Ver qué incluye</button>
