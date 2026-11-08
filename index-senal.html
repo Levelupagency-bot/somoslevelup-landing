@@ -1312,6 +1312,28 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
 #el-sistema .wrap,#consultorio .wrap{position:relative}
 #el-sistema .sis-def{font-size:clamp(22px,2.2vw,30px);letter-spacing:-.025em}
 #el-sistema .rubros li{background:rgba(245,242,234,.06);border-color:rgba(245,242,234,.2)}
+
+/* ══ ESCRITORIO: equilibrio de columnas (Consultorios y Nosotros). Móvil y tablet angosta no cambian (≤760). ══ */
+.consul-lista,.consul-armado{display:none}
+@media(min-width:761px){
+  #consultorio .consul{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto;column-gap:clamp(40px,6vw,96px);row-gap:clamp(24px,3vw,40px);align-items:start}
+  #consultorio .consul>.pl{grid-column:1;grid-row:1}
+  #consultorio .consul>.consul-lista{grid-column:2;grid-row:1 / span 2;display:block;list-style:none;margin:0;padding:0;counter-reset:cl;align-self:center;border-top:1px solid rgba(245,242,234,.16)}
+  #consultorio .consul>.consul-cta{grid-column:1;grid-row:2;justify-self:start}
+  #consultorio .consul .pl-l1,#consultorio .consul .pl-l0{display:none!important}
+  #consultorio .consul .consul-armado{display:block;margin-bottom:0}
+  #consultorio .consul .lead{text-wrap:pretty}
+  #consultorio .consul-lista li{counter-increment:cl;position:relative;padding:20px 0 20px 52px;border-bottom:1px solid rgba(245,242,234,.16);font-size:clamp(1.02rem,1.35vw,1.2rem);line-height:1.45;color:#ece8de}
+  #consultorio .consul-lista li::before{content:'0' counter(cl);position:absolute;left:0;top:23px;font-size:.78rem;font-weight:700;letter-spacing:.1em;color:#8fa9bd;font-variant-numeric:tabular-nums}
+  #consultorio .consul-lista li b{color:#fff}
+  .nos{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto auto;align-items:start;column-gap:clamp(40px,6vw,96px);row-gap:20px}
+  .nos>div:first-child{display:contents}
+  .nos .k{grid-column:1 / -1;grid-row:1}
+  .nos h2{grid-column:1 / -1;grid-row:2;max-width:30ch;text-wrap:balance;font-size:clamp(2rem,3.9vw,3.4rem);margin-bottom:clamp(12px,2vw,28px)}
+  .nos>div:first-child .lead{grid-column:1;grid-row:3;margin:0}
+  .nos>div:last-child{grid-column:2;grid-row:3}
+  .nos>div:last-child .lead{margin:0}
+}
 </style>
 </head>
 <body>
@@ -1826,9 +1848,17 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       <h2>Sistema para consultorios.</h2>
       <p class="lead pl-l0">Agenda en varios lugares de atención, recordatorios de turnos y pacientes para volver a citar.</p>
       <p class="lead pl-l1">Agenda en varios lugares de atención, recordatorios de turnos por WhatsApp, pacientes para volver a citar, estadísticas y control de cobros a obras sociales: qué presentaste, qué cobraste y qué te debitaron. <b>Es un registro: no procesa pagos.</b> Armado según cómo trabaja cada consultorio.</p>
+      <p class="lead consul-armado">Armado según cómo trabaja cada consultorio.</p>
       <p class="lead pl-l2">Si lo necesitás, lo armamos con vos. Escribinos y vemos tu caso.</p>
       <button type="button" class="pl-ver" aria-expanded="false">Ver qué incluye</button>
     </div>
+    <ul class="consul-lista">
+      <li>Agenda en varios lugares de atención</li>
+      <li>Recordatorios de turnos por WhatsApp</li>
+      <li>Pacientes para volver a citar</li>
+      <li>Estadísticas</li>
+      <li>Control de cobros a obras sociales: qué presentaste, qué cobraste y qué te debitaron. <b>Es un registro: no procesa pagos.</b></li>
+    </ul>
     <div class="consul-cta">
       <!-- Consultorios: botón a WhatsApp guardado para reactivar cuando Lia esté lista (reemplaza al de abajo):
       <a class="button button--primary" href="https://wa.me/5493482583784?text=Hola%2C%20vengo%20de%20la%20web%20y%20quiero%20ver%20el%20sistema%20para%20consultorios." target="_blank" rel="noopener">Escribinos</a> -->
