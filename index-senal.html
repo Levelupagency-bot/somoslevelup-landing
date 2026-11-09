@@ -1986,7 +1986,7 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
           </div>
           <div class="frow">
             <div class="fg"><label for="whatsapp">WhatsApp</label><input type="tel" id="whatsapp" autocomplete="tel" placeholder="+54 9 ..." required><span class="err" role="alert" id="e-whatsapp">Falta el WhatsApp</span></div>
-            <div class="fg"><label for="rubro">Rubro</label><input type="text" id="rubro" placeholder="Concesionaria, maquinaria…" required><span class="err" role="alert" id="e-rubro">Falta el rubro</span></div>
+            <div class="fg"><label for="rubro">Rubro (opcional)</label><input type="text" id="rubro" placeholder="Concesionaria, maquinaria…"></div>
           </div>
           <div class="fg"><label for="problema">Si sumaras a alguien al equipo, ¿qué proceso o tarea le dejarías a cargo?</label><textarea id="problema" placeholder="Contalo con tus palabras." aria-describedby="ayuda-problema" data-ayuda="ayuda-problema" required></textarea><span class="ayuda" id="ayuda-problema">Sin datos de tus clientes.</span><span class="err" role="alert" id="e-problema">Contanos aunque sea una línea</span></div>
           <!-- Consentimiento para escribir primero por WhatsApp. Va DESMARCADA de fábrica:
@@ -2314,6 +2314,8 @@ input,textarea{transition:border-color .3s var(--suave),box-shadow .3s var(--sua
       var el=document.getElementById(id), err=document.getElementById('e-'+id);
       var mal=!el.value.trim();
       if(id==='email') mal=!/^\S+@\S+\.\S+$/.test(el.value.trim());
+      /* El rubro es opcional: viaja igual, vacío si no lo completa */
+      if(id==='rubro') mal=false;
       /* Quien ya contesto en la calculadora no tiene que volver a escribirlo acá */
       if(id==='problema' && mal && (document.getElementById('calc')||{dataset:{}}).dataset.resumen) mal=false;
       el.classList.toggle('bad',mal);
