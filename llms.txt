@@ -1,0 +1,32 @@
+# Level Up™ | AIMA
+
+Actualizado: 2026-11-25
+
+> Level Up™ | AIMA construye empleados digitales y sistemas a medida para negocios, armados a partir de cómo trabaja cada negocio. Los empleados digitales empiezan por una tarea y crecen, según el caso, hasta llevar procesos completos; trabajan con las reglas del dueño y dejan registro de lo que hacen. Los precios, los descuentos y el cierre de la venta los decide el dueño. Con base en Reconquista, Santa Fe, Argentina. Se pide contando qué se necesita: en 48 horas hábiles se manda una propuesta, sin costo ni compromiso.
+
+## Páginas
+- [Inicio](https://www.somoslevelup.com/): qué construimos, cómo trabajamos, preguntas frecuentes y contacto.
+- [¿Qué le dejarías a cargo?](https://www.somoslevelup.com/#a-cargo): los procesos que puede llevar un empleado digital y un ejemplo de ficha del puesto (qué hace, qué no hace y qué queda escrito).
+- [Lo que desarrollamos](https://www.somoslevelup.com/#que-construimos): sistemas a medida, el Sistema, Alia, Eventria y el sistema para consultorios.
+- [El Sistema](https://www.somoslevelup.com/#el-sistema): para negocios donde cada venta vale (concesionarias, energía solar, maquinaria agrícola e industrial, inmobiliarias). Conecta la publicidad con el trabajo comercial del negocio.
+- [Consultorios](https://www.somoslevelup.com/#consultorio): agenda en varios lugares de atención, recordatorios de turnos por WhatsApp, pacientes para volver a citar, estadísticas y control de cobros a obras sociales. Es un registro: no procesa pagos.
+- [Cómo trabajamos](https://www.somoslevelup.com/#como-trabajamos): primero entendemos, después construimos.
+- [Preguntas frecuentes](https://www.somoslevelup.com/#preguntas)
+- [Alia](https://alialvl.com): sistema para ordenar las consultas de un negocio. Sitio propio.
+- [Eventria](https://eventria.com.ar): sistema para organizadoras de fiestas y salones. Sitio propio.
+- [Política de privacidad del sitio](https://levelup-legal.vercel.app/privacidad-web)
+- [Política de privacidad de AIMA](https://www.somoslevelup.com/aima/privacidad/)
+- [Términos del servicio del agente](https://www.somoslevelup.com/aima/agente/terminos/)
+
+## Lo que Level Up no hace
+- No promete ventas ni cantidad de consultas.
+- No cierra ventas, no da descuentos ni fija precios: lo decide el dueño.
+- Lo que pide criterio sigue siendo de la gente del negocio.
+- No usa datos reales en las demos.
+- No maneja redes ni publica contenido.
+- No publica precios: el costo se define con el alcance, por escrito y antes de pagar.
+
+## Contacto
+- WhatsApp: https://wa.me/5493482583784
+- Instagram: https://www.instagram.com/levelup.aima/
+- Formulario: https://www.somoslevelup.com/#sesion
